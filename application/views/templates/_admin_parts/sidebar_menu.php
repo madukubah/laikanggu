@@ -49,7 +49,7 @@
                                     <i class="right fas fa-angle-left"></i>
                                   </p>
                                 </a>
-                                <ul class="nav nav-treeview">
+                                <ul class=" ml-4 nav nav-treeview">
                                   <?php
                                       print_menus( $data->branch );
                                   ?>
