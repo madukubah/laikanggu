@@ -113,7 +113,7 @@ class Ion_auth
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public function __call($method, $arguments)
+	public function __call( $method, $arguments )
 	{
 		if (!method_exists( $this->ion_auth_model, $method) )
 		{
@@ -250,13 +250,13 @@ class Ion_auth
 	 *                        if the operation failed.
 	 * @author Mathew
 	 */
-	public function register($identity, $password, $email, $additional_data = [], $group_ids = [])
+	public function register($identity, $password, $email, $additional_data = [], $group_ids = [], $identity_mode = NULL)
 	{
 		$this->ion_auth_model->trigger_events('pre_account_creation');
 
 		$email_activation = $this->config->item('email_activation', 'ion_auth');
 
-		$id = $this->ion_auth_model->register($identity, $password, $email, $additional_data, $group_ids);
+		$id = $this->ion_auth_model->register($identity, $password, $email, $additional_data, $group_ids, $identity_mode );
 
 		if (!$email_activation)
 		{
@@ -361,8 +361,8 @@ class Ion_auth
 		$this->session->sess_destroy();
 
 		// Recreate the session
-		session_start();
-		$this->session->sess_regenerate(TRUE);
+		// session_start();
+		// $this->session->sess_regenerate(TRUE);
 
 		$this->set_message('logout_successful');
 		return TRUE;
@@ -521,8 +521,11 @@ class Ion_auth
 			if ( $this->ion_auth_model->update( $user->id, $data) )
 			{
 				$this->set_message('upload_successful');
-				$this->remove_photo( $user->image );
-				$this->session->set_userdata(array( 'user_image'=> $data['image'] ) ) ;
+				if( $user->image != "default.jpg" )
+					if( $this->remove_photo( $user->image_file ) ) {};
+
+
+				$this->session->set_userdata(array( 'user_image'=> base_url('uploads/users_photo/').$data['image'] ) ) ;
 				return TRUE;
 			}
 		}
@@ -551,7 +554,7 @@ class Ion_auth
 	 * @return true
 	 * @author alanHetfielD
 	 **/
-	public function update( $id_user, $data)
+	public function update( $id_user, $data , $identity_mode = NULL)
 	{
 		if (array_key_exists('old_password', $data))
 		{
@@ -563,7 +566,7 @@ class Ion_auth
 				return FALSE;
 			}
 		}
-		return $this->ion_auth_model->update( $id_user, $data) ;
+		return $this->ion_auth_model->update( $id_user, $data, $identity_mode ) ;
 	}
 
 	/**
@@ -588,21 +591,21 @@ class Ion_auth
 				 'label' => 'Nama Belakang',
 				 'rules' =>  'trim|required',
 			),
-			array(
-				'field' => 'email',
-				 'label' => 'Email',
-				 'rules' =>  'trim|required|valid_email',
-			),
+			// array(
+			// 	'field' => 'email',
+			// 	 'label' => 'Email',
+			// 	 'rules' =>  'trim|required|valid_email|is_unique[users.email]',
+			// ),
 			array(
 				'field' => 'phone',
 				 'label' =>('No Telepon'),
 				 'rules' =>  'trim|required',
 			),
-			array(
-				'field' => 'address',
-				 'label' => 'Alamat',
-				 'rules' =>  'trim|required',
-			),
+			// array(
+			// 	'field' => 'address',
+			// 	 'label' => 'Alamat',
+			// 	 'rules' =>  'trim|required',
+			// ),
 			array(
 				'field' => 'password',
 				 'label' => "Kata Sandi",
@@ -619,13 +622,8 @@ class Ion_auth
 				 'rules' =>  'trim|required',
 			 ),
 		);
-		if( $this->router->fetch_method() == "edit" )
-		{
-			unset($config[7]);
-			
-		}
-		unset($config[6]);
-		unset($config[5]);
+		unset($config[4]);
+		unset($config[3]);
 		
 		return $config;
 	}
