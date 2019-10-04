@@ -187,7 +187,7 @@ class MY_Model extends CI_Model {
 			}
 			$this->_ion_where = array();
 		}
-		return $this->db->count_all( $this->table );
+		return $this->db->count_all_results( $this->table );
 	}
 	/**
 	 * @param string $table

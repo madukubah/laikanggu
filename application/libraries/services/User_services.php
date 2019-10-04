@@ -10,17 +10,17 @@ class User_services
 	protected $phone;
 	protected $address;
 	protected $email;
-  protected $group_id;
+  	protected $group_id;
   
   function __construct()
   {
-      $this->id		      ='';
+      $this->id		      	='';
       $this->identity		='';
-      $this->first_name	="";
-      $this->last_name	="";
-      $this->phone		  ="";
+      $this->first_name		="";
+      $this->last_name		="";
+      $this->phone		  	="";
       $this->address		="";
-      $this->email		  ="";
+      $this->email		  	="";
       $this->group_id		= '';
   }
 
@@ -29,7 +29,7 @@ class User_services
     return get_instance()->$var;
   }
   
-  public function groups_table_config( $_page, $start_number = 1 )
+  public function get_table_config( $_page, $start_number = 1 )
   {
     $table["header"] = array(
 			'username' => 'username',
@@ -73,47 +73,6 @@ class User_services
 		);
     return $table;
   }
-  public function validation_config( ){
-    $config = array(
-        array(
-          'field' => 'name',
-          'label' => 'name',
-          'rules' =>  'trim|required',
-        ),
-        array(
-          'field' => 'link',
-          'label' => 'link',
-          'rules' =>  'trim|required',
-        ),
-        array(
-          'field' => 'icon',
-          'label' => 'icon',
-          'rules' =>  'trim|required',
-        ),
-        array(
-          'field' => 'position',
-          'label' => 'position',
-          'rules' =>  'trim|required',
-        ),
-        array(
-          'field' => 'status',
-          'label' => 'status',
-          'rules' =>  'trim|required',
-        ),
-        array(
-          'field' => 'description',
-          'label' => 'description',
-          'rules' =>  'trim|required',
-        ),
-        array(
-          'field' => 'menu_id',
-          'label' => 'menu_id',
-          'rules' =>  'trim|required',
-        ),
-    );
-    
-    return $config;
-  }
 
   /**
 	 * get_form_data
@@ -137,14 +96,6 @@ class User_services
 
 		$groups =$this->ion_auth_model->groups(  )->result();
 
-		$group_options ="";
-		foreach($groups as $n => $item)
-		{	
-			
-			$group_options .= form_radio("group_id", $item->id ,set_checkbox('group_id', $item->id), ' id="basic_checkbox_'.$n.'"');
-			$group_options .= '<label for="basic_checkbox_'.$n.'"> '. $item->name .'</label><br>';
-		}
-		$data['groups'] = $group_options;
 		$group_select = array();
 		foreach( $groups as $group )
 		{

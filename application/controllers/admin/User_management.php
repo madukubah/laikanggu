@@ -27,7 +27,7 @@ class User_management extends Admin_Controller
 		 //set pagination
 		 if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
-		$table = $this->services->groups_table_config( $this->current_page );
+		$table = $this->services->get_table_config( $this->current_page );
 		$table[ "rows" ] = $this->ion_auth->users_limit( $pagination['limit_per_page'], $pagination['start_record']  )->result();
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
