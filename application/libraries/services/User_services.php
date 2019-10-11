@@ -10,23 +10,37 @@ class User_services
 	protected $phone;
 	protected $address;
 	protected $email;
-  	protected $group_id;
+  protected $group_id;
   
   function __construct()
   {
-      $this->id		      	='';
+      $this->id		      ='';
       $this->identity		='';
-      $this->first_name		="";
-      $this->last_name		="";
-      $this->phone		  	="";
+      $this->first_name	="";
+      $this->last_name	="";
+      $this->phone		  ="";
       $this->address		="";
-      $this->email		  	="";
+      $this->email		  ="";
       $this->group_id		= '';
   }
 
   public function __get($var)
   {
     return get_instance()->$var;
+  }
+  public function get_photo_upload_config( $name = "_" )
+  {
+    $filename = "USER_".$name."_".time();
+    $upload_path = 'uploads/users_photo/';
+
+    $config['upload_path'] = './'.$upload_path;
+    $config['image_path'] = base_url().$upload_path;
+    $config['allowed_types'] = "gif|jpg|png|jpeg";
+    $config['overwrite']="true";
+    $config['max_size']="2048";
+    $config['file_name'] = ''.$filename;
+
+    return $config;
   }
   
   public function get_table_config( $_page, $start_number = 1 )
@@ -36,6 +50,7 @@ class User_services
 			'group_name' => 'Group',
 			'user_fullname' => 'Nama Lengkap',
 			'phone' => 'No Telepon',
+			'address' => 'Alamat',
 			'email' => 'Email',
 		  );
 		  $table["number"] = $start_number ;
@@ -66,6 +81,10 @@ class User_services
 				  'type' => 'hidden',
 				  'label' => "id",
 				),
+				"group_id" => array(
+				  'type' => 'hidden',
+				  'label' => "group_id",
+				),
 			  ),
 			  "title" => "User",
 			  "data_name" => "user_fullname",
@@ -92,10 +111,11 @@ class User_services
 			$this->id			=$user->user_id;
 			$this->email		=$user->email;
 			$this->group_id		=$user->group_id;
+			$this->address		=$user->address;
+
 		}
 
 		$groups =$this->ion_auth_model->groups(  )->result();
-
 		$group_select = array();
 		foreach( $groups as $group )
 		{
@@ -118,13 +138,17 @@ class User_services
 			  'type' => 'text',
 			  'label' => "Nama Belakang",
 			  'value' => $this->form_validation->set_value('last_name', $this->last_name),
-			  
 			),
 			"email" => array(
 			  'type' => 'text',
 			  'label' => "Email",
 			  'value' => $this->form_validation->set_value('email', $this->email),			  
 			),
+			"address" => array(
+				'type' => 'text',
+				'label' => "Alamat",
+				'value' => $this->form_validation->set_value('address', $this->address),			  
+			  ),
 			"phone" => array(
 			  'type' => 'number',
 			  'label' => "Nomor Telepon",
