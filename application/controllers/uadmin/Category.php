@@ -40,13 +40,9 @@ class Category extends Uadmin_Controller {
 
 	public function index( $group_id = 0 )
 	{
-		// return;
-		// echo var_dump( $this->category_model->tree( $group_id ) ) ;return;
-		// $group = $this->Group_model->group( $group_id )->row();
-		// if( $group == NULL ) redirect( site_url($this->current_page)  );
+		
 		$this->data[ "menus_tree" ] = $this->category_model->tree( $group_id );
 		$this->data[ "menu_list" ] = $this->category_model->get_category_list(  );
-		// $this->data[ "group" ] = $group;
 		$this->data[ "contents" ] = '' ;
 		##################################################################################################################################
 		$add_menu = array(
@@ -74,11 +70,6 @@ class Category extends Uadmin_Controller {
 				'label' => "category_id",
 				'value' => $group_id,
 			  ),
-			//   "group_id" => array(
-			// 	'type' => 'hidden',
-			// 	'label' => "group_id",
-			// 	'value' => $group->id,
-			//   ),
 			),
 			'data' => NULL
 		);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2019 at 04:01 AM
+-- Generation Time: Oct 12, 2019 at 05:10 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 5.6.37
 
@@ -19,8 +19,31 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `fixlcore`
+-- Database: `laikanggu`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `civilization`
+--
+
+CREATE TABLE `civilization` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `village_id` int(10) UNSIGNED NOT NULL,
+  `no_kk` varchar(100) NOT NULL,
+  `chief_name` varchar(200) NOT NULL,
+  `member_count` int(11) NOT NULL,
+  `file_scan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `civilization`
+--
+
+INSERT INTO `civilization` (`id`, `village_id`, `no_kk`, `chief_name`, `member_count`, `file_scan`) VALUES
+(4, 4, '1090', 'alan', 4, 'Civilization_1090_1570812095.JPG'),
+(5, 5, '18008', 'alun', 4, 'Civilization_18008_1570813621.JPG');
 
 -- --------------------------------------------------------
 
@@ -40,7 +63,27 @@ CREATE TABLE `groups` (
 
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 (1, 'admin', 'Administrator'),
-(2, 'uadmin', 'user admin');
+(2, 'uadmin', 'user admin'),
+(3, 'village_officer', 'Aparatur Desa');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `house`
+--
+
+CREATE TABLE `house` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `civilization_id` int(10) UNSIGNED NOT NULL,
+  `category` int(11) NOT NULL,
+  `certificate_status` int(11) NOT NULL,
+  `rt` varchar(20) NOT NULL,
+  `dusun` varchar(100) NOT NULL,
+  `images` text NOT NULL,
+  `latitude` varchar(100) NOT NULL,
+  `longitude` varchar(100) NOT NULL,
+  `file_scan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -54,6 +97,13 @@ CREATE TABLE `login_attempts` (
   `login` varchar(100) NOT NULL,
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(3, '::1', 'uadmin@gmail.com', 1570840115);
 
 -- --------------------------------------------------------
 
@@ -84,7 +134,15 @@ INSERT INTO `menus` (`id`, `menu_id`, `name`, `link`, `list_id`, `icon`, `status
 (104, 1, 'User', 'admin/user_management', 'user_management_index', 'users', 1, 4, '-'),
 (106, 103, 'Menu', 'admin/menus', 'menus_index', 'circle', 1, 1, '-'),
 (107, 2, 'Beranda', 'user/home', 'home_index', 'home', 1, 1, '-'),
-(108, 2, 'Pengguna', 'uadmin/users', 'users_index', 'home', 1, 2, '-');
+(108, 2, 'Pengguna', 'uadmin/users', 'users_index', 'home', 1, 2, '-'),
+(109, 2, 'Desa', 'uadmin/village', 'village_index', 'home', 1, 1, '-'),
+(110, 2, 'Olah Kartu Keluarga', 'uadmin/civilization', 'civilization_index', 'home', 1, 1, '-'),
+(111, 2, 'Olah Perumahan', 'uadmin/housing', 'housing_index', 'home', 1, 1, '-'),
+(112, 2, 'Olah Penerima Bantuan', 'uadmin/aid', 'aid_index', 'home', 1, 1, '-'),
+(113, 3, 'Beranda', 'village_officer/home', 'home_index', 'home', 1, 1, '-'),
+(114, 3, 'Desa Saya', 'village_officer/village', 'village_index', 'home', 1, 1, '-'),
+(115, 3, 'Olah Kartu Keluarga', 'village_officer/civilization', 'civilization_index', 'home', 1, 1, '-'),
+(116, 3, 'Olah Perumahan', 'village_officer/housing', 'housing_index', 'home', 1, 1, '-');
 
 -- --------------------------------------------------------
 
@@ -120,8 +178,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`) VALUES
-(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1570755261, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
-(13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1570758865, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8');
+(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1570804384, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
+(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1570892348, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
+(20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, NULL, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat'),
+(21, '::1', 'Desa_B@gmail.com', '$2y$10$F4QZKfJOJ2aLfnR3V5xrzO/AAZ.RDIHg7/uL2QBbRW7l2vhYTpjxu', 'Desa_B@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570813501, NULL, 1, 'admin', 'Desa B', '0', 'default.jpg', 'Alamat');
 
 -- --------------------------------------------------------
 
@@ -141,17 +201,55 @@ CREATE TABLE `users_groups` (
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
-(29, 13, 2);
+(29, 13, 2),
+(32, 20, 3),
+(33, 21, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `village`
+--
+
+CREATE TABLE `village` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `polygon` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `village`
+--
+
+INSERT INTO `village` (`id`, `user_id`, `name`, `description`, `polygon`) VALUES
+(4, 20, 'Desa A', 'ringkasan', 'polygon'),
+(5, 21, 'Desa B', 'ringkasan', 'polygon');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `civilization`
+--
+ALTER TABLE `civilization`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `village_id` (`village_id`);
+
+--
 -- Indexes for table `groups`
 --
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `house`
+--
+ALTER TABLE `house`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `civilization_id` (`civilization_id`);
 
 --
 -- Indexes for table `login_attempts`
@@ -185,42 +283,79 @@ ALTER TABLE `users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
+-- Indexes for table `village`
+--
+ALTER TABLE `village`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `civilization`
+--
+ALTER TABLE `civilization`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `house`
+--
+ALTER TABLE `house`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT for table `village`
+--
+ALTER TABLE `village`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `civilization`
+--
+ALTER TABLE `civilization`
+  ADD CONSTRAINT `civilization_ibfk_1` FOREIGN KEY (`village_id`) REFERENCES `village` (`id`);
+
+--
+-- Constraints for table `house`
+--
+ALTER TABLE `house`
+  ADD CONSTRAINT `house_ibfk_1` FOREIGN KEY (`civilization_id`) REFERENCES `civilization` (`id`);
 
 --
 -- Constraints for table `users_groups`
@@ -228,6 +363,12 @@ ALTER TABLE `users_groups`
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `village`
+--
+ALTER TABLE `village`
+  ADD CONSTRAINT `village_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

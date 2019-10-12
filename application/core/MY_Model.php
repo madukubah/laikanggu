@@ -166,7 +166,7 @@ class MY_Model extends CI_Model {
 	public function record_count(  ) {
 		if (isset($this->_ion_join) && !empty($this->_ion_join))
 		{
-			$this->db->distinct();
+			// $this->db->distinct();
 			foreach ($this->_ion_join as $join)
 			{
 				$this->db->join(
@@ -408,7 +408,8 @@ class MY_Model extends CI_Model {
 		{
 			foreach ($this->_ion_like as $like)
 			{
-				$this->db->or_like($like['like'], $like['value'], $like['position']);
+				$this->db->like($like['like'], $like['value'], $like['position']);
+				// $this->db->or_like($like['like'], $like['value'], $like['position']);
 			}
 
 			$this->_ion_like = array();

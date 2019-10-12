@@ -1931,6 +1931,29 @@ class Ion_auth_model extends MY_Model
 	}
 
 	/**
+	 * group
+	 *
+	 * @param int|string|null $id
+	 *
+	 * @return static
+	 * @author Ben Edmunds
+	 */
+	public function group_by_name($name = NULL)
+	{
+		$this->trigger_events('group');
+
+		if (isset($name))
+		{
+			$this->where($this->tables['groups'].'.name', $name);
+		}
+
+		$this->limit(1);
+		$this->order_by('id', 'desc');
+
+		return $this->groups();
+	}
+
+	/**
 	 * update
 	 *
 	 * @param int|string $id

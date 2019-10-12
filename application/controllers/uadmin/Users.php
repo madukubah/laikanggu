@@ -110,27 +110,22 @@ class Users extends Uadmin_Controller
 
         if ( $this->form_validation->run() === TRUE )
         {
-          $group_id = $this->input->post('group_id');
+          	$group_id = $this->input->post('group_id');
 
-        //   $email = $this->input->post('email') ;
-        //   $phone = $this->input->post('phone') ;
-        //   $identity = $phone ;
-		//   $password = $phone ;
-		$email = $this->input->post('email') ;
-		$identity = $email;
-		$password = substr( $email, 0, strpos( $identity, "@" ) ) ;
+			$email = $this->input->post('email') ;
+			$identity = $email;
+			$password = substr( $email, 0, strpos( $identity, "@" ) ) ;
 
 
-          $additional_data = array(
-            'first_name' => $this->input->post('first_name'),
-            'last_name' => $this->input->post('last_name'),
-            'email' => $this->input->post('email'),
-            'phone' => $this->input->post('phone'),
-            'address' => $this->input->post('address'),
-          );
+			$additional_data = array(
+				'first_name' => $this->input->post('first_name'),
+				'last_name' => $this->input->post('last_name'),
+				'email' => $this->input->post('email'),
+				'phone' => $this->input->post('phone'),
+				'address' => $this->input->post('address'),
+			);
 		}
 		
-		$identity_mode = NULL;
 
         if ($this->form_validation->run() === TRUE && ( $user_id =  $this->ion_auth->register($identity, $password, $email,$additional_data, [$group_id], $identity_mode ) ) )
         {
