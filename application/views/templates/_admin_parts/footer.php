@@ -71,7 +71,6 @@
 </script>
 
 <script>
-  var cordinate = <?php print_r($cordinate) ?>
   var config = {
     "baseUrl": "",
     "apiRoot": "",
@@ -141,16 +140,14 @@
 
   function addMarker(ltlng, event) {
     if (event === 'click') {
-      for (let $i = 0; $i < cordinate.length; $i++) {
-        cordinate_ + $i = ltlng;
-      }
+      konut = ltlng;
     }
 
     marker = new mapboxgl.Marker({
         draggable: true,
         color: "#c20e2c"
       })
-      .setLngLat(cordinate_0)
+      .setLngLat(konut)
       .addTo(map)
       .on('dragend', onDragEnd);
 
