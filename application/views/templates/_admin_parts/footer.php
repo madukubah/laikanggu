@@ -52,11 +52,9 @@
 
 <script>
   $(function() {
-
     //Date range picker
     $('.datepicker').datepicker();
     // console.log( $('.datepicker').val() );
-
   })
 </script>
 
