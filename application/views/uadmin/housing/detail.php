@@ -85,9 +85,6 @@
         </div>
 
       </div>
-      <script>
-        var kendari = [<?= (float) ($longitude)  ?>, <?= (float) ($latitude) ?>];
-      </script>
       <div class="card" style="height: 570px">
         <div class="card-body">
           <div class="row">

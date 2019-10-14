@@ -71,6 +71,7 @@
 </script>
 
 <script>
+  var cordinate = <?php print_r($cordinate) ?>
   var config = {
     "baseUrl": "",
     "apiRoot": "",
@@ -78,11 +79,11 @@
   };
   mapboxgl.accessToken = 'pk.eyJ1IjoiZmFraHJhd3kiLCJhIjoiY2pscWs4OTNrMmd5ZTNra21iZmRvdTFkOCJ9.15TZ2NtGk_AtUvLd27-8xA';
 
-
+  var konut = [<?= $cordinate['konut_0'][0]; ?>, <?= $cordinate['konut_0'][1]; ?>];
   var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v9',
-    center: kendari,
+    center: konut,
     zoom: <?php echo (isset($zoom)) ? $zoom : 12 ?>
   });
 
@@ -101,7 +102,7 @@
     'kawasanBandara': 'polygon'
   };
   map.on('load', function() {
-    addMarker(kendari, 'load');
+    addMarker(konut, 'load');
     allMarkers();
 
     for (let [key, value] of Object.entries(geojson)) {
@@ -140,13 +141,16 @@
 
   function addMarker(ltlng, event) {
     if (event === 'click') {
-      kendari = ltlng;
+      for (let $i = 0; $i < cordinate.length; $i++) {
+        cordinate_ + $i = ltlng;
+      }
     }
+
     marker = new mapboxgl.Marker({
         draggable: true,
         color: "#c20e2c"
       })
-      .setLngLat(kendari)
+      .setLngLat(cordinate_0)
       .addTo(map)
       .on('dragend', onDragEnd);
 
