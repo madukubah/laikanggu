@@ -23,7 +23,7 @@
             <div class="card-header">
               <div class="col-12">
                 <?php
-                  echo $alert;
+                echo $alert;
                 ?>
               </div>
               <div class="row">
@@ -36,54 +36,64 @@
             </div>
             <div class="card-body">
               <!--  -->
-              <?php echo ( isset( $form_data_1 )  ) ? $form_data_1 : '' ;  ?>
+              <?php echo (isset($form_data_1)) ? $form_data_1 : '';  ?>
               <label for="">Sertifikat</label>
               <br>
               <!-- modal -->
-              <a href="" data-toggle="modal" data-target="#file_scan"><?php echo $file_scan->name;?></a>
+              <a href="" data-toggle="modal" data-target="#file_scan"><?php echo $file_scan->name; ?></a>
               <br>
-              <div class="modal fade" id="file_scan" role="dialog" >
-                  <div class="modal-dialog modal-xl ">
-                        <img class=" img-fluid" src="<?php echo $file_scan->url  ?>" alt="" height="auto" width="1500" >
-                  </div>
+              <div class="modal fade" id="file_scan" role="dialog">
+                <div class="modal-dialog modal-xl ">
+                  <img class=" img-fluid" src="<?php echo $file_scan->url  ?>" alt="" height="auto" width="1500">
+                </div>
               </div>
               <!--  -->
               <!--  -->
-              <?php echo ( isset( $pagination_links )  ) ? $pagination_links : '' ;  ?>
+              <?php echo (isset($pagination_links)) ? $pagination_links : '';  ?>
               <!--  -->
             </div>
           </div>
         </div>
         <!-- col -->
         <div class="col-7">
-          <div class="row" >
-              <!--  -->
-               <!-- IMAGE -->
-               <?php
-               $title = [ "Tampak Depan", "Tampak Belakang", "Tampak Kiri", "Tampak Kanan" ];
-                  $images = explode(";", $house->images );
-                  foreach( $images as $i => $image ):
+          <div class="row">
+            <!--  -->
+            <!-- IMAGE -->
+            <?php
+            $title = ["Tampak Depan", "Tampak Belakang", "Tampak Kiri", "Tampak Kanan"];
+            $images = explode(";", $house->images);
+            foreach ($images as $i => $image) :
               ?>
-                  <div class="col-6" >
-                      <div class="card" style="height:90%">
-                        <div class="card-body">
-                            <label for=""> <?= $title[$i]?> </label>
-                            <img class=" img-fluid" src="<?php echo $image_url. $image  ?>" alt="" height="auto" width="500" >
-                            <a href="" data-toggle="modal" data-target="#image<?php echo  $house->id.$i  ;?>">Lihat</a>
-                            <div class="modal fade" id="image<?php echo  $house->id.$i  ;?>" role="dialog">
-                                <div class="modal-dialog modal-xl ">
-                                      <img class=" img-fluid" src="<?php echo $image_url. $image  ?>" alt="" height="auto" width="1500" >
-                                </div>
-                            </div>
-                        </div>
+              <div class="col-6">
+                <div class="card" style="height:90%">
+                  <div class="card-body">
+                    <label for=""> <?= $title[$i] ?> </label>
+                    <img class=" img-fluid" src="<?php echo $image_url . $image  ?>" alt="" height="auto" width="500">
+                    <a href="" data-toggle="modal" data-target="#image<?php echo  $house->id . $i; ?>">Lihat</a>
+                    <div class="modal fade" id="image<?php echo  $house->id . $i; ?>" role="dialog">
+                      <div class="modal-dialog modal-xl " style="overflow: hidden">
+                        <img class=" img-fluid" src="<?php echo $image_url . $image  ?>" alt="" height="auto" width="1500">
                       </div>
+                    </div>
                   </div>
-              <?php 
-                  endforeach;
-              ?>
+                </div>
+              </div>
+            <?php
+            endforeach;
+            ?>
           </div>
         </div>
-      
+
+      </div>
+      <script>
+        var kendari = [<?= (float) ($longitude)  ?>, <?= (float) ($latitude) ?>];
+      </script>
+      <div class="card" style="height: 570px">
+        <div class="card-body">
+          <div class="row">
+            <div id='map'></div>
+          </div>
+        </div>
       </div>
       <!-- grid -->
     </div>
