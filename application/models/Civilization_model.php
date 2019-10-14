@@ -158,9 +158,51 @@ class Civilization_model extends MY_Model
       {
         $this->limit( $limit );
       }
+
+      $this->select( $this->table.'.*' );
+      $this->select( " ".$this->table.".file_scan  as images"  );
+      $this->select( " ".$this->table.".file_scan  as _file_scan"  );
+      $this->select( " CONCAT( ".$this->table.".no_kk, ' ' )  as no_kk"  );
+
       $this->offset( $start );
       $this->order_by($this->table.'.id', 'asc');
       return $this->fetch_data();
+  }
+
+  /**
+   * civilizations
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function civilizations_by_list_id( $start = 0 , $limit = NULL, $list_ids )
+  {
+    $this->db->select( $this->table.'.*' );
+    $this->db->select( " ".$this->table.".file_scan  as images"  );
+    $this->db->select( " ".$this->table.".file_scan  as _file_scan"  );
+    $this->db->select( " CONCAT( ".$this->table.".no_kk, ' ' )  as no_kk"  );
+
+    $this->db->where_in( $this->table. ".id", $list_ids);
+    return $this->db->get( $this->table );
+  }
+
+  /**
+   * civilizations
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function not_in_civilizations_by_list_id( $start = 0 , $limit = NULL, $list_ids )
+  {
+    $this->db->select( $this->table.'.*' );
+    $this->db->select( " ".$this->table.".file_scan  as images"  );
+    $this->db->select( " ".$this->table.".file_scan  as _file_scan"  );
+    $this->db->select( " CONCAT( ".$this->table.".no_kk, ' ' )  as no_kk"  );
+
+    $this->db->where_not_in( $this->table. ".id", $list_ids);
+    return $this->db->get( $this->table );
   }
 
    /**
@@ -172,7 +214,7 @@ class Civilization_model extends MY_Model
    */
   public function record_count_by_village_id( $village_id )
   {
-      $this->select($this->table.'.*');
+      $this->select( $this->table.'.*' );
       $this->select( " ".$this->table.".file_scan  as images"  );
       $this->select( " ".$this->table.".file_scan  as _file_scan"  );
       $this->select( " CONCAT( ".$this->table.".no_kk, ' ' )  as no_kk"  );
