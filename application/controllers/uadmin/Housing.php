@@ -246,6 +246,10 @@ class Housing extends Uadmin_Controller
 		if ($civilization == NULL) redirect(site_url($this->current_page));
 
 		$form_data = $this->services->get_form_data_readonly($house->id, $house->civilization_id);
+
+		$this->data["latitude"] = $form_data['form_data']['latitude']['value'];
+		$this->data["longitude"] = $form_data['form_data']['longitude']['value'];
+
 		$form_data_1 = $this->load->view('templates/form/plain_form_readonly', $form_data, TRUE);
 		$form_data = $this->load->view('templates/form/plain_form_readonly_6', $form_data, TRUE);
 
@@ -266,6 +270,7 @@ class Housing extends Uadmin_Controller
 
 		##############################################################################
 		$alert = $this->session->flashdata('alert');
+		$this->data["zoom"] = 15;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
@@ -403,6 +408,7 @@ class Housing extends Uadmin_Controller
 
 			##############################################################################
 			$alert = $this->session->flashdata('alert');
+			$this->data["zoom"] = 15;
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;

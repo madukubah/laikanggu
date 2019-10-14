@@ -25,7 +25,7 @@
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v9',
         center: kendari,
-        zoom: 10
+        zoom: 8
     });
 
     var geocoder = new MapboxGeocoder({
