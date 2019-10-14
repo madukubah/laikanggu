@@ -85,7 +85,7 @@
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v9',
     center: kendari,
-    zoom: 12
+    zoom: <?php echo (isset($zoom)) ? $zoom : 12 ?>
   });
 
   var geocoder = new MapboxGeocoder({
@@ -155,8 +155,8 @@
     map.on('click', function(e) {
       marker.remove();
       addMarker(e.lngLat, 'click');
-      document.getElementById("lat").value = e.lngLat.lat;
-      document.getElementById("lng").value = e.lngLat.lng;
+      document.getElementById("latitude").value = e.lngLat.lat;
+      document.getElementById("longitude").value = e.lngLat.lng;
     });
   }
 
