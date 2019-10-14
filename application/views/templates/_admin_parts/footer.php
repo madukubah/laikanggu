@@ -52,11 +52,9 @@
 
 <script>
   $(function() {
-
     //Date range picker
     $('.datepicker').datepicker();
     // console.log( $('.datepicker').val() );
-
   })
 </script>
 
@@ -155,8 +153,8 @@
     map.on('click', function(e) {
       marker.remove();
       addMarker(e.lngLat, 'click');
-      document.getElementById("lat").value = e.lngLat.lat;
-      document.getElementById("lng").value = e.lngLat.lng;
+      document.getElementById("latitude").value = e.lngLat.lat;
+      document.getElementById("longitude").value = e.lngLat.lng;
     });
   }
 

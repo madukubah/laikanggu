@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2019 at 11:41 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: Oct 14, 2019 at 04:07 PM
+-- Server version: 10.1.34-MariaDB
+-- PHP Version: 5.6.37
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -34,16 +34,17 @@ CREATE TABLE `civilization` (
   `no_kk` varchar(100) NOT NULL,
   `chief_name` varchar(200) NOT NULL,
   `member_count` int(11) NOT NULL,
-  `file_scan` text NOT NULL
+  `file_scan` text NOT NULL,
+  `income` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `civilization`
 --
 
-INSERT INTO `civilization` (`id`, `village_id`, `no_kk`, `chief_name`, `member_count`, `file_scan`) VALUES
-(4, 4, '1090', 'alan', 4, 'Civilization_1090_1570812095.JPG'),
-(5, 5, '18008', 'alun', 4, 'Civilization_18008_1570813621.JPG');
+INSERT INTO `civilization` (`id`, `village_id`, `no_kk`, `chief_name`, `member_count`, `file_scan`, `income`) VALUES
+(4, 4, '1090', 'alan', 4, 'Civilization_1090_1570812095.JPG', 1500000),
+(5, 5, '18008', 'alun', 4, 'Civilization_18008_1570813621.JPG', 2000000);
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,7 @@ CREATE TABLE `house` (
 --
 
 INSERT INTO `house` (`id`, `civilization_id`, `category`, `certificate_status`, `rt`, `dusun`, `images`, `latitude`, `longitude`, `file_scan`) VALUES
-(8, 4, 1, 1, '2', '3', 'front_1571034937.jpg;back_1571034937.jpg;left_1571034937.jpg;right_1571034937.jpg', '-3.513471699407347', '122.11173975086558', 'file_scan_1571034937.jpg');
+(1, 4, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '1234', '6543', 'default.jpg');
 
 -- --------------------------------------------------------
 
@@ -138,11 +139,13 @@ INSERT INTO `menus` (`id`, `menu_id`, `name`, `link`, `list_id`, `icon`, `status
 (109, 2, 'Desa', 'uadmin/village', 'village_index', 'home', 1, 1, '-'),
 (110, 2, 'Olah Kartu Keluarga', 'uadmin/civilization', 'civilization_index', 'home', 1, 1, '-'),
 (111, 2, 'Olah Perumahan', 'uadmin/housing', 'housing_index', 'home', 1, 1, '-'),
-(112, 2, 'Olah Penerima Bantuan', 'uadmin/aid', 'aid_index', 'home', 1, 1, '-'),
+(112, 2, 'Penerima Bantuan', 'uadmin/aid', '_aid_index', 'home', 1, 1, '-'),
 (113, 3, 'Beranda', 'village_officer/home', 'home_index', 'home', 1, 1, '-'),
 (114, 3, 'Desa Saya', 'village_officer/village', 'village_index', 'home', 1, 1, '-'),
 (115, 3, 'Olah Kartu Keluarga', 'village_officer/civilization', 'civilization_index', 'home', 1, 1, '-'),
-(116, 3, 'Olah Perumahan', 'village_officer/housing', 'housing_index', 'home', 1, 1, '-');
+(116, 3, 'Olah Perumahan', 'village_officer/housing', 'housing_index', 'home', 1, 1, '-'),
+(117, 112, 'Cari Calon Penerima Bantuan', 'uadmin/candidate', 'candidate_index', 'home', 1, 1, '-'),
+(119, 112, 'Riwayat', 'uadmin/aid/history', 'aid_history', 'home', 1, 1, '-');
 
 -- --------------------------------------------------------
 
@@ -178,8 +181,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`) VALUES
-(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1571021996, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
-(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1571034766, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
+(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1571045001, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
+(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1571058975, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
 (20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, NULL, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat'),
 (21, '::1', 'Desa_B@gmail.com', '$2y$10$F4QZKfJOJ2aLfnR3V5xrzO/AAZ.RDIHg7/uL2QBbRW7l2vhYTpjxu', 'Desa_B@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570813501, NULL, 1, 'admin', 'Desa B', '0', 'default.jpg', 'Alamat');
 
@@ -309,7 +312,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `house`
 --
 ALTER TABLE `house`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
@@ -321,7 +324,7 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT for table `users`
