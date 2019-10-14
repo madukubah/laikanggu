@@ -76,6 +76,24 @@ class Village_services
     return $table;
   }
 
+  public function get_table_config_aid( $_page, $start_number = 1 )
+  {
+      $table["header"] = array(
+        'name' => 'Nama Desa',
+      );
+      $table["number"] = $start_number;
+      $table[ "action" ] = array(
+              array(
+                "name" => "Detail",
+                "type" => "link",
+                "url" => site_url($_page."village/"),
+                "button_color" => "primary",
+                "param" => "id",
+              ),
+    );
+    return $table;
+  }
+
   public function validation_config( ){
     $config = array(
         array(

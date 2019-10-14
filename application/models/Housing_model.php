@@ -116,6 +116,24 @@ class Housing_model extends MY_Model
       return $this;
   }
 
+    /**
+   * house
+   *
+   * @param int|array|null $id = id_houses
+   * @return static
+   * @author madukubah
+   */
+  public function houses_civilization_id( $civilization_id = NULL  )
+  {
+      if (isset($civilization_id))
+      {
+        $this->where($this->table.'.civilization_id', $civilization_id);
+      }
+
+      $this->houses(  );
+
+      return $this;
+  }
   /**
    * houses
    *
@@ -169,6 +187,20 @@ class Housing_model extends MY_Model
           $this->where( 'civilization.village_id', $village_id);
       }
       return $this->record_count();
+  }
+
+     /**
+   * houses
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function get_civilization_id_list(  )
+  {
+      $this->select($this->table.'.civilization_id');
+      // $this->select($this->table.'.*');
+      return $this->fetch_data();
   }
 
 }

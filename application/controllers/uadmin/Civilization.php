@@ -76,6 +76,7 @@ class Civilization extends Uadmin_Controller {
 			$table = $this->services->get_table_config( $this->current_page );
 			$table[ "rows" ] = $this->civilization_model->civilizations( $pagination['start_record']  , $pagination['limit_per_page'], $village_id )->result();
 			$table[ "image_url" ] = $this->services->get_photo_upload_config( "" )["image_path"];
+			// var_dump( $table[ "rows" ] ); return;
 
 			$table = $this->load->view('templates/tables/plain_table_image_col', $table, true);
 			
@@ -118,6 +119,7 @@ class Civilization extends Uadmin_Controller {
 			$data['no_kk'] = $this->input->post( 'no_kk' );
 			$data['chief_name'] = $this->input->post( 'chief_name' );
 			$data['member_count'] = $this->input->post( 'member_count' );
+			$data['income'] = $this->input->post( 'income' );
 
 			$data['village_id'] = $this->input->post( 'village_id' );
 
@@ -164,6 +166,7 @@ class Civilization extends Uadmin_Controller {
 			$data['no_kk'] = $this->input->post( 'no_kk' );
 			$data['chief_name'] = $this->input->post( 'chief_name' );
 			$data['member_count'] = $this->input->post( 'member_count' );
+			$data['income'] = $this->input->post( 'income' );
 
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config( $data['no_kk'] );

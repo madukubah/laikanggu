@@ -2,9 +2,18 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Civilization_services
 {
-
+  protected $id;
+	protected $no_kk;
+	protected $chief_name;
+	protected $member_count;
+  protected $income;
+  
   function __construct(){
-     
+      $this->id		      ='';
+      $this->no_kk		='';
+      $this->chief_name	="";
+      $this->member_count	="";
+      $this->income	="";
   }
 
   public function __get($var)
@@ -32,6 +41,7 @@ class Civilization_services
         'no_kk' => 'Nomor KK',
         'chief_name' => 'Kepala Keluarga',
         'member_count' => 'Anggota Keluarga',
+        'income' => 'Pendapatan / bulan',
         'images' => 'File',
       );
       $table["number"] = $start_number;
@@ -68,6 +78,29 @@ class Civilization_services
                 ),
                 "title" => "KK",
                 "data_name" => "no_kk",
+              ),
+    );
+    return $table;
+  }
+
+  public function get_table_config_candidate( $_page, $start_number = 1 )
+  {
+      $table["header"] = array(
+        'no_kk' => 'Nomor KK',
+        'chief_name' => 'Kepala Keluarga',
+        'member_count' => 'Anggota Keluarga',
+        'income' => 'Pendapatan / bulan',
+
+      );
+      $table["number"] = $start_number;
+      $table[ "action" ] = array(
+              array(
+                "name" => "Detail",
+                "type" => "link",
+                "modal_id" => "edit_civilization_",
+                "button_color" => "primary",
+                "url" => site_url( $_page."detail/"),
+                "param" => "id",
               ),
     );
     return $table;
@@ -124,6 +157,10 @@ class Civilization_services
             'type' => 'number',
             'label' => "Jumlah Anggota Keluarga",
           ),
+          "income" => array(
+            'type' => 'number',
+            'label' => "Pendapatan / bulan",
+          ),
           "file_scan" => array(
             'type' => 'file',
             'label' => "File Scan KK ( JPG atau PNG )",
@@ -134,6 +171,62 @@ class Civilization_services
           ),
 		  );
 		return $_data;
-	}
+  }
+
+  /**
+	 * get_form_data
+	 *
+	 * @return array
+	 * @author madukubah
+	 **/
+	public function get_form_data_readonly( $civilization_id = NULL )
+	{
+    if( isset( $civilization_id )  )
+    {
+      $this->load->model(array(
+        'village_model',
+      ));
+      $civilization = $this->civilization_model->civilization( $civilization_id )->row();
+      $this->id		        = $civilization->id;
+      $this->no_kk		    = $civilization->no_kk;
+      $this->chief_name	  = $civilization->chief_name;
+      $this->member_count	= $civilization->member_count;
+      $this->income	      = $civilization->income;
+
+    }
+
+		$_data["form_data"] = array(
+          "no_kk" => array(
+            'type' => 'text',
+            'label' => "Nomor KK",
+            'value' => $this->no_kk,
+          ),
+          "chief_name" => array(
+            'type' => 'text',
+            'label' => "Kepala Keluarga",
+            'value' => $this->chief_name,
+          ),
+          "member_count" => array(
+            'type' => 'number',
+            'label' => "Jumlah Anggota Keluarga",
+            'value' => $this->member_count,
+          ),
+          "income" => array(
+            'type' => 'number',
+            'label' => "Pendapatan / bulan",
+            'value' => $this->income,
+          ),
+          // "file_scan" => array(
+          //   'type' => 'file',
+          //   'label' => "File Scan KK ( JPG atau PNG )",
+          // ),
+          // "_file_scan" => array(
+          //   'type' => 'hidden',
+          //   'label' => "File Scan KK ( JPG atau PNG )",
+          // ),
+		  );
+		return $_data;
+  }
+  
 }
 ?>

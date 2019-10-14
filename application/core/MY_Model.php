@@ -265,13 +265,11 @@ class MY_Model extends CI_Model {
 	 */
 	public function like($like, $value = NULL, $position = 'both')
 	{
-
 		array_push($this->_ion_like, array(
 			'like'     => $like,
 			'value'    => $value,
 			'position' => $position
 		));
-
 		return $this;
     }
     /**
