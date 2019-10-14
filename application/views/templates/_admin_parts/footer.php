@@ -71,6 +71,14 @@
 </script>
 
 <script>
+  var cor = [];
+  <?php $i = 0; ?>
+  <?php foreach ($cordinate as $key => $value) : ?>
+    <?= $key ?> = [<?= $value[0] ?>, <?= $value[1] ?>];
+    cor[<?= $i ?>] = <?= $key ?>;
+    <?php $i++; ?>
+  <?php endforeach; ?>
+
   var config = {
     "baseUrl": "",
     "apiRoot": "",
@@ -140,16 +148,24 @@
 
   function addMarker(ltlng, event) {
     if (event === 'click') {
-      konut = ltlng;
+      <?php $i = 0; ?>
+      <?php foreach ($cordinate as $key => $value) : ?>
+        cor[<?= $i ?>] = ltlng;
+        <?php $i++; ?>
+      <?php endforeach; ?>
     }
-
-    marker = new mapboxgl.Marker({
-        draggable: true,
-        color: "#c20e2c"
-      })
-      .setLngLat(konut)
-      .addTo(map)
-      .on('dragend', onDragEnd);
+    console.log(cor.length);
+    <?php $i = 0; ?>
+    <?php foreach ($cordinate as $key => $value) : ?>
+      marker_<?= $i; ?> = new mapboxgl.Marker({
+          draggable: true,
+          color: "#c20e2c"
+        })
+        .setLngLat(cor[<?= $i; ?>])
+        .addTo(map)
+        .on('dragend', onDragEnd);
+      <?php $i++; ?>
+    <?php endforeach; ?>
 
     map.on('click', function(e) {
       marker.remove();
