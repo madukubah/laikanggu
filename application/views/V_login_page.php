@@ -3,7 +3,7 @@
         <div class="col-9">
             <div id='map'></div>
         </div>
-        <div class="col-3" style="margin-top: 100px">
+        <div class="col-3" style="margin-top: 100px;s">
             <div class="login-box">
                 <div class="card">
                     <div class="card-body login-card-body">
