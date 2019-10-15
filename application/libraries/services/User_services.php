@@ -69,26 +69,26 @@ class User_services
 			  "button_color" => "primary",
 			  "param" => "id",
 			),
-			array(
-			  "name" => 'X',
-			  "type" => "modal_delete",
-			  "modal_id" => "delete_category_",
-			  "url" => site_url( $_page."delete/"),
-			  "button_color" => "danger",
-			  "param" => "id",
-			  "form_data" => array(
-				"id" => array(
-				  'type' => 'hidden',
-				  'label' => "id",
-				),
-				"group_id" => array(
-				  'type' => 'hidden',
-				  'label' => "group_id",
-				),
-			  ),
-			  "title" => "User",
-			  "data_name" => "user_fullname",
-			),
+			// array(
+			//   "name" => 'X',
+			//   "type" => "modal_delete",
+			//   "modal_id" => "delete_category_",
+			//   "url" => site_url( $_page."delete/"),
+			//   "button_color" => "danger",
+			//   "param" => "id",
+			//   "form_data" => array(
+			// 	"id" => array(
+			// 	  'type' => 'hidden',
+			// 	  'label' => "id",
+			// 	),
+			// 	"group_id" => array(
+			// 	  'type' => 'hidden',
+			// 	  'label' => "group_id",
+			// 	),
+			//   ),
+			//   "title" => "User",
+			//   "data_name" => "user_fullname",
+			// ),
 		);
     return $table;
   }

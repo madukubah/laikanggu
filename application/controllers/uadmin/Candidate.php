@@ -81,16 +81,6 @@ class Candidate extends Uadmin_Controller
 		$table["rows"] = $candidate_rows;
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data["contents"] = $table;
-
-		$link_add =
-			array(
-				"name" => "Tambah",
-				"type" => "link",
-				"url" => site_url($this->current_page . "add/"),
-				"button_color" => "primary",
-				"data" => NULL,
-			);
-		$this->data["header_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);
 		// return;
 		#################################################################3
 		$village 				= $this->village_model->village($village_id)->row();
@@ -149,13 +139,14 @@ class Candidate extends Uadmin_Controller
 		// echo var_dump($this->civilization_model->db);
 		// return;
 		#################################################################3
+		$village 				= $this->village_model->village($village_id)->row();
 
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Olah Penerima Bantuan";
-		$this->data["header"] = "Daftar KK " . $get_data[$code]["title"];
+		$this->data["header"] = "Daftar KK " . $get_data[$code]["title"]. " ". $village->name;
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->render("templates/contents/plain_content");
