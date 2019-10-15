@@ -164,15 +164,15 @@
         .setLngLat(cor[<?= $i; ?>])
         .addTo(map)
         .on('dragend', onDragEnd);
+      map.on('click', function(e) {
+        marker_<?= $i; ?>.remove();
+        addMarker(e.lngLat, 'click');
+        document.getElementById("latitude").value = e.lngLat.lat;
+        document.getElementById("longitude").value = e.lngLat.lng;
+      });
       <?php $i++; ?>
     <?php endforeach; ?>
 
-    map.on('click', function(e) {
-      marker.remove();
-      addMarker(e.lngLat, 'click');
-      document.getElementById("latitude").value = e.lngLat.lat;
-      document.getElementById("longitude").value = e.lngLat.lng;
-    });
   }
 
   function polygonMarker(name, type) {
