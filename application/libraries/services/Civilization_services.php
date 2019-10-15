@@ -65,13 +65,13 @@ class Civilization_services
         "url" => site_url($_page . "detail/"),
         "param" => "id",
       ),
-      array(
-        "name" => "Edit KK",
-        "type" => "link",
-        "button_color" => "primary",
-        "url" => site_url($_page . "edit/"),
-        "param" => "id",
-      ),
+      // array(
+      //   "name" => "Edit KK",
+      //   "type" => "link",
+      //   "button_color" => "primary",
+      //   "url" => site_url($_page . "edit/"),
+      //   "param" => "id",
+      // ),
       array(
         "name" => 'X',
         "type" => "modal_delete",

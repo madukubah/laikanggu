@@ -247,6 +247,16 @@ class Civilization extends Uadmin_Controller
 		$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
 		$this->data["contents"] =  $form_data;
 
+		$link_add = array(
+			"name" => "Edit KK",
+			"button_color" => "primary",
+			"url" => site_url($this->current_page . "edit/") . $id,
+		);
+
+		$link_add = $this->load->view('templates/actions/link', $link_add, true);
+
+		$this->data["header_button"] =  $link_add;
+
 		##############################################################################
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
