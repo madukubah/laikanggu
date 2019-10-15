@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Candidate extends Uadmin_Controller
+class Aid extends Officer_Controller
 {
 	private $services = null;
 	private $name = null;
 	private $parent_page = 'uadmin';
-	private $current_page = 'uadmin/candidate/';
+	private $current_page = 'uadmin/aid/';
 
 	public function __construct()
 	{
@@ -17,7 +17,7 @@ class Candidate extends Uadmin_Controller
 			'village_model',
 			'housing_model',
 		));
-		$this->data["menu_list_id"] = "candidate_index";
+		// $this->data[ "menu_list_id" ] = "candidate_index";
 	}
 	public function index()
 	{
@@ -51,45 +51,54 @@ class Candidate extends Uadmin_Controller
 		$this->render("templates/contents/plain_content");
 	}
 
-	public function village( $village_id = NULL)
+	public function history($village_id = NULL)
 	{
 		if ($village_id == NULL) redirect(site_url($this->current_page));
 
-		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list($village_id)->result();
+		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list()->result();
 		$has_house_civilization_ids = $this->services->extract_civilization_id($has_house_civilization_ids);
 
-		$has_house = (empty($has_house_civilization_ids)) ? array() : $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids)->result();
+		$has_house = $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids)->result();
 		$count_all = $this->civilization_model->record_count_by_village_id($village_id);
+		// var_dump( $has_house ); return;
 
 		$candidate_rows = array();
 		$candidate_rows[] = (object) ["code" => "has_house", "name" => "KK Punya Rumah", "count" => count($has_house)];
 		$candidate_rows[] = (object) ["code" => "not_has_house", "name" => "KK Tidak Punya Rumah", "count" => ($count_all - count($has_house))];
 
-		$page = ($this->uri->segment(4 +1)) ? ($this->uri->segment(4 +1) - 1) : 0;
+		$page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
 		//pagination parameter
 		$pagination['base_url'] = base_url($this->current_page) . '/index';
 		$pagination['total_records'] = $this->civilization_model->record_count();
 		$pagination['limit_per_page'] = 10;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4 +1;
+		$pagination['uri_segment'] = 4;
 		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		// echo json_encode( $this->data[ "_menus" ] ) ;return;
-		$table = $this->services->get_table_config($this->current_page, NULL,  $village_id);
+		$table = $this->services->get_table_config($this->current_page);
 		$table["rows"] = $candidate_rows;
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data["contents"] = $table;
+
+		$link_add =
+			array(
+				"name" => "Tambah",
+				"type" => "link",
+				"url" => site_url($this->current_page . "add/"),
+				"button_color" => "primary",
+				"data" => NULL,
+			);
+		$this->data["header_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);
 		// return;
 		#################################################################3
-		$village 				= $this->village_model->village($village_id)->row();
-
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "" . $village->name;
-		$this->data["header"] = "" . $village->name; //"Olah Penerima Bantuan";
+		$this->data["block_header"] = "Olah Penerima Bantuan";
+		$this->data["header"] = "Olah Penerima Bantuan";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->render("templates/contents/plain_content");
@@ -99,8 +108,8 @@ class Candidate extends Uadmin_Controller
 	{
 		$this->data["menu_list_id"] = "candidate_index";
 		if ($code == NULL) redirect(site_url($this->current_page));
-		$village_id = $this->input->get("village_id", NULL);
-		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list($village_id)->result();
+
+		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list()->result();
 		$has_house_civilization_ids = $this->services->extract_civilization_id($has_house_civilization_ids);
 		// var_dump( $has_house_civilization_ids ); return;
 
@@ -108,12 +117,12 @@ class Candidate extends Uadmin_Controller
 			"has_house" => array(
 				"title" => "Punya Rumah",
 				"count" => count($has_house_civilization_ids),
-				"function" => (empty($has_house_civilization_ids)) ? array() : $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result(),
+				"function" => $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids)->result(),
 			),
 			"not_has_house" => array(
 				"title" => "Tidak Punya Rumah",
-				"count" => $this->civilization_model->record_count_by_village_id($village_id) - count($has_house_civilization_ids),
-				"function" => (empty($has_house_civilization_ids)) ?  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result() : array(),
+				"count" => $this->civilization_model->record_count() - count($has_house_civilization_ids),
+				"function" => $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids)->result(),
 			)
 		);
 		$this->load->library('services/Civilization_services');
@@ -135,17 +144,15 @@ class Candidate extends Uadmin_Controller
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 
 		$this->data["contents"] = $table;
-		// echo var_dump($this->civilization_model->db);
-		// return;
+
 		#################################################################3
-		$village 				= $this->village_model->village($village_id)->row();
 
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Olah Penerima Bantuan";
-		$this->data["header"] = "Daftar KK " . $get_data[$code]["title"]. " ". $village->name;
+		$this->data["header"] = "Daftar KK " . $get_data[$code]["title"];
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->render("templates/contents/plain_content");
@@ -167,6 +174,7 @@ class Candidate extends Uadmin_Controller
 		$form_data_civilization = $this->load->view('templates/form/plain_form_readonly', $form_data_civilization, TRUE);
 		################################################
 
+
 		$this->load->library('services/housing_services');
 		$this->services = new housing_services;
 		################################################
@@ -174,7 +182,6 @@ class Candidate extends Uadmin_Controller
 		if (empty($houses)) { }
 
 		$HOUSE_ARR = array();
-		$cordinate = array();
 		$i = 0;
 		foreach ($houses as $house) {
 			$data_house = NULL;
@@ -260,7 +267,7 @@ class Candidate extends Uadmin_Controller
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));
 			}
 		} else {
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->civilization_model->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->m_account->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
 			if (validation_errors() || $this->civilization_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
 		}
 
