@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Candidate extends Uadmin_Controller
+class Aid extends Uadmin_Controller
 {
 	private $services = null;
 	private $name = null;
 	private $parent_page = 'uadmin';
-	private $current_page = 'uadmin/candidate/';
+	private $current_page = 'uadmin/aid/';
 
 	public function __construct()
 	{
@@ -51,15 +51,15 @@ class Candidate extends Uadmin_Controller
 		$this->render("templates/contents/plain_content");
 	}
 
-	public function village( $village_id = NULL)
+	public function history($village_id = NULL)
 	{
 		if ($village_id == NULL) redirect(site_url($this->current_page));
 
-		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list(  )->result();
+		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list()->result();
 		$has_house_civilization_ids = $this->services->extract_civilization_id($has_house_civilization_ids);
 
 		$has_house = $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids)->result();
-		$count_all = $this->civilization_model->record_count_by_village_id( $village_id );
+		$count_all = $this->civilization_model->record_count_by_village_id($village_id);
 		// var_dump( $has_house ); return;
 
 		$candidate_rows = array();

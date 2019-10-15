@@ -71,6 +71,14 @@
 </script>
 
 <script>
+  var cor = [];
+  <?php $i = 0; ?>
+  <?php foreach ($cordinate as $key => $value) : ?>
+    <?= $key ?> = [<?= $value[0] ?>, <?= $value[1] ?>];
+    cor[<?= $i ?>] = <?= $key ?>;
+    <?php $i++; ?>
+  <?php endforeach; ?>
+
   var config = {
     "baseUrl": "",
     "apiRoot": "",
@@ -78,11 +86,11 @@
   };
   mapboxgl.accessToken = 'pk.eyJ1IjoiZmFraHJhd3kiLCJhIjoiY2pscWs4OTNrMmd5ZTNra21iZmRvdTFkOCJ9.15TZ2NtGk_AtUvLd27-8xA';
 
-
+  var konut = [<?= $cordinate['konut_0'][0]; ?>, <?= $cordinate['konut_0'][1]; ?>];
   var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v9',
-    center: kendari,
+    center: konut,
     zoom: <?php echo (isset($zoom)) ? $zoom : 12 ?>
   });
 
@@ -101,7 +109,7 @@
     'kawasanBandara': 'polygon'
   };
   map.on('load', function() {
-    addMarker(kendari, 'load');
+    addMarker(konut, 'load');
     allMarkers();
 
     for (let [key, value] of Object.entries(geojson)) {
@@ -140,15 +148,24 @@
 
   function addMarker(ltlng, event) {
     if (event === 'click') {
-      kendari = ltlng;
+      <?php $i = 0; ?>
+      <?php foreach ($cordinate as $key => $value) : ?>
+        cor[<?= $i ?>] = ltlng;
+        <?php $i++; ?>
+      <?php endforeach; ?>
     }
-    marker = new mapboxgl.Marker({
-        draggable: true,
-        color: "#c20e2c"
-      })
-      .setLngLat(kendari)
-      .addTo(map)
-      .on('dragend', onDragEnd);
+    console.log(cor.length);
+    <?php $i = 0; ?>
+    <?php foreach ($cordinate as $key => $value) : ?>
+      marker_<?= $i; ?> = new mapboxgl.Marker({
+          draggable: true,
+          color: "#c20e2c"
+        })
+        .setLngLat(cor[<?= $i; ?>])
+        .addTo(map)
+        .on('dragend', onDragEnd);
+      <?php $i++; ?>
+    <?php endforeach; ?>
 
     map.on('click', function(e) {
       marker.remove();

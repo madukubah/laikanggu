@@ -62,9 +62,6 @@
             width: 90%;
         }
     </style>
-    <script>
-        var kendari = [122.10348308181318, -3.5014330835094682];
-    </script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed" onload="menuActive('<?php echo $menu_list_id ?> ')">

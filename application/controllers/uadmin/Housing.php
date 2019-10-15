@@ -220,10 +220,13 @@ class Housing extends Uadmin_Controller
 			$form_data_3 = $this->load->view('templates/form/plain_form_6', $form_data_3, TRUE);
 
 			$this->data["contents"] =  $form_data . $form_data_1 . $form_data_2 . "<br>" . $form_data_3;
-
+			$cordinate = array(
+				'konut_0' => [122.10348308181318, -3.5014330835094682]
+			);
 
 			$alert = $this->session->flashdata('alert');
 			$this->data["key"] = $this->input->get('key', FALSE);
+			$this->data["cordinate"] = $cordinate;
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;
 			$this->data["block_header"] = "Tambah Rumah ";
@@ -247,8 +250,8 @@ class Housing extends Uadmin_Controller
 
 		$form_data = $this->services->get_form_data_readonly($house->id, $house->civilization_id);
 
-		$this->data["latitude"] = $form_data['form_data']['latitude']['value'];
-		$this->data["longitude"] = $form_data['form_data']['longitude']['value'];
+		$latitude = $form_data['form_data']['latitude']['value'];
+		$longitude = $form_data['form_data']['longitude']['value'];
 
 		$form_data_1 = $this->load->view('templates/form/plain_form_readonly', $form_data, TRUE);
 		$form_data = $this->load->view('templates/form/plain_form_readonly_6', $form_data, TRUE);
@@ -267,9 +270,13 @@ class Housing extends Uadmin_Controller
 			"data" => NULL,
 		);
 		$this->data["edit_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);;
-
+		$cordinate = array(
+			'konut_0' => [$longitude, $latitude]
+		);
 		##############################################################################
+
 		$alert = $this->session->flashdata('alert');
+		$this->data["cordinate"] = $cordinate;
 		$this->data["zoom"] = 15;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
@@ -383,8 +390,8 @@ class Housing extends Uadmin_Controller
 			$form_data_3 = $form[3];
 			$form_data_1 = $form[1];
 
-			$this->data["latitude"] = $form_data_3['form_data']['latitude']['value'];
-			$this->data["longitude"] = $form_data_3['form_data']['longitude']['value'];
+			$latitude = $form_data_3['form_data']['latitude']['value'];
+			$longitude = $form_data_3['form_data']['longitude']['value'];
 
 			$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
 			$form_data_1 = $this->load->view('templates/form/plain_form', $form_data_1, TRUE);
@@ -405,10 +412,13 @@ class Housing extends Uadmin_Controller
 				"data" => NULL,
 			);
 			$this->data["edit_button"] = "";
-
+			$cordinate = array(
+				'konut_0' => [$longitude, $latitude]
+			);
 			##############################################################################
 			$alert = $this->session->flashdata('alert');
-			$this->data["zoom"] = 15;
+			$this->data["cordinate"] = $cordinate;
+			$this->data["zoom"] = 20;
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;
