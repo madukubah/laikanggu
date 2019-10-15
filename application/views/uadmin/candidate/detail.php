@@ -52,13 +52,20 @@
         echo $item;
       }
       ?>
-      <div class="card" style="height: 570px">
-        <div class="card-body">
-          <div class="row">
-            <div id='map'></div>
+      <?php
+      if (!empty($HOUSE_ARR)) :
+        ?>
+        <div class="card" style="height: 570px">
+          <div class="card-body">
+            <div class="row">
+              <div id='map'></div>
+            </div>
           </div>
         </div>
-      </div>
+      <?php
+      endif;
+      ?>
+
       <!-- grid -->
     </div>
   </section>
