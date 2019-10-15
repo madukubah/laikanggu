@@ -167,11 +167,17 @@ class Housing extends Uadmin_Controller
 
 		$this->form_validation->set_rules($this->services->validation_config());
 		if ($this->form_validation->run() === TRUE) {
-			$data['civilization_id'] 		= $this->input->post('civilization_id');
-			$data['category'] 					= $this->input->post('category');
+			$data['civilization_id'] 	= $this->input->post('civilization_id');
+			$data['category'] 			= $this->input->post('category');
 			$data['certificate_status'] = $this->input->post('certificate_status');
-			$data['rt'] 								= $this->input->post('rt');
-			$data['dusun'] 							= $this->input->post('dusun');
+			$data['rt'] 				= $this->input->post('rt');
+			$data['dusun'] 				= $this->input->post('dusun');
+
+			$data['land_status'] 				= $this->input->post('land_status');
+			$data['water_source'] 				= $this->input->post('water_source');
+			$data['floor_material'] 				= $this->input->post('floor_material');
+			$data['wall_material'] 				= $this->input->post('wall_material');
+			$data['roof_material'] 				= $this->input->post('roof_material');
 
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
@@ -244,7 +250,6 @@ class Housing extends Uadmin_Controller
 
 		$house 				= $this->housing_model->house($house_id)->row();
 
-
 		$civilization = $this->civilization_model->civilization($house->civilization_id)->row();
 		if ($civilization == NULL) redirect(site_url($this->current_page));
 
@@ -277,7 +282,7 @@ class Housing extends Uadmin_Controller
 
 		$alert = $this->session->flashdata('alert');
 		$this->data["cordinate"] = $cordinate;
-		$this->data["zoom"] = 15;
+		$this->data["zoom"] = 12;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
@@ -305,6 +310,12 @@ class Housing extends Uadmin_Controller
 			$data['certificate_status'] = $this->input->post('certificate_status');
 			$data['rt'] 								= $this->input->post('rt');
 			$data['dusun'] 							= $this->input->post('dusun');
+
+			$data['land_status'] 				= $this->input->post('land_status');
+			$data['water_source'] 				= $this->input->post('water_source');
+			$data['floor_material'] 				= $this->input->post('floor_material');
+			$data['wall_material'] 				= $this->input->post('wall_material');
+			$data['roof_material'] 				= $this->input->post('roof_material');
 
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
@@ -418,7 +429,7 @@ class Housing extends Uadmin_Controller
 			##############################################################################
 			$alert = $this->session->flashdata('alert');
 			$this->data["cordinate"] = $cordinate;
-			$this->data["zoom"] = 20;
+			$this->data["zoom"] = 12;
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;

@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Village_model extends MY_Model
+class Candidate_model extends MY_Model
 {
-  protected $table = "village";
+  protected $table = "candidate";
 
   function __construct() {
       parent::__construct( $this->table );
-      parent::set_join_key( 'village_id' );
+      parent::set_join_key( 'candidate_id' );
   }
 
   /**
@@ -73,7 +73,7 @@ class Village_model extends MY_Model
     //delete_foreign( $data_param. $models[]  )
     if( !$this->delete_foreign( $data_param ) )
     {
-      $this->set_error("gagal");//('village_delete_unsuccessful');
+      $this->set_error("gagal");//('candidate_delete_unsuccessful');
       return FALSE;
     }
     //foreign
@@ -84,24 +84,24 @@ class Village_model extends MY_Model
     {
       $this->db->trans_rollback();
 
-      $this->set_error("gagal");//('village_delete_unsuccessful');
+      $this->set_error("gagal");//('candidate_delete_unsuccessful');
       return FALSE;
     }
 
     $this->db->trans_commit();
 
-    $this->set_message("berhasil");//('village_delete_successful');
+    $this->set_message("berhasil");//('candidate_delete_successful');
     return TRUE;
   }
 
     /**
-   * village
+   * candidate
    *
-   * @param int|array|null $id = id_villages
+   * @param int|array|null $id = id_candidates
    * @return static
    * @author madukubah
    */
-  public function village( $id = NULL  )
+  public function candidate( $id = NULL  )
   {
       if (isset($id))
       {
@@ -111,19 +111,19 @@ class Village_model extends MY_Model
       $this->limit(1);
       $this->order_by($this->table.'.id', 'desc');
 
-      $this->villages(  );
+      $this->candidates(  );
 
       return $this;
   }
 
    /**
-   * village
+   * candidate
    *
-   * @param int|array|null $id = id_villages
+   * @param int|array|null $id = id_candidates
    * @return static
    * @author madukubah
    */
-  public function village_by_user_id( $user_id = NULL  )
+  public function candidate_by_user_id( $user_id = NULL  )
   {
       if( isset($user_id) )
       {
@@ -133,24 +133,58 @@ class Village_model extends MY_Model
       $this->limit(1);
       $this->order_by($this->table.'.id', 'desc');
 
-      $this->villages(  );
+      $this->candidates(  );
 
       return $this;
   }
 
   /**
-   * villages
+   * candidate
+   *
+   * @param int|array|null $id = id_candidates
+   * @return static
+   * @author madukubah
+   */
+  public function is_exist_by_civilization_id( $civilization_id = NULL  )
+  {
+      if( isset($civilization_id) )
+      {
+        $this->where($this->table.'.civilization_id', $civilization_id);
+      }
+      return $this->record_count() != 0 ;
+  }
+
+  /**
+   * candidates
    *
    *
    * @return static
    * @author madukubah
    */
-  public function villages( $start = 0 , $limit = NULL )
+  public function candidates( $start = 0 , $limit = NULL )
   {
       if (isset( $limit ))
       {
         $this->limit( $limit );
       }
+
+      $this->select( $this->table.'.*' );
+      $this->select( "civilization.chief_name as chief_name" );
+      $this->select( "CONCAT( civilization.no_kk, ' ' )  as no_kk" );
+      $this->select( "village.name as village_name" );
+
+      $this->join( 
+        "civilization" ,
+        "civilization.id = " .$this->table.'.civilization_id',
+        "inner"
+      );
+      $this->join( 
+        "village" ,
+        "village.id = civilization.village_id ",
+        "inner"
+      );
+
+
       $this->offset( $start );
       $this->order_by($this->table.'.id', 'asc');
       return $this->fetch_data();

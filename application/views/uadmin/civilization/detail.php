@@ -48,7 +48,7 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <img src="<?= $image_url; ?>" alt="">
+                            <img  class="img-fluid" src="<?= $image_url; ?>" alt="">
                         </div>
                     </div>
                 </div>

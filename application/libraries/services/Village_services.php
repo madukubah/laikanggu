@@ -168,7 +168,7 @@ class Village_services
         'value' => $this->form_validation->set_value('description', $this->description),
       ),
       "polygon" => array(
-        'type' => 'textarea',
+        'type' => 'hidden',
         'label' => "Polygon",
         'value' => $this->form_validation->set_value('polygon', $this->polygon),
       ),

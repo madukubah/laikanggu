@@ -7,6 +7,9 @@ class Civilization_services
   protected $chief_name;
   protected $member_count;
   protected $income;
+  protected $job;
+  protected $age;
+  protected $study;
 
   function __construct()
   {
@@ -15,6 +18,10 @@ class Civilization_services
     $this->chief_name  = "";
     $this->member_count  = "";
     $this->income  = "";
+    $this->job  = "";
+    $this->age  = "";
+    $this->study	  = "";
+
     $this->file_scan      = "";
     $this->_file_scan     = "";
   }
@@ -164,6 +171,10 @@ class Civilization_services
       $this->chief_name     = $civilization->chief_name;
       $this->member_count   = $civilization->member_count;
       $this->income         = $civilization->income;
+      $this->job            = $civilization->job;
+      $this->age            = $civilization->age;
+      $this->study          = $civilization->study;
+
       $this->file_scan      = $civilization->file_scan;
       $this->_file_scan     = $civilization->_file_scan;
     }
@@ -194,9 +205,24 @@ class Civilization_services
         'label' => "Jumlah Anggota Keluarga",
         'value' => $this->member_count
       ),
+      "age" => array(
+        'type' => 'text',
+        'label' => "Umur",
+        'value' => $this->age
+      ),
+      "study" => array(
+        'type' => 'text',
+        'label' => "Pendidikan Terakhir",
+        'value' => $this->study
+      ),
+      "job" => array(
+        'type' => 'text',
+        'label' => "Pekerjaan",
+        'value' => $this->job
+      ),
       "income" => array(
         'type' => 'number',
-        'label' => "Pendapatan / bulan",
+        'label' => "Pendapatan / Bulan",
         'value' => $this->income
       ),
       "file_scan" => array(
@@ -228,23 +254,27 @@ class Civilization_services
       $civilization = $this->civilization_model->civilization($civilization_id)->row();
       $village = $this->village_model->village($civilization->village_id)->row();
 
-      $this->id            = $civilization->id;
-      $this->no_kk        = $civilization->no_kk;
-      $this->chief_name    = $civilization->chief_name;
-      $this->member_count  = $civilization->member_count;
-      $this->income        = $civilization->income;
-      $this->name        = $village->name;
+      $this->id             = $civilization->id;
+      $village_id             = $civilization->village_id;
+      $this->no_kk          = $civilization->no_kk;
+      $this->chief_name     = $civilization->chief_name;
+      $this->member_count   = $civilization->member_count;
+      $this->income         = $civilization->income;
+      $this->job            = $civilization->job;
+      $this->age            = $civilization->age;
+      $this->study          = $civilization->study;
+
       $this->file_scan      = $civilization->file_scan;
       $this->_file_scan     = $civilization->_file_scan;
     }
 
     $_data["form_data"] = array(
-      "name" => array(
-        'type' => 'text',
-        'readonly' => 'readonly',
-        'label' => "Nama Desa",
-        'value' => $this->name,
-      ),
+      // "name" => array(
+      //   'type' => 'text',
+      //   'readonly' => 'readonly',
+      //   'label' => "Nama Desa",
+      //   'value' => $village->name,
+      // ),
       "no_kk" => array(
         'type' => 'text',
         'readonly' => 'readonly',
@@ -263,11 +293,29 @@ class Civilization_services
         'label' => "Jumlah Anggota Keluarga",
         'value' => $this->member_count,
       ),
+      "age" => array(
+        'type' => 'text',
+        'label' => "Umur",
+        'readonly' => 'readonly',
+        'value' => $this->age
+      ),
+      "study" => array(
+        'type' => 'text',
+        'readonly' => 'readonly',
+        'label' => "Pendidikan Terakhir",
+        'value' => $this->study
+      ),
+      "job" => array(
+        'type' => 'text',
+        'readonly' => 'readonly',
+        'label' => "Pekerjaan",
+        'value' => $this->job
+      ),
       "income" => array(
         'type' => 'number',
         'readonly' => 'readonly',
-        'label' => "Pendapatan / bulan",
-        'value' => $this->income,
+        'label' => "Pendapatan / Bulan",
+        'value' => $this->income
       ),
       // "file_scan" => array(
       //   'type' => 'file',

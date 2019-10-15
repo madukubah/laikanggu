@@ -73,7 +73,10 @@
 <script>
   var cor = [];
   <?php $i = 0; ?>
-  <?php foreach ($cordinate as $key => $value) : ?>
+  <?php 
+  $cordinate = ( isset( $cordinate ) ) ? $cordinate : array( "konut_0" => [ 1, 1] );
+  foreach ($cordinate as $key => $value) : 
+  ?>
     <?= $key ?> = [<?= $value[0] ?>, <?= $value[1] ?>];
     cor[<?= $i ?>] = <?= $key ?>;
     <?php $i++; ?>

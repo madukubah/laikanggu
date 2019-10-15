@@ -13,6 +13,30 @@ class Housing_services
   protected $longitude;
   protected $file_scan;
 
+  protected $floor_material;
+  protected $floor_material_select = array(
+    "PLESTERAN", "UBIN/TEGEL", "KAYU"
+  );
+  protected $wall_material;
+  protected $wall_material_select = array(
+    "KAYU", "TEMBOK"
+  );
+  protected $roof_material;
+  protected $roof_material_select = array(
+    "SENG", "JERAMI"
+  );
+  protected $light_source;
+  protected $light_source_select = array(
+    "LISTRIK PLN DENGAN METERAN", "BUKAN LISTRIK"
+  );
+  protected $water_source;
+  protected $water_source_select = array(
+    "MATA AIR", "SUMUR GALI", "SUNGAI"
+  );
+  protected $land_status	;
+  protected $land_status_select =array(
+    "MILIK SENDIRI", "BUKAN MILIK SENDIRI"
+  );
   protected $category_select = array(
     0 => "Tidak Layak Huni",
     1 => "Layak Huni",
@@ -25,16 +49,23 @@ class Housing_services
 
   function __construct()
   {
-    $this->id                  = '';
+    $this->id                 = '';
     $this->civilization_id    = '';
-    $this->category            = "";
-    $this->certificate_status  = "";
-    $this->rt                  = "2";
+    $this->category           = "";
+    $this->certificate_status = "";
+    $this->rt                 = "2";
     $this->dusun              = "3";
-    $this->images              = "";
-    $this->latitude            = "-3.5014330835094682";
+    $this->images             = "";
+    $this->latitude           = "-3.5014330835094682";
     $this->longitude          = "122.10348308181318";
     $this->file_scan          = "";
+
+    $this->floor_material     = 0;
+    $this->wall_material      = 0;
+    $this->roof_material      = 0;
+    $this->light_source       = 0;
+    $this->water_source       = 0;
+    $this->land_status        = 0;
   }
 
   public function __get($var)
@@ -133,6 +164,13 @@ class Housing_services
       $this->latitude            = $house->latitude;
       $this->longitude          = $house->longitude;
       $this->file_scan          = $house->file_scan;
+
+      $this->floor_material          = $house->floor_material;
+      $this->wall_material          = $house->wall_material;
+      $this->roof_material          = $house->roof_material;
+      $this->light_source          = $house->light_source;
+      $this->water_source          = $house->water_source;
+      $this->land_status          = $house->land_status;
     }
 
     $_data["form_data"] = array(
@@ -165,6 +203,31 @@ class Housing_services
         'type' => 'text',
         'label' => "Dusun",
         'value' => $this->form_validation->set_value('dusun', $this->dusun),
+      ),
+      "land_status" => array(
+        'type' => 'text',
+        'label' => "Status Tanah",
+        "value" => $this->land_status_select[ $this->land_status ],
+      ),
+      "water_source" => array(
+        'type' => 'text',
+        'label' => "Sumber Air",
+        "value" => $this->water_source_select[ $this->water_source ],
+      ),
+      "floor_material" => array(
+        'type' => 'text',
+        'label' => "Material Lantai Terluas",
+        "value" => $this->floor_material_select[ $this->floor_material ],
+      ),
+      "wall_material" => array(
+        'type' => 'text',
+        'label' => "Material Dinding Terluas",
+        "value" => $this->wall_material_select[ $this->wall_material ],
+      ),
+      "roof_material" => array(
+        'type' => 'text',
+        'label' => "Material Atap Terluas",
+        "value" => $this->roof_material_select[ $this->roof_material ],
       ),
       "latitude" => array(
         'type' => 'text',
@@ -205,6 +268,13 @@ class Housing_services
       $this->latitude            = $house->latitude;
       $this->longitude          = $house->longitude;
       $this->file_scan          = $house->file_scan;
+
+      $this->floor_material          = $house->floor_material;
+      $this->wall_material          = $house->wall_material;
+      $this->roof_material          = $house->roof_material;
+      $this->light_source          = $house->light_source;
+      $this->water_source          = $house->water_source;
+      $this->land_status          = $house->land_status;
     }
 
     $_data[0]["form_data"] = array(
@@ -239,6 +309,36 @@ class Housing_services
         'type' => 'text',
         'label' => "Dusun",
         'value' => $this->form_validation->set_value('dusun', $this->dusun),
+      ),
+      "land_status" => array(
+        'type' => 'select',
+        'label' => "Status Lahan",
+        "options" => $this->land_status_select,
+        "selected" => $this->land_status,
+      ),
+      "water_source" => array(
+        'type' => 'select',
+        'label' => "Sumber Air",
+        "options" => $this->water_source_select,
+        "selected" => $this->water_source,
+      ),
+      "floor_material" => array(
+        'type' => 'select',
+        'label' => "Material Lantai Terluas",
+        "options" => $this->floor_material_select,
+        "selected" => $this->floor_material,
+      ),
+      "wall_material" => array(
+        'type' => 'select',
+        'label' => "Material Dinding Terluas",
+        "options" => $this->wall_material_select,
+        "selected" => $this->wall_material,
+      ),
+      "roof_material" => array(
+        'type' => 'select',
+        'label' => "Material Atap Terluas",
+        "options" => $this->roof_material_select,
+        "selected" => $this->roof_material,
       ),
 
     );

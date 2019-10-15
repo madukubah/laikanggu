@@ -4,8 +4,8 @@ class Aid extends Officer_Controller
 {
 	private $services = null;
 	private $name = null;
-	private $parent_page = 'uadmin';
-	private $current_page = 'uadmin/aid/';
+	private $parent_page = 'officer';
+	private $current_page = 'officer/aid/';
 
 	public function __construct()
 	{
@@ -201,7 +201,7 @@ class Aid extends Officer_Controller
 				"header" => "Detail Rumah ",
 			);
 
-			$data_house = $this->load->view('uadmin/candidate/house_template', $data_house, TRUE);
+			$data_house = $this->load->view('officer/candidate/house_template', $data_house, TRUE);
 			$HOUSE_ARR[] = $data_house;
 			$i++;
 		}
@@ -232,7 +232,7 @@ class Aid extends Officer_Controller
 
 		$this->data["url_form"] = ""; // $this->current_page."add/?no_kk=".$no_kk."&village_id=".$village_id;
 
-		$this->render("uadmin/candidate/detail");
+		$this->render("officer/candidate/detail");
 	}
 
 	public function add()

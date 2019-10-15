@@ -139,12 +139,17 @@ class Officer_Controller extends User_Controller
 {
 	public function __construct()
 	{
-      parent::__construct();
+	  	parent::__construct();
+		$this->load->model(array(
+			'village_model',
+		));
+	  	$user_id = $this->ion_auth->get_user_id();
     	if( !$this->ion_auth->in_group( 'village_officer' ) ){
     		$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Anda Bukan Aparatur Desa" ) );
     		redirect(site_url('/auth/login'));
     	}else{
-      }
+			$this->data["village"] = $this->village_model->village_by_user_id( $user_id )->row();
+      	}
     }
 
     protected function render($the_view = NULL, $template = 'admin_master'){

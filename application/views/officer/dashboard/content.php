@@ -29,7 +29,7 @@
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>573</h3>
+              <h3><?= $civilization_count?></h3>
 
               <p>Penduduk</p>
             </div>

@@ -4,8 +4,8 @@ class Housing extends Officer_Controller
 {
 	private $services = null;
 	private $name = null;
-	private $parent_page = 'uadmin';
-	private $current_page = 'uadmin/housing/';
+	private $parent_page = 'officer';
+	private $current_page = 'officer/housing/';
 
 	public function __construct()
 	{
@@ -61,40 +61,10 @@ class Housing extends Officer_Controller
 		redirect(site_url($this->current_page) . "edit/" . $house->id);
 	}
 
-	public function index()
+	public function index( )
 	{
-		$this->load->library('services/Village_services');
-		$this->services = new Village_services;
-		$page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
-		//pagination parameter
-		$pagination['base_url'] = base_url($this->current_page) . '/index';
-		$pagination['total_records'] = $this->village_model->record_count();
-		$pagination['limit_per_page'] = 10;
-		$pagination['start_record'] = $page * $pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4;
-		//set pagination
-		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
-
-		// echo json_encode( $this->data[ "_menus" ] ) ;return;
-		$table = $this->services->get_table_config_housing($this->current_page);
-		$table["rows"] = $this->village_model->villages($pagination['start_record'], $pagination['limit_per_page'])->result();
-		$table = $this->load->view('templates/tables/plain_table', $table, true);
-		$this->data["contents"] = $table;
-
-		#################################################################3
-		$alert = $this->session->flashdata('alert');
-		$this->data["key"] = $this->input->get('key', FALSE);
-		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
-		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Olah Perumahan";
-		$this->data["header"] = "Pilih Desa";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-
-		$this->render("templates/contents/plain_content");
-	}
-
-	public function village($village_id = NULL)
-	{
+		$village = $this->data["village"];
+		$village_id = $village->id;
 		if ($village_id == NULL) redirect(site_url($this->current_page));
 
 		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
@@ -138,7 +108,7 @@ class Housing extends Officer_Controller
 
 		$this->data["header_button"] =  $modal_add;
 		#################################################################3
-		$village 				= $this->village_model->village($village_id)->row();
+		// $village 				= $this->village_model->village($village_id)->row();
 
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
@@ -167,11 +137,17 @@ class Housing extends Officer_Controller
 
 		$this->form_validation->set_rules($this->services->validation_config());
 		if ($this->form_validation->run() === TRUE) {
-			$data['civilization_id'] 		= $this->input->post('civilization_id');
-			$data['category'] 					= $this->input->post('category');
+			$data['civilization_id'] 	= $this->input->post('civilization_id');
+			$data['category'] 			= $this->input->post('category');
 			$data['certificate_status'] = $this->input->post('certificate_status');
-			$data['rt'] 								= $this->input->post('rt');
-			$data['dusun'] 							= $this->input->post('dusun');
+			$data['rt'] 				= $this->input->post('rt');
+			$data['dusun'] 				= $this->input->post('dusun');
+
+			$data['land_status'] 				= $this->input->post('land_status');
+			$data['water_source'] 				= $this->input->post('water_source');
+			$data['floor_material'] 				= $this->input->post('floor_material');
+			$data['wall_material'] 				= $this->input->post('wall_material');
+			$data['roof_material'] 				= $this->input->post('roof_material');
 
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
@@ -200,7 +176,7 @@ class Housing extends Officer_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->housing_model->errors()));
 			}
-			redirect(site_url($this->current_page) . "village/" . $village_id);
+			redirect(site_url($this->current_page) );
 		} else {
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->housing_model->errors() ? $this->housing_model->errors() : $this->session->flashdata('message')));
 			if (!empty(validation_errors()) || $this->housing_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
@@ -244,7 +220,6 @@ class Housing extends Officer_Controller
 
 		$house 				= $this->housing_model->house($house_id)->row();
 
-
 		$civilization = $this->civilization_model->civilization($house->civilization_id)->row();
 		if ($civilization == NULL) redirect(site_url($this->current_page));
 
@@ -277,7 +252,7 @@ class Housing extends Officer_Controller
 
 		$alert = $this->session->flashdata('alert');
 		$this->data["cordinate"] = $cordinate;
-		$this->data["zoom"] = 15;
+		$this->data["zoom"] = 12;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
@@ -306,6 +281,12 @@ class Housing extends Officer_Controller
 			$data['rt'] 								= $this->input->post('rt');
 			$data['dusun'] 							= $this->input->post('dusun');
 
+			$data['land_status'] 				= $this->input->post('land_status');
+			$data['water_source'] 				= $this->input->post('water_source');
+			$data['floor_material'] 				= $this->input->post('floor_material');
+			$data['wall_material'] 				= $this->input->post('wall_material');
+			$data['roof_material'] 				= $this->input->post('roof_material');
+
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
 			// echo json_encode( $data );return;
@@ -333,7 +314,7 @@ class Housing extends Officer_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->housing_model->errors()));
 			}
-			redirect(site_url($this->current_page) . "village/" . $civilization->village_id);
+			redirect(site_url($this->current_page) );
 		} else {
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->housing_model->errors() ? $this->housing_model->errors() : $this->session->flashdata('message')));
 			if (!empty(validation_errors()) || $this->housing_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
@@ -418,7 +399,7 @@ class Housing extends Officer_Controller
 			##############################################################################
 			$alert = $this->session->flashdata('alert');
 			$this->data["cordinate"] = $cordinate;
-			$this->data["zoom"] = 20;
+			$this->data["zoom"] = 12;
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;
@@ -459,6 +440,6 @@ class Housing extends Officer_Controller
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->housing_model->errors()));
 		}
-		redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+		redirect(site_url($this->current_page)  );
 	}
 }

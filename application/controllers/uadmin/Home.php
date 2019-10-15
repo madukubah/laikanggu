@@ -8,33 +8,13 @@ class Home extends Uadmin_Controller {
 	private $current_page = 'uadmin/';
 	public function __construct(){
 		parent::__construct();
-
+		$this->load->model(array(
+			'civilization_model',
+		));
 	}
 	public function index()
 	{
-		$add_menu = array(
-			"name" => "Tambah Group",
-			"modal_id" => "add_group_",
-			"button_color" => "primary",
-			"url" => site_url($this->current_page . "add/"),
-			"form_data" => array(
-				"name" => array(
-					'type' => 'text',
-					'label' => "Nama Group",
-					'value' => "",
-				),
-				"description" => array(
-					'type' => 'textarea',
-					'label' => "Deskripsi",
-					'value' => "-",
-				),
-				'data' => NULL
-			),
-		);
-
-		$add_menu = $this->load->view('templates/actions/modal_form', $add_menu, true);
-
-		$this->data["header_button"] =  $add_menu;
+		
 		
 		#################################################################3
 		$alert = $this->session->flashdata('alert');

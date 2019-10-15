@@ -28,11 +28,19 @@
                 ?>
               </div>
               <div class="row">
-                <div class="col-12">
+                <!--  -->
+                <div class="col-6">
                   <h5>
                     <?php echo strtoupper($form_data_civilization->block_header) ?>
                   </h5>
                 </div>
+                <!--  -->
+                <div class="col-6">
+                  <div class="float-right" >
+                    <?= $header_button?>
+                  </div>
+                </div>
+                <!--  -->
               </div>
             </div>
             <div class="card-body">

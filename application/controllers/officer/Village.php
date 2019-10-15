@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Village extends Officer_Controller {
 	private $services = null;
     private $name = null;
-    private $parent_page = 'uadmin';
-	private $current_page = 'uadmin/village/';
+    private $parent_page = 'officer';
+	private $current_page = 'officer/village/';
 	
 	public function __construct(){
 		parent::__construct();
@@ -17,6 +17,9 @@ class Village extends Officer_Controller {
 	}	
 	public function index()
 	{
+		$village = $this->data["village"];
+		$village_id = $village->id;
+
 		$page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
 		//pagination parameter
 		$pagination['base_url'] = base_url( $this->current_page ) .'/index';
@@ -31,13 +34,18 @@ class Village extends Officer_Controller {
 		$table = $this->services->get_table_config( $this->current_page );
 		$table[ "rows" ] = $this->village_model->villages( $pagination['start_record']  , $pagination['limit_per_page'] )->result();
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
-		$this->data[ "contents" ] = $table;
+
+
+		$form_data = $this->services->get_form_data( $village_id );
+		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
+
+		$this->data[ "contents" ] =  $form_data;
 		
 		$link_add = 
 		array(
-			"name" => "Tambah",
+			"name" => "Edit Desa",
 			"type" => "link",
-			"url" => site_url( $this->current_page."add/"),
+			"url" => site_url( $this->current_page."edit/"),
 			"button_color" => "primary",	
 			"data" => NULL,
 		);
@@ -52,7 +60,7 @@ class Village extends Officer_Controller {
 		$this->data["header"] = "Desa";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
-		$this->render( "templates/contents/plain_content" );
+		$this->render( "officer/village/content" );
 	}
 
 	public function add(  )
@@ -123,8 +131,11 @@ class Village extends Officer_Controller {
         }
 	}
 
-	public function edit( $village_id = NULL )
+	public function edit(  )
 	{
+		$village = $this->data["village"];
+		$village_id = $village->id;
+
 		if( $village_id == NULL ) redirect( site_url($this->current_page)  );
 
 		$this->form_validation->set_rules( $this->services->validation_config() );
@@ -132,7 +143,7 @@ class Village extends Officer_Controller {
         {
 			$data['name'] = $this->input->post( 'name' );
 			$data['description'] = $this->input->post( 'description' );
-			$data['polygon'] = $this->input->post( 'polygon' );
+			// $data['polygon'] = $this->input->post( 'polygon' );
 
 			$data_param['id'] = $this->input->post( 'id' );
 

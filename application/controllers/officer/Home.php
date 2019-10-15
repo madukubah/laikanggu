@@ -4,38 +4,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends Officer_Controller {
 	private $services = null;
     private $name = null;
-    private $parent_page = 'uadmin';
-	private $current_page = 'uadmin/';
+    private $parent_page = 'officer';
+	private $current_page = 'officer/';
 	public function __construct(){
 		parent::__construct();
-
+		$this->load->model(array(
+			'civilization_model',
+		));
+		// echo var_dump( $this->data["village"] );die;
 	}
 	public function index()
 	{
-		$add_menu = array(
-			"name" => "Tambah Group",
-			"modal_id" => "add_group_",
-			"button_color" => "primary",
-			"url" => site_url($this->current_page . "add/"),
-			"form_data" => array(
-				"name" => array(
-					'type' => 'text',
-					'label' => "Nama Group",
-					'value' => "",
-				),
-				"description" => array(
-					'type' => 'textarea',
-					'label' => "Deskripsi",
-					'value' => "-",
-				),
-				'data' => NULL
-			),
-		);
+		$village = $this->data["village"];
+		$village_id = $village->id;
 
-		$add_menu = $this->load->view('templates/actions/modal_form', $add_menu, true);
-
-		$this->data["header_button"] =  $add_menu;
-		
+		$this->data["civilization_count"]  = $this->civilization_model->record_count_by_village_id( $village_id );
 		#################################################################3
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);

@@ -134,6 +134,10 @@ class Civilization extends Uadmin_Controller
 			$data['member_count'] = $this->input->post('member_count');
 			$data['income'] = $this->input->post('income');
 
+			$data['age'] = $this->input->post('age');
+			$data['study'] = $this->input->post('study');
+			$data['job'] = $this->input->post('job');
+
 			$data['village_id'] = $village_id;
 
 			$this->load->library('upload'); // Load librari upload
@@ -192,6 +196,10 @@ class Civilization extends Uadmin_Controller
 			$data['member_count'] = $this->input->post('member_count');
 			$data['income'] = $this->input->post('income');
 
+			$data['age'] = $this->input->post('age');
+			$data['study'] = $this->input->post('study');
+			$data['job'] = $this->input->post('job');
+			
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config($data['no_kk']);
 
