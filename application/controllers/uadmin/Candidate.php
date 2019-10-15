@@ -82,15 +82,6 @@ class Candidate extends Uadmin_Controller
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data["contents"] = $table;
 
-		$link_add =
-			array(
-				"name" => "Tambah",
-				"type" => "link",
-				"url" => site_url($this->current_page . "add/"),
-				"button_color" => "primary",
-				"data" => NULL,
-			);
-		$this->data["header_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);
 		// return;
 		#################################################################3
 		$village 				= $this->village_model->village($village_id)->row();
@@ -270,7 +261,7 @@ class Candidate extends Uadmin_Controller
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));
 			}
 		} else {
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->m_account->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->civilization_model->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
 			if (validation_errors() || $this->civilization_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
 		}
 

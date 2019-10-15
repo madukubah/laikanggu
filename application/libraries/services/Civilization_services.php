@@ -15,6 +15,8 @@ class Civilization_services
     $this->chief_name  = "";
     $this->member_count  = "";
     $this->income  = "";
+    $this->file_scan      = "";
+    $this->_file_scan     = "";
   }
 
   public function __get($var)
@@ -47,14 +49,28 @@ class Civilization_services
     );
     $table["number"] = $start_number;
     $table["action"] = array(
+      // array(
+      //   "name" => "Edit KK",
+      //   "type" => "modal_form_multipart",
+      //   "modal_id" => "edit_civilization_",
+      //   "button_color" => "primary",
+      //   "url" => site_url($_page . "edit/"),
+      //   "param" => "id",
+      //   "form_data" => $this->get_form_data(null)["form_data"],
+      // ),
+      array(
+        "name" => "Detail",
+        "type" => "link",
+        "button_color" => "primary",
+        "url" => site_url($_page . "detail/"),
+        "param" => "id",
+      ),
       array(
         "name" => "Edit KK",
-        "type" => "modal_form_multipart",
-        "modal_id" => "edit_civilization_",
+        "type" => "link",
         "button_color" => "primary",
         "url" => site_url($_page . "edit/"),
         "param" => "id",
-        "form_data" => $this->get_form_data(null)["form_data"],
       ),
       array(
         "name" => 'X',
@@ -134,13 +150,29 @@ class Civilization_services
    * @return array
    * @author madukubah
    **/
-  public function get_form_data($village_id = NULL)
+  public function get_form_data($village_id = NULL, $id = NULL)
   {
+    if (isset($id)) {
+      $this->load->model(array(
+        'civilization_model',
+      ));
+      $civilization = $this->civilization_model->civilization($id)->row();
+
+      $this->id             = $civilization->id;
+      $village_id             = $civilization->village_id;
+      $this->no_kk          = $civilization->no_kk;
+      $this->chief_name     = $civilization->chief_name;
+      $this->member_count   = $civilization->member_count;
+      $this->income         = $civilization->income;
+      $this->file_scan      = $civilization->file_scan;
+      $this->_file_scan     = $civilization->_file_scan;
+    }
 
     $_data["form_data"] = array(
       "id" => array(
         'type' => 'hidden',
         'label' => "ID",
+        'value' => $this->id
       ),
       "village_id" => array(
         'type' => 'hidden',
@@ -150,26 +182,32 @@ class Civilization_services
       "no_kk" => array(
         'type' => 'text',
         'label' => "Nomor KK",
+        'value' => $this->no_kk
       ),
       "chief_name" => array(
         'type' => 'text',
         'label' => "Kepala Keluarga",
+        'value' => $this->chief_name
       ),
       "member_count" => array(
         'type' => 'number',
         'label' => "Jumlah Anggota Keluarga",
+        'value' => $this->member_count
       ),
       "income" => array(
         'type' => 'number',
         'label' => "Pendapatan / bulan",
+        'value' => $this->income
       ),
       "file_scan" => array(
         'type' => 'file',
         'label' => "File Scan KK ( JPG atau PNG )",
+        'value' => $this->file_scan
       ),
       "_file_scan" => array(
         'type' => 'hidden',
         'label' => "File Scan KK ( JPG atau PNG )",
+        'value' => $this->_file_scan
       ),
     );
     return $_data;
@@ -196,31 +234,38 @@ class Civilization_services
       $this->member_count  = $civilization->member_count;
       $this->income        = $civilization->income;
       $this->name        = $village->name;
+      $this->file_scan      = $civilization->file_scan;
+      $this->_file_scan     = $civilization->_file_scan;
     }
 
     $_data["form_data"] = array(
       "name" => array(
         'type' => 'text',
+        'readonly' => 'readonly',
         'label' => "Nama Desa",
         'value' => $this->name,
       ),
       "no_kk" => array(
         'type' => 'text',
+        'readonly' => 'readonly',
         'label' => "Nomor KK",
         'value' => $this->no_kk,
       ),
       "chief_name" => array(
         'type' => 'text',
+        'readonly' => 'readonly',
         'label' => "Kepala Keluarga",
         'value' => $this->chief_name,
       ),
       "member_count" => array(
         'type' => 'number',
+        'readonly' => 'readonly',
         'label' => "Jumlah Anggota Keluarga",
         'value' => $this->member_count,
       ),
       "income" => array(
         'type' => 'number',
+        'readonly' => 'readonly',
         'label' => "Pendapatan / bulan",
         'value' => $this->income,
       ),
@@ -228,10 +273,11 @@ class Civilization_services
       //   'type' => 'file',
       //   'label' => "File Scan KK ( JPG atau PNG )",
       // ),
-      // "_file_scan" => array(
-      //   'type' => 'hidden',
-      //   'label' => "File Scan KK ( JPG atau PNG )",
-      // ),
+      "_file_scan" => array(
+        'type' => 'hidden',
+        'label' => "File Scan KK ( JPG atau PNG )",
+        'value' => $this->_file_scan
+      ),
     );
     return $_data;
   }
