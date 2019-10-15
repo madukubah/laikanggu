@@ -42,16 +42,16 @@
             <div class="card-body">
               <!--  -->
               <?php echo form_open();  ?>
-              <?php echo ( isset( $contents )  ) ? $contents : '' ;  ?>
-              
-              <button class="btn btn-bold btn-success btn-sm " style="margin-left: 5px;" type="submit" >
+              <?php echo (isset($contents)) ? $contents : '';  ?>
+
+              <button class="btn btn-bold btn-success btn-sm " style="margin-left: 5px;" type="submit">
                 Simpan
               </button>
 
               <?php echo form_close()  ?>
               <!--  -->
               <!--  -->
-              <?php echo ( isset( $pagination_links )  ) ? $pagination_links : '' ;  ?>
+              <?php echo (isset($pagination_links)) ? $pagination_links : '';  ?>
               <!--  -->
             </div>
           </div>

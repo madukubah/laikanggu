@@ -62,68 +62,79 @@ class Civilization extends Uadmin_Controller
 
 	public function village($village_id = NULL)
 	{
-			if( $village_id == NULL ) redirect( site_url($this->current_page)  );
+		if ($village_id == NULL) redirect(site_url($this->current_page));
 
-			$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
-			//pagination parameter
-			$pagination['base_url'] = base_url( $this->current_page ) .'/index';
-			$pagination['total_records'] = $this->civilization_model->record_count_by_village_id( $village_id ) ;
-			$pagination['limit_per_page'] = 10;
-			$pagination['start_record'] = $page*$pagination['limit_per_page'];
-			$pagination['uri_segment'] = 4 + 1;
-			//set pagination
-			if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
+		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
+		//pagination parameter
+		$pagination['base_url'] = base_url($this->current_page) . '/index';
+		$pagination['total_records'] = $this->civilization_model->record_count_by_village_id($village_id);
+		$pagination['limit_per_page'] = 10;
+		$pagination['start_record'] = $page * $pagination['limit_per_page'];
+		$pagination['uri_segment'] = 4 + 1;
+		//set pagination
+		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
-			// echo json_encode( $this->data[ "_menus" ] ) ;return;
-			$table = $this->services->get_table_config( $this->current_page );
-			$table[ "rows" ] = $this->civilization_model->civilizations( $pagination['start_record']  , $pagination['limit_per_page'], $village_id )->result();
-			$table[ "image_url" ] = $this->services->get_photo_upload_config( "" )["image_path"];
-			// var_dump( $table[ "rows" ] ); return;
+		// echo json_encode( $this->data[ "_menus" ] ) ;return;
+		$table = $this->services->get_table_config($this->current_page);
+		$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+		$table["image_url"] = $this->services->get_photo_upload_config("")["image_path"];
+		// var_dump($table["rows"]); return;
 
-			$table = $this->load->view('templates/tables/plain_table_image_col', $table, true);
-			
-			$this->data[ "contents" ] = $table;
-			
-			$modal_add = array(
-				"name" => "Tambah KK",
-				"modal_id" => "add_civilization_",
-				"button_color" => "primary",
-				"url" => site_url( $this->current_page."add/"),
-				"form_data" => $this->services->get_form_data( $village_id )["form_data"],
-				'data' => NULL
-			);
+		$table = $this->load->view('templates/tables/plain_table_image_col', $table, true);
 
-			$modal_add= $this->load->view('templates/actions/modal_form_multipart', $modal_add, true ); 
+		$this->data["contents"] = $table;
 
-			$this->data[ "header_button" ] =  $modal_add;		// return;
-			#################################################################3
-			$village 				= $this->village_model->village( $village_id )->row();
+		// $modal_add = array(
+		// 	"name" => "Tambah KK",
+		// 	"modal_id" => "add_civilization_",
+		// 	"button_color" => "primary",
+		// 	"url" => site_url($this->current_page . "add/"),
+		// 	"form_data" => $this->services->get_form_data($village_id)["form_data"],
+		// 	'data' => NULL
+		// );
 
-			$alert = $this->session->flashdata('alert');
-			$this->data["key"] = $this->input->get('key', FALSE);
-			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
-			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Olah Kartu Keluarga";
-			$this->data["header"] = "Daftar KK ".$village->name;
-			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+		// $modal_add = $this->load->view('templates/actions/modal_form_multipart', $modal_add, true);
 
-			$this->render( "templates/contents/plain_content" );
+		$link_add = array(
+			"name" => "Tambah KK",
+			"button_color" => "primary",
+			"url" => site_url($this->current_page . "add"),
+			"data" => null,
+			"get" => "?village_id=" . $village_id
+		);
+
+		$link_add = $this->load->view('templates/actions/link', $link_add, true);
+
+		$this->data["header_button"] =  $link_add;		// return;
+		#################################################################3
+		$village 				= $this->village_model->village($village_id)->row();
+
+		$alert = $this->session->flashdata('alert');
+		$this->data["key"] = $this->input->get('key', FALSE);
+		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
+		$this->data["current_page"] = $this->current_page;
+		$this->data["block_header"] = "Olah Kartu Keluarga";
+		$this->data["header"] = "Daftar KK " . $village->name;
+		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+
+		$this->render("templates/contents/plain_content");
 	}
 
 	public function add()
 	{
-		if (!($_POST)) redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+		$village_id = $this->input->get('village_id');
+
+		// if (!($_POST)) redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 
 		// echo var_dump( $data );return;
-		$this->form_validation->set_rules( $this->services->validation_config() );
-        if ($this->form_validation->run() === TRUE )
-        {
-			$data['no_kk'] = $this->input->post( 'no_kk' );
-			$data['chief_name'] = $this->input->post( 'chief_name' );
-			$data['member_count'] = $this->input->post( 'member_count' );
-			$data['income'] = $this->input->post( 'income' );
+		$this->form_validation->set_rules($this->services->validation_config());
+		if ($this->form_validation->run() === TRUE) {
+			$data['no_kk'] = $this->input->post('no_kk');
+			$data['chief_name'] = $this->input->post('chief_name');
+			$data['member_count'] = $this->input->post('member_count');
+			$data['income'] = $this->input->post('income');
 
-			$data['village_id'] = $this->input->post('village_id');
+			$data['village_id'] = $village_id;
 
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config($data['no_kk']);
@@ -143,26 +154,43 @@ class Civilization extends Uadmin_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));
 			}
+			redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 		} else {
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->m_account->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->civilization_model->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
 			if (validation_errors() || $this->civilization_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
-		}
 
-		redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+			$form_data = $this->services->get_form_data($village_id);
+
+			$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
+
+
+			$this->data["contents"] =  $form_data;
+
+			$alert = $this->session->flashdata('alert');
+			$this->data["key"] = $this->input->get('key', FALSE);
+			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
+			$this->data["current_page"] = $this->current_page;
+			$this->data["block_header"] = "Tambah Rumah ";
+			$this->data["header"] = "Tambah Rumah Untuk No KK ";
+			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+
+			$this->data["url_form"] = $this->current_page . "add?village_id=" . $village_id;
+
+			$this->render("templates/contents/plain_content_form");
+		}
 	}
 
-	public function edit()
+	public function edit($id = null)
 	{
-		if (!($_POST)) redirect(site_url($this->current_page));
+		// if (!($_POST)) redirect(site_url($this->current_page));
 
 		// echo var_dump( $data );return;
-		$this->form_validation->set_rules( $this->services->validation_config() );
-        if ($this->form_validation->run() === TRUE )
-        {
-			$data['no_kk'] = $this->input->post( 'no_kk' );
-			$data['chief_name'] = $this->input->post( 'chief_name' );
-			$data['member_count'] = $this->input->post( 'member_count' );
-			$data['income'] = $this->input->post( 'income' );
+		$this->form_validation->set_rules($this->services->validation_config());
+		if ($this->form_validation->run() === TRUE) {
+			$data['no_kk'] = $this->input->post('no_kk');
+			$data['chief_name'] = $this->input->post('chief_name');
+			$data['member_count'] = $this->input->post('member_count');
+			$data['income'] = $this->input->post('income');
 
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config($data['no_kk']);
@@ -184,12 +212,63 @@ class Civilization extends Uadmin_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));
 			}
+			redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 		} else {
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->m_account->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->civilization_model->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
 			if (validation_errors() || $this->civilization_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
-		}
 
-		redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+			$form_data = $this->services->get_form_data(null, $id);
+			$this->data["image_url"] =  base_url("uploads/civilization/") . $form_data['form_data']['file_scan']['value'];
+			$no_kk = $form_data['form_data']['no_kk']['value'];
+			$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
+			$this->data["contents"] =  $form_data;
+			// $this->data["file_scan"] = (object) ["name" => $civilization->file_scan, "url" => $civilization->url_file_scan];
+
+			##############################################################################
+			$alert = $this->session->flashdata('alert');
+			$this->data["key"] = $this->input->get('key', FALSE);
+			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
+			$this->data["current_page"] = $this->current_page;
+			$this->data["block_header"] = "Edit Rumah ";
+			$this->data["header"] = "Edit Rumah Untuk No KK " . $no_kk;
+			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+
+			$this->data["url_form"] = ""; // $this->current_page."add/?no_kk=".$no_kk."&village_id=".$village_id;
+
+			$this->render("uadmin/civilization/edit");
+		}
+	}
+
+	public function detail($id = null)
+	{
+		$form_data = $this->services->get_form_data_readonly($id);
+		$this->data["image_url"] =  base_url("uploads/civilization/") . $form_data['form_data']['_file_scan']['value'];
+		$no_kk = $form_data['form_data']['no_kk']['value'];
+		$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
+		$this->data["contents"] =  $form_data;
+
+		$link_add = array(
+			"name" => "Edit KK",
+			"button_color" => "primary",
+			"url" => site_url($this->current_page . "edit/") . $id,
+		);
+
+		$link_add = $this->load->view('templates/actions/link', $link_add, true);
+
+		$this->data["header_button"] =  $link_add;
+
+		##############################################################################
+		$alert = $this->session->flashdata('alert');
+		$this->data["key"] = $this->input->get('key', FALSE);
+		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
+		$this->data["current_page"] = $this->current_page;
+		$this->data["block_header"] = "Detail Kartu Keluarga ";
+		$this->data["header"] = "Detail Kartu Keluarga " . $no_kk;
+		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+
+		$this->data["url_form"] = ""; // $this->current_page."add/?no_kk=".$no_kk."&village_id=".$village_id;
+
+		$this->render("uadmin/civilization/detail");
 	}
 
 	public function delete()
