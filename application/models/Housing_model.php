@@ -129,6 +129,24 @@ class Housing_model extends MY_Model
 
     return $this;
   }
+
+   /**
+   * house
+   *
+   * @param int|array|null $id = id_houses
+   * @return static
+   * @author madukubah
+   */
+  public function count_houses_by_category($category = NULL)
+  {
+    if (isset($category)) {
+      $this->where($this->table . '.category', $category);
+    }
+
+    // $this->houses();
+
+    return $this->record_count();
+  }
   /**
    * houses
    *

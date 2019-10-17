@@ -67,10 +67,16 @@ class Candidate extends Uadmin_Controller
 		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
-		// echo json_encode( $this->data[ "_menus" ] ) ;return;
+
 		$table = $this->services->get_table_config($this->current_page);
-		$table["rows"] = $this->candidate_model->candidates($pagination['start_record'], $pagination['limit_per_page'])->result();
-		// var_dump( $table["rows"] ); die;
+		$table["rows"] = $this->candidate_model->candidates(  )->result();
+		$type_of_aid = $this->services->type_of_aid();
+		$table["type_of_aid"] = $this->load->view('templates/form/plain_form_no_label', $type_of_aid, TRUE);
+
+		$form_header = $this->services->get_header_form();
+		$this->data["form_header"] = $this->load->view('templates/form/plain_form_horizontal', $form_header, TRUE);
+
+		// $table = $this->load->view('uadmin/candidate/table_form', $table, true);
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data["contents"] = $table;
 
@@ -83,11 +89,13 @@ class Candidate extends Uadmin_Controller
 		$this->data["header"] = "Daftar Kandidat Penerima Bantuan";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
-		$this->render("templates/contents/plain_content");
+		$this->render("uadmin/candidate/candidates");
 	}
 
 	public function village( $village_id = NULL)
 	{
+		$this->load->library('services/Candidate_services');
+		$this->services = new Candidate_services;
 		if ($village_id == NULL) redirect(site_url($this->current_page));
 
 		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list($village_id)->result();
@@ -111,7 +119,7 @@ class Candidate extends Uadmin_Controller
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		// echo json_encode( $this->data[ "_menus" ] ) ;return;
-		$table = $this->services->get_table_config($this->current_page, NULL,  $village_id);
+		$table = $this->services->get_table_accumulation($this->current_page, NULL,  $village_id);
 		$table["rows"] = $candidate_rows;
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data["contents"] = $table;
@@ -189,7 +197,8 @@ class Candidate extends Uadmin_Controller
 	public function detail($civilization_id = null)
 	{
 		$this->data["menu_list_id"] = "_aid_index";
-
+		$this->load->library('services/Candidate_services');
+		$this->services = new Candidate_services;
 		if ($civilization_id == NULL) redirect(site_url($this->current_page));
 
 		$civilization = $this->civilization_model->civilization($civilization_id)->row();
@@ -212,11 +221,12 @@ class Candidate extends Uadmin_Controller
 				'label' => "village_id",
 				'value' => $civilization->village_id,
 			  ),
+			  "type_of_aid" =>  $this->services->type_of_aid()[ "form_data" ]["type_of_aid[]"],
 			),
 			'data' => NULL
 		);
 
-		$add_menu= $this->load->view('templates/actions/modal_form_confirm', $add_menu, true ); 
+		$add_menu= $this->load->view('templates/actions/modal_form', $add_menu, true ); 
 
 		$this->data[ "header_button" ] =  $add_menu ;
 
@@ -296,6 +306,7 @@ class Candidate extends Uadmin_Controller
 		$this->form_validation->set_rules( "civilization_id", "civilization_id", "trim|required" );
 		if ($this->form_validation->run() === TRUE) {
 			$data['civilization_id'] = $this->input->post('civilization_id');
+			$data['type_of_aid'] = $this->input->post('type_of_aid');
 			$is_exist = $this->candidate_model->is_exist_by_civilization_id( $data['civilization_id']  );
 			if( $is_exist ) 
 			{
@@ -318,19 +329,14 @@ class Candidate extends Uadmin_Controller
 
 	public function delete()
 	{
-		if (!($_POST)) redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
-
-		$this->load->library('upload'); // Load librari upload
-		$config = $this->services->get_photo_upload_config($data['no_kk']);
+		if (!($_POST)) redirect(site_url($this->current_page) . "candidates/" );
 
 		$data_param['id'] 	= $this->input->post('id');
 		if ($this->candidate_model->delete($data_param)) {
-			if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) return;
-
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->candidate_model->messages()));
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->candidate_model->errors()));
 		}
-		redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+		redirect(site_url($this->current_page) . "candidates/"  );
 	}
 }

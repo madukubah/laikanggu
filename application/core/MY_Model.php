@@ -145,7 +145,7 @@ class MY_Model extends CI_Model {
 			}else{
 				foreach( $data_param as $key => $value )
 				{
-					$this->where($this->table.'.'.$key , $value );
+					$this->where( $this->table.'.'.$key , $value );
 				}
 	
 				foreach( $this->fetch_data( )->result() as $item )
@@ -156,6 +156,15 @@ class MY_Model extends CI_Model {
 			}
 		}
 		return TRUE;
+	}
+	/** record_count
+	 * @param string $table
+	 * @param array  $data
+	 *
+	 * @return int
+	 */
+	public function truncate(  ) {
+		$this->db->truncate( $this->table );
 	}
 	/** record_count
 	 * @param string $table

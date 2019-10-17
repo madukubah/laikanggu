@@ -10,12 +10,17 @@ class Home extends Uadmin_Controller {
 		parent::__construct();
 		$this->load->model(array(
 			'civilization_model',
+			'village_model',
+			'housing_model',
 		));
 	}
 	public function index()
 	{
-		
-		
+		$this->data["village_count"] 		= $this->village_model->record_count();
+		$this->data["civilization_count"] 	= $this->civilization_model->record_count();
+		$this->data["livable_house_count"] 	= $this->housing_model->count_houses_by_category( 1 );
+		$this->data["unlivable_house_count"] = $this->housing_model->count_houses_by_category( 0 );
+		// $civilization_count = $this->civilization_model->record_count();
 		#################################################################3
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);

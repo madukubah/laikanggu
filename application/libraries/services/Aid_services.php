@@ -25,11 +25,34 @@ class Aid_services
     return $config;
   }
 
-  public function get_table_config($_page, $start_number = 1, $village_id = "")
+  public function get_table_config( $_page, $start_number = 1, $village_id = "")
   {
     $table["header"] = array(
-      'name' => 'Filter',
-      'count' => 'Jumlah',
+      'no_kk' => 'No KK',
+      'village_name' => 'Desa',
+      'chief_name' => 'Nama Kepala Keluarga',
+      'type_of_aid' => 'Jenis Bantuan',
+      '_date' => 'Tanggal Bantuan',
+    );
+    $table["number"] = $start_number;
+    // $table["action"] = array(
+    //   array(
+    //     "name" => "Lihat",
+    //     "type" => "link",
+    //     "modal_id" => "edit_civilization_",
+    //     "button_color" => "primary",
+    //     "url" => site_url($_page . "code/"),
+    //     "param" => "code",
+    //     "get" => "?village_id=" . $village_id,
+    //   ),
+    // );
+    return $table;
+  }
+
+  public function get_year_table( $_page, $start_number = 1 )
+  {
+    $table["header"] = array(
+      '_year' => 'Tahun Anggaran',
     );
     $table["number"] = $start_number;
     $table["action"] = array(
@@ -38,13 +61,33 @@ class Aid_services
         "type" => "link",
         "modal_id" => "edit_civilization_",
         "button_color" => "primary",
-        "url" => site_url($_page . "code/"),
-        "param" => "code",
-        "get" => "?village_id=" . $village_id,
+        "url" => site_url($_page . "year/"),
+        "param" => "year",
       ),
     );
     return $table;
   }
+
+  
+  public function get_date_table( $_page, $start_number = 1 )
+  {
+    $table["header"] = array(
+      '_date' => 'Tanggal Bantuan',
+    );
+    $table["number"] = $start_number;
+    $table["action"] = array(
+      array(
+        "name" => "Lihat",
+        "type" => "link",
+        "modal_id" => "edit_civilization_",
+        "button_color" => "primary",
+        "url" => site_url($_page . "date/"),
+        "param" => "_date",
+      ),
+    );
+    return $table;
+  }
+
   public function validation_config()
   {
     $config = array(

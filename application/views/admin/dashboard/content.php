@@ -27,7 +27,7 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>2</h3>
+              <h3><?= $village_count?></h3>
 
               <p>Desa</p>
             </div>
@@ -42,7 +42,7 @@
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>573</h3>
+              <h3><?= $civilization_count?></h3>
 
               <p>Penduduk</p>
             </div>
@@ -57,7 +57,7 @@
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>37</h3>
+              <h3><?= $livable_house_count?></h3>
 
               <p>Jumlah Rumah Layak Huni</p>
             </div>
@@ -72,7 +72,7 @@
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>72</h3>
+              <h3><?= $unlivable_house_count?></h3>
 
               <p>Jumlah Rumah Tidak Layak Huni</p>
             </div>

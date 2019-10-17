@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2019 at 04:07 PM
+-- Generation Time: Oct 18, 2019 at 01:58 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 5.6.37
 
@@ -25,6 +25,40 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `aid`
+--
+
+CREATE TABLE `aid` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `civilization_id` int(10) UNSIGNED NOT NULL,
+  `type_of_aid` varchar(200) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `year` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `aid`
+--
+
+INSERT INTO `aid` (`id`, `civilization_id`, `type_of_aid`, `timestamp`, `date`, `year`) VALUES
+(1, 5, 'PEMBELIAN SENG', 1571195273, '2019-10-23', 2019);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `candidate`
+--
+
+CREATE TABLE `candidate` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `civilization_id` int(10) UNSIGNED NOT NULL,
+  `type_of_aid` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `civilization`
 --
 
@@ -35,16 +69,19 @@ CREATE TABLE `civilization` (
   `chief_name` varchar(200) NOT NULL,
   `member_count` int(11) NOT NULL,
   `file_scan` text NOT NULL,
-  `income` double NOT NULL
+  `income` double NOT NULL,
+  `age` int(5) NOT NULL,
+  `job` varchar(200) NOT NULL,
+  `study` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `civilization`
 --
 
-INSERT INTO `civilization` (`id`, `village_id`, `no_kk`, `chief_name`, `member_count`, `file_scan`, `income`) VALUES
-(4, 4, '1090', 'alan', 4, 'Civilization_1090_1570812095.JPG', 1500000),
-(5, 5, '18008', 'alun', 4, 'Civilization_18008_1570813621.JPG', 2000000);
+INSERT INTO `civilization` (`id`, `village_id`, `no_kk`, `chief_name`, `member_count`, `file_scan`, `income`, `age`, `job`, `study`) VALUES
+(4, 4, '1090', 'alan', 4, 'Civilization_1090_1570812095.JPG', 1500000, 45, 'Petani', 'SMA'),
+(5, 5, '18008', 'alun', 4, 'Civilization_18008_1570813621.JPG', 2000000, 40, '', '');
 
 -- --------------------------------------------------------
 
@@ -83,15 +120,21 @@ CREATE TABLE `house` (
   `images` text NOT NULL,
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
-  `file_scan` text NOT NULL
+  `file_scan` text NOT NULL,
+  `floor_material` int(3) NOT NULL,
+  `wall_material` int(3) NOT NULL,
+  `roof_material` int(3) NOT NULL,
+  `light_source` int(3) NOT NULL,
+  `water_source` int(3) NOT NULL,
+  `land_status` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `house`
 --
 
-INSERT INTO `house` (`id`, `civilization_id`, `category`, `certificate_status`, `rt`, `dusun`, `images`, `latitude`, `longitude`, `file_scan`) VALUES
-(1, 4, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '1234', '6543', 'default.jpg');
+INSERT INTO `house` (`id`, `civilization_id`, `category`, `certificate_status`, `rt`, `dusun`, `images`, `latitude`, `longitude`, `file_scan`, `floor_material`, `wall_material`, `roof_material`, `light_source`, `water_source`, `land_status`) VALUES
+(6, 5, 0, 0, '2', '3', 'front_1571154257.JPG;back_1571154257.JPG;left_1571154257.JPG;right_1571154257.JPG', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -134,18 +177,19 @@ INSERT INTO `menus` (`id`, `menu_id`, `name`, `link`, `list_id`, `icon`, `status
 (103, 1, 'Setting', 'admin/menus', '-', 'cogs', 1, 3, '-'),
 (104, 1, 'User', 'admin/user_management', 'user_management_index', 'users', 1, 4, '-'),
 (106, 103, 'Menu', 'admin/menus', 'menus_index', 'circle', 1, 1, '-'),
-(107, 2, 'Beranda', 'user/home', 'home_index', 'home', 1, 1, '-'),
+(107, 2, 'Beranda', 'uadmin/home', 'home_index', 'home', 1, 1, '-'),
 (108, 2, 'Pengguna', 'uadmin/users', 'users_index', 'home', 1, 2, '-'),
 (109, 2, 'Desa', 'uadmin/village', 'village_index', 'home', 1, 1, '-'),
 (110, 2, 'Olah Kartu Keluarga', 'uadmin/civilization', 'civilization_index', 'home', 1, 1, '-'),
 (111, 2, 'Olah Perumahan', 'uadmin/housing', 'housing_index', 'home', 1, 1, '-'),
 (112, 2, 'Penerima Bantuan', 'uadmin/aid', '_aid_index', 'home', 1, 1, '-'),
-(113, 3, 'Beranda', 'village_officer/home', 'home_index', 'home', 1, 1, '-'),
-(114, 3, 'Desa Saya', 'village_officer/village', 'village_index', 'home', 1, 1, '-'),
-(115, 3, 'Olah Kartu Keluarga', 'village_officer/civilization', 'civilization_index', 'home', 1, 1, '-'),
-(116, 3, 'Olah Perumahan', 'village_officer/housing', 'housing_index', 'home', 1, 1, '-'),
+(113, 3, 'Beranda', 'officer/home', 'home_index', 'home', 1, 1, '-'),
+(114, 3, 'Tentang Desa', 'officer/village', 'village_index', 'home', 1, 1, '-'),
+(115, 3, 'Olah Kartu Keluarga', 'officer/civilization', 'civilization_index', 'home', 1, 1, '-'),
+(116, 3, 'Olah Perumahan', 'officer/housing', 'housing_index', 'home', 1, 1, '-'),
 (117, 112, 'Cari Calon Penerima Bantuan', 'uadmin/candidate', 'candidate_index', 'home', 1, 1, '-'),
-(119, 112, 'Riwayat', 'uadmin/aid/history', 'aid_history', 'home', 1, 1, '-');
+(119, 112, 'Riwayat', 'uadmin/aid', 'aid_index', 'home', 1, 3, '-'),
+(120, 112, 'Kandidat Penerima Bantuan', 'uadmin/candidate/candidates', 'candidate_candidates', 'home', 1, 2, '-');
 
 -- --------------------------------------------------------
 
@@ -181,10 +225,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`) VALUES
-(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1571045001, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
-(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1571058975, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
-(20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, NULL, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat'),
-(21, '::1', 'Desa_B@gmail.com', '$2y$10$F4QZKfJOJ2aLfnR3V5xrzO/AAZ.RDIHg7/uL2QBbRW7l2vhYTpjxu', 'Desa_B@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570813501, NULL, 1, 'admin', 'Desa B', '0', 'default.jpg', 'Alamat');
+(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1571294019, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
+(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1571282695, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
+(20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, 1571154162, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat'),
+(21, '::1', 'Desa_B@gmail.com', '$2y$10$F4QZKfJOJ2aLfnR3V5xrzO/AAZ.RDIHg7/uL2QBbRW7l2vhYTpjxu', 'Desa_B@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570813501, 1571146598, 1, 'admin', 'Desa B', '0', 'default.jpg', 'Alamat');
 
 -- --------------------------------------------------------
 
@@ -228,11 +272,25 @@ CREATE TABLE `village` (
 
 INSERT INTO `village` (`id`, `user_id`, `name`, `description`, `polygon`) VALUES
 (4, 20, 'Desa A', 'ringkasan', 'polygon'),
-(5, 21, 'Desa B', 'ringkasan', 'polygon');
+(5, 21, 'Desa B', 'desa ini adalah', 'polygon');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `aid`
+--
+ALTER TABLE `aid`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `civilization_id` (`civilization_id`);
+
+--
+-- Indexes for table `candidate`
+--
+ALTER TABLE `candidate`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `civilization_id` (`civilization_id`);
 
 --
 -- Indexes for table `civilization`
@@ -297,6 +355,18 @@ ALTER TABLE `village`
 --
 
 --
+-- AUTO_INCREMENT for table `aid`
+--
+ALTER TABLE `aid`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `candidate`
+--
+ALTER TABLE `candidate`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `civilization`
 --
 ALTER TABLE `civilization`
@@ -312,19 +382,19 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `house`
 --
 ALTER TABLE `house`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -347,6 +417,18 @@ ALTER TABLE `village`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `aid`
+--
+ALTER TABLE `aid`
+  ADD CONSTRAINT `aid_ibfk_1` FOREIGN KEY (`civilization_id`) REFERENCES `civilization` (`id`);
+
+--
+-- Constraints for table `candidate`
+--
+ALTER TABLE `candidate`
+  ADD CONSTRAINT `candidate_ibfk_1` FOREIGN KEY (`civilization_id`) REFERENCES `civilization` (`id`);
 
 --
 -- Constraints for table `civilization`
