@@ -13,6 +13,9 @@ class Housing_services
   protected $longitude;
   protected $file_scan;
 
+  protected $length;
+  protected $width;
+
   protected $floor_material;
   protected $floor_material_select = array(
     "PLESTERAN", "UBIN/TEGEL", "KAYU"
@@ -66,6 +69,9 @@ class Housing_services
     $this->light_source       = 0;
     $this->water_source       = 0;
     $this->land_status        = 0;
+
+    $this->length             = 0;
+    $this->width              = 0;
   }
 
   public function __get($var)
@@ -171,6 +177,9 @@ class Housing_services
       $this->light_source          = $house->light_source;
       $this->water_source          = $house->water_source;
       $this->land_status          = $house->land_status;
+
+      $this->length          = $house->length;
+      $this->width          = $house->width;
     }
 
     $_data["form_data"] = array(
@@ -193,6 +202,16 @@ class Housing_services
         'type' => 'text',
         'label' => "Bersertifikat",
         'value' => $this->certificate_status_select[$this->certificate_status],
+      ),
+      "length" => array(
+        'type' => 'number',
+        'label' => "Panjang Rumah",
+        'value' => $this->form_validation->set_value('length', $this->length),
+      ),
+      "width" => array(
+        'type' => 'number',
+        'label' => "Lebar Rumah",
+        'value' => $this->form_validation->set_value('width', $this->width),
       ),
       "rt" => array(
         'type' => 'text',
@@ -275,6 +294,9 @@ class Housing_services
       $this->light_source          = $house->light_source;
       $this->water_source          = $house->water_source;
       $this->land_status          = $house->land_status;
+
+      $this->length          = $house->length;
+      $this->width          = $house->width;
     }
 
     $_data[0]["form_data"] = array(
@@ -300,6 +322,18 @@ class Housing_services
         'options' => $this->certificate_status_select,
         'selected' => $this->form_validation->set_value('certificate_status', $this->certificate_status),
       ),
+      ############################################
+      "length" => array(
+        'type' => 'number',
+        'label' => "Panjang Rumah",
+        'value' => $this->form_validation->set_value('length', $this->length),
+      ),
+      "width" => array(
+        'type' => 'number',
+        'label' => "Lebar Rumah",
+        'value' => $this->form_validation->set_value('width', $this->width),
+      ),
+      ############################################
       "rt" => array(
         'type' => 'text',
         'label' => "RT",

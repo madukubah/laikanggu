@@ -70,7 +70,7 @@ class Civilization_model extends MY_Model
   {
     //foreign
     //delete_foreign( $data_param. $models[]  )
-    if (!$this->delete_foreign($data_param)) {
+    if (!$this->delete_foreign($data_param, ["aid_model"])) {
       $this->set_error("gagal"); //('civilization_delete_unsuccessful');
       return FALSE;
     }
@@ -155,6 +155,7 @@ class Civilization_model extends MY_Model
     $this->select($this->table . '.*');
     $this->select(" " . $this->table . ".file_scan  as images");
     $this->select(" " . $this->table . ".file_scan  as _file_scan");
+    $this->db->select(" " . $this->table . ".civilization_card_scan  as _civilization_card_scan");
     $this->select(" CONCAT( " . $this->table . ".no_kk, ' ' )  as no_kk");
 
     $this->offset($start);
@@ -175,6 +176,7 @@ class Civilization_model extends MY_Model
     $this->db->select($this->table . '.*');
     $this->db->select(" " . $this->table . ".file_scan  as images");
     $this->db->select(" " . $this->table . ".file_scan  as _file_scan");
+    $this->db->select(" " . $this->table . ".civilization_card_scan  as _civilization_card_scan");
     $this->db->select(" CONCAT( " . $this->table . ".no_kk, ' ' )  as no_kk");
 
     if (!empty($list_ids)) {
@@ -199,6 +201,7 @@ class Civilization_model extends MY_Model
     $this->db->select($this->table . '.*');
     $this->db->select(" " . $this->table . ".file_scan  as images");
     $this->db->select(" " . $this->table . ".file_scan  as _file_scan");
+    $this->db->select(" " . $this->table . ".civilization_card_scan  as _civilization_card_scan");
     $this->db->select(" CONCAT( " . $this->table . ".no_kk, ' ' )  as no_kk");
 
     if (!empty($list_ids)) {

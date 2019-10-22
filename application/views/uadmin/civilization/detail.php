@@ -48,9 +48,20 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <img  class="img-fluid" src="<?= $image_url; ?>" alt="">
+                            <label for="">Scan KK</label>
+                            <br>
+                            <img  class="img-fluid" src="<?= $image_url.$civilization->file_scan; ?>" alt="">
                         </div>
                     </div>
+                    <!-- KTP -->
+                    <div class="card">
+                        <div class="card-body">
+                            <label for="">Scan KTP</label>
+                            <br>
+                            <img  class="img-fluid" src="<?= $image_url.$civilization->civilization_card_scan; ?>" alt="">
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -182,6 +182,9 @@ class Housing extends Uadmin_Controller
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
 
+			$data['length'] 					= $this->input->post('length');
+			$data['width'] 						= $this->input->post('width');
+
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config($data['no_kk'] = "");
 
@@ -308,17 +311,20 @@ class Housing extends Uadmin_Controller
 			$data['civilization_id'] 		= $this->input->post('civilization_id');
 			$data['category'] 					= $this->input->post('category');
 			$data['certificate_status'] = $this->input->post('certificate_status');
-			$data['rt'] 								= $this->input->post('rt');
-			$data['dusun'] 							= $this->input->post('dusun');
+			$data['rt'] 						= $this->input->post('rt');
+			$data['dusun'] 						= $this->input->post('dusun');
 
 			$data['land_status'] 				= $this->input->post('land_status');
 			$data['water_source'] 				= $this->input->post('water_source');
-			$data['floor_material'] 				= $this->input->post('floor_material');
+			$data['floor_material'] 			= $this->input->post('floor_material');
 			$data['wall_material'] 				= $this->input->post('wall_material');
 			$data['roof_material'] 				= $this->input->post('roof_material');
 
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
+
+			$data['length'] 					= $this->input->post('length');
+			$data['width'] 						= $this->input->post('width');
 			// echo json_encode( $data );return;
 
 			$this->load->library('upload'); // Load librari upload

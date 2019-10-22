@@ -152,6 +152,9 @@ class Housing extends Officer_Controller
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
 
+			$data['length'] 					= $this->input->post('length');
+			$data['width'] 						= $this->input->post('width');
+
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config($data['no_kk'] = "");
 
@@ -289,6 +292,9 @@ class Housing extends Officer_Controller
 
 			$data['latitude'] 					= $this->input->post('latitude');
 			$data['longitude'] 					= $this->input->post('longitude');
+
+			$data['length'] 					= $this->input->post('length');
+			$data['width'] 						= $this->input->post('width');
 			// echo json_encode( $data );return;
 
 			$this->load->library('upload'); // Load librari upload

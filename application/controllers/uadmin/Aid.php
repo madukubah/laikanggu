@@ -329,10 +329,11 @@ class Aid extends Uadmin_Controller
 				unset( $candidates[ $ind ][ "chief_name" ]  );
 				unset( $candidates[ $ind ][ "village_name" ]  );
 				unset( $candidates[ $ind ][ "no_kk" ]  );
+				unset( $candidates[ $ind ][ "id" ]  );
 			}
 			// var_dump( $candidates ); return;
 			if ( $this->aid_model->create_batch($candidates)) {
-				$this->aid_model->truncate();
+				$this->candidate_model->truncate();
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->aid_model->messages()));
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->aid_model->errors()));

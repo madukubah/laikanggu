@@ -11,6 +11,12 @@ class Civilization_services
   protected $age;
   protected $study;
 
+  protected $file_scan;
+  protected $_file_scan;
+
+  protected $civilization_card_scan;
+  protected $_civilization_card_scan;
+
   function __construct()
   {
     $this->id          = '';
@@ -24,6 +30,9 @@ class Civilization_services
 
     $this->file_scan      = "";
     $this->_file_scan     = "";
+
+    $this->civilization_card_scan     = "";
+    $this->_civilization_card_scan     = "";
   }
 
   public function __get($var)
@@ -52,7 +61,8 @@ class Civilization_services
       'chief_name' => 'Kepala Keluarga',
       'member_count' => 'Anggota Keluarga',
       'income' => 'Pendapatan / bulan',
-      'images' => 'File',
+      'images' => 'Scan KK',
+      'civilization_card_scan' => 'Scan KTP',
     );
     $table["number"] = $start_number;
     $table["action"] = array(
@@ -97,7 +107,11 @@ class Civilization_services
           ),
           "_file_scan" => array(
             'type' => 'hidden',
-            'label' => "village_id",
+            'label' => "_file_scan",
+          ),
+          "_civilization_card_scan" => array(
+            'type' => 'hidden',
+            'label' => "_civilization_card_scan",
           ),
         ),
         "title" => "KK",
@@ -177,6 +191,10 @@ class Civilization_services
 
       $this->file_scan      = $civilization->file_scan;
       $this->_file_scan     = $civilization->_file_scan;
+
+      $this->civilization_card_scan      = $civilization->civilization_card_scan;
+      $this->_civilization_card_scan     = $civilization->_civilization_card_scan;
+      
     }
 
     $_data["form_data"] = array(
@@ -235,6 +253,17 @@ class Civilization_services
         'label' => "File Scan KK ( JPG atau PNG )",
         'value' => $this->_file_scan
       ),
+      #######################
+      "civilization_card_scan" => array(
+        'type' => 'file',
+        'label' => "File Scan KTP ( JPG atau PNG )",
+        'value' => $this->civilization_card_scan
+      ),
+      "_civilization_card_scan" => array(
+        'type' => 'hidden',
+        'label' => "File Scan KTP ( JPG atau PNG )",
+        'value' => $this->_civilization_card_scan
+      ),
     );
     return $_data;
   }
@@ -266,6 +295,9 @@ class Civilization_services
 
       $this->file_scan      = $civilization->file_scan;
       $this->_file_scan     = $civilization->_file_scan;
+
+      $this->civilization_card_scan      = $civilization->civilization_card_scan;
+      $this->_civilization_card_scan     = $civilization->_civilization_card_scan;
     }
 
     $_data["form_data"] = array(
@@ -325,6 +357,11 @@ class Civilization_services
         'type' => 'hidden',
         'label' => "File Scan KK ( JPG atau PNG )",
         'value' => $this->_file_scan
+      ),
+      "_civilization_card_scan" => array(
+        'type' => 'hidden',
+        'label' => "File Scan KTP ( JPG atau PNG )",
+        'value' => $this->_civilization_card_scan
       ),
     );
     return $_data;

@@ -40,8 +40,7 @@ class Civilization extends Officer_Controller
 		$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
 		$table["image_url"] = $this->services->get_photo_upload_config("")["image_path"];
 		// var_dump($table["rows"]); return;
-
-		$table = $this->load->view('templates/tables/plain_table_image_col', $table, true);
+		$table = $this->load->view('uadmin/civilization/plain_table_image_col', $table, true);
 
 		$this->data["contents"] = $table;
 
@@ -70,9 +69,10 @@ class Civilization extends Officer_Controller
 		$this->render("templates/contents/plain_content");
 	}
 
-	public function add()
+	public function add( )
 	{
-		$village_id = $this->input->get('village_id');
+		$village = $this->data["village"];
+		$village_id = $village->id;
 
 		$this->form_validation->set_rules($this->services->validation_config());
 		if ($this->form_validation->run() === TRUE) {
@@ -85,19 +85,31 @@ class Civilization extends Officer_Controller
 			$data['study'] = $this->input->post('study');
 			$data['job'] = $this->input->post('job');
 
-			$data['village_id'] = $village_id;
+			$data['village_id'] = $this->input->post('village_id');
 
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config($data['no_kk']);
 
 			$this->upload->initialize($config);
-			// echo var_dump( $_FILES ); return;
+			// echo var_dump( $_FILES ); return;	
 			if ($_FILES['file_scan']['name'] != "")
 				if ($this->upload->do_upload("file_scan")) {
 					$data['file_scan'] = $this->upload->data()["file_name"];
 				} else {
+					$data['file_scan'] = "default.jpg";
+					// $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
+					// redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+				}
+			// KTP
+			$config = $this->services->get_photo_upload_config( "KTP_".$data['no_kk']);
+
+			$this->upload->initialize($config);
+			if ($_FILES['civilization_card_scan']['name'] != "")
+				if ($this->upload->do_upload("civilization_card_scan")) {
+					$data['civilization_card_scan'] = $this->upload->data()["file_name"];
+				} else {
 					$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
-					redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+					redirect(site_url($this->current_page) );
 				}
 
 			if ($this->civilization_model->create($data)) {
@@ -105,7 +117,7 @@ class Civilization extends Officer_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));
 			}
-			redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+			redirect(site_url($this->current_page) );
 		} else {
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->civilization_model->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
 			if (validation_errors() || $this->civilization_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
@@ -125,9 +137,9 @@ class Civilization extends Officer_Controller
 			$this->data["header"] = "Tambah Rumah Untuk No KK ";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
-			$this->data["url_form"] = $this->current_page . "add?village_id=" . $village_id;
+			// $this->data["url_form"] = $this->current_page . "add?village_id=" . $village_id;
 
-			$this->render("templates/contents/plain_content_form");
+			$this->render("templates/contents/plain_content_form_multipart");
 		}
 	}
 
@@ -152,10 +164,24 @@ class Civilization extends Officer_Controller
 			if ($_FILES['file_scan']['name'] != "") //if image not null
 				if ($this->upload->do_upload("file_scan")) {
 					$data['file_scan'] = $this->upload->data()["file_name"];
-					if (!@unlink($config['upload_path'] . $this->input->post('_file_scan')));
+					if ($this->input->post('_file_scan') != "default.jpg")
+						if (!@unlink($config['upload_path'] . $this->input->post('_file_scan')));
 				} else {
-					$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
-					redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+					// $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
+					// redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+				}
+			// KTP
+			$config = $this->services->get_photo_upload_config( "KTP_".$data['no_kk']);
+
+			$this->upload->initialize($config);
+			if ($_FILES['civilization_card_scan']['name'] != "")
+				if ($this->upload->do_upload("civilization_card_scan")) {
+					$data['civilization_card_scan'] = $this->upload->data()["file_name"];
+					if ($this->input->post('_civilization_card_scan') != "default.jpg")
+						if (!@unlink($config['upload_path'] . $this->input->post('_civilization_card_scan')));
+				} else {
+					// $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
+					// redirect(site_url($this->current_page) );
 				}
 
 			$data_param['id'] = $this->input->post('id');
@@ -164,13 +190,16 @@ class Civilization extends Officer_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));
 			}
-			redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+			redirect(site_url($this->current_page) );
 		} else {
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->civilization_model->errors() ? $this->civilization_model->errors() : $this->session->flashdata('message')));
 			if (validation_errors() || $this->civilization_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
 
+			$this->data["civilization"] = $this->civilization_model->civilization($id)->row();
+			
 			$form_data = $this->services->get_form_data(null, $id);
-			$this->data["image_url"] =  base_url("uploads/civilization/") . $form_data['form_data']['file_scan']['value'];
+
+			$this->data["image_url"] =  base_url("uploads/civilization/") ;
 			$no_kk = $form_data['form_data']['no_kk']['value'];
 			$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
 			$this->data["contents"] =  $form_data;
@@ -193,8 +222,10 @@ class Civilization extends Officer_Controller
 
 	public function detail($id = null)
 	{
+		$this->data["civilization"] = $this->civilization_model->civilization($id)->row();
+		
 		$form_data = $this->services->get_form_data_readonly($id);
-		$this->data["image_url"] =  base_url("uploads/civilization/") . $form_data['form_data']['_file_scan']['value'];
+		$this->data["image_url"] =  base_url("uploads/civilization/") ;
 		$no_kk = $form_data['form_data']['no_kk']['value'];
 		$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
 		$this->data["contents"] =  $form_data;
@@ -225,19 +256,20 @@ class Civilization extends Officer_Controller
 
 	public function delete()
 	{
-		if (!($_POST)) redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+		if (!($_POST)) redirect(site_url($this->current_page) );
 
 		$this->load->library('upload'); // Load librari upload
-		$config = $this->services->get_photo_upload_config( "-" );
+		$config = $this->services->get_photo_upload_config($data['no_kk']);
 
 		$data_param['id'] 	= $this->input->post('id');
 		if ($this->civilization_model->delete($data_param)) {
-			if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) return;
+			if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) {};
+			if (!@unlink($config['upload_path'] . $this->input->post('_civilization_card_scan'))) {};
 
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->civilization_model->messages()));
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));
 		}
-		redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+		redirect(site_url($this->current_page));
 	}
 }
