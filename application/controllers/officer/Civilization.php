@@ -264,7 +264,8 @@ class Civilization extends Officer_Controller
 		$data_param['id'] 	= $this->input->post('id');
 		if ($this->civilization_model->delete($data_param)) {
 			if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) {};
-			if (!@unlink($config['upload_path'] . $this->input->post('_civilization_card_scan'))) {};
+			if ($this->input->post('_civilization_card_scan') != "default.jpg")
+				if (!@unlink($config['upload_path'] . $this->input->post('_civilization_card_scan'))) {};
 
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->civilization_model->messages()));
 		} else {
