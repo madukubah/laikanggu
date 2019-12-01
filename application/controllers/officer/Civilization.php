@@ -21,6 +21,8 @@ class Civilization extends Officer_Controller
 
 	public function index( )
 	{
+		$search = $this->input->get( 'search', TRUE );
+
 		$village = $this->data["village"];
 		$village_id = $village->id;
 		if ( $village_id == NULL) redirect(site_url($this->current_page));
@@ -37,12 +39,29 @@ class Civilization extends Officer_Controller
 
 		// echo json_encode( $this->data[ "_menus" ] ) ;return;
 		$table = $this->services->get_table_config($this->current_page);
-		$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+
+		if( isset( $search ) && $search != "" )
+			$table[ "rows" ] = $this->civilization_model->search( $search , $village_id )->result(  );
+		else
+			$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+
 		$table["image_url"] = $this->services->get_photo_upload_config("")["image_path"];
 		// var_dump($table["rows"]); return;
 		$table = $this->load->view('uadmin/civilization/plain_table_image_col', $table, true);
 
-		$this->data["contents"] = $table;
+		
+		
+		$form_filter["form_data"] = array(
+				"search" => array(
+					'type' => 'text',
+					'label' => "No KK",
+					'value' => $search
+				),
+		);
+		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
+		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
+
+		$this->data["contents"] = $form_filter. $table;
 
 		$link_add = array(
 			"name" => "Tambah KK",
@@ -53,6 +72,23 @@ class Civilization extends Officer_Controller
 		);
 
 		$link_add = $this->load->view('templates/actions/link', $link_add, true);
+
+		$search_ = array(
+			"name" => "Cari",
+			"modal_id" => "search_",
+			"button_color" => "primary",
+			"url" => site_url( $this->current_page),
+			"form_data" => array(
+				"search" => array(
+					'type' => 'text',
+					'label' => "nama / no induk",
+					'value' => $search
+				),
+			),
+			'data' => NULL
+		);
+
+		$search_ = $this->load->view('templates/actions/modal_form_get', $search_, true );
 
 		$this->data["header_button"] =  $link_add;		// return;
 		#################################################################3

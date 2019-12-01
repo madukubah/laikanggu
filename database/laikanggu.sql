@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2019 at 01:31 AM
+-- Generation Time: Dec 01, 2019 at 05:22 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 5.6.37
 
@@ -37,6 +37,13 @@ CREATE TABLE `aid` (
   `year` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `aid`
+--
+
+INSERT INTO `aid` (`id`, `civilization_id`, `type_of_aid`, `timestamp`, `date`, `year`) VALUES
+(1, 15, 'PENGADAAN LISTRIK', 1575192857, '2019-12-01', 2019);
+
 -- --------------------------------------------------------
 
 --
@@ -48,6 +55,13 @@ CREATE TABLE `candidate` (
   `civilization_id` int(10) UNSIGNED NOT NULL,
   `type_of_aid` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `candidate`
+--
+
+INSERT INTO `candidate` (`id`, `civilization_id`, `type_of_aid`) VALUES
+(1, 15, 'UBIN/TEGEL');
 
 -- --------------------------------------------------------
 
@@ -124,6 +138,13 @@ CREATE TABLE `house` (
   `length` float DEFAULT NULL,
   `width` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `house`
+--
+
+INSERT INTO `house` (`id`, `civilization_id`, `category`, `certificate_status`, `rt`, `dusun`, `images`, `latitude`, `longitude`, `file_scan`, `floor_material`, `wall_material`, `roof_material`, `light_source`, `water_source`, `land_status`, `length`, `width`) VALUES
+(1, 15, 1, 1, '2', '3', 'front_1575215000.JPG;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -215,9 +236,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`) VALUES
 (1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1571294019, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
-(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1574686157, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
-(20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, 1571761682, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat'),
-(21, '::1', 'Desa_B@gmail.com', '$2y$10$F4QZKfJOJ2aLfnR3V5xrzO/AAZ.RDIHg7/uL2QBbRW7l2vhYTpjxu', 'Desa_B@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570813501, 1571146598, 1, 'admin', 'Desa B', '0', 'default.jpg', 'Alamat');
+(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1575211724, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
+(20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, 1575211879, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat');
 
 -- --------------------------------------------------------
 
@@ -238,8 +258,7 @@ CREATE TABLE `users_groups` (
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
 (29, 13, 2),
-(32, 20, 3),
-(33, 21, 3);
+(32, 20, 3);
 
 -- --------------------------------------------------------
 
@@ -260,8 +279,7 @@ CREATE TABLE `village` (
 --
 
 INSERT INTO `village` (`id`, `user_id`, `name`, `description`, `polygon`) VALUES
-(4, 20, 'Desa A', 'ringkasan', 'polygon'),
-(5, 21, 'Desa B', 'desa ini adalah', 'polygon');
+(4, 20, 'Desa A', 'ringkasan', 'polygon');
 
 --
 -- Indexes for dumped tables
@@ -347,13 +365,13 @@ ALTER TABLE `village`
 -- AUTO_INCREMENT for table `aid`
 --
 ALTER TABLE `aid`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `candidate`
 --
 ALTER TABLE `candidate`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `civilization`
@@ -371,7 +389,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `house`
 --
 ALTER TABLE `house`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`

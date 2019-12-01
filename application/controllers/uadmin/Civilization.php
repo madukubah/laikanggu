@@ -62,6 +62,8 @@ class Civilization extends Uadmin_Controller
 
 	public function village($village_id = NULL)
 	{
+		$search = $this->input->get( 'search', TRUE );
+
 		if ($village_id == NULL) redirect(site_url($this->current_page));
 
 		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
@@ -76,24 +78,27 @@ class Civilization extends Uadmin_Controller
 
 		// echo json_encode( $this->data[ "_menus" ] ) ;return;
 		$table = $this->services->get_table_config($this->current_page);
-		$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+		if( isset( $search ) && $search != "" )
+			$table[ "rows" ] = $this->civilization_model->search( $search , $village_id )->result(  );
+		else
+			$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+
 		$table["image_url"] = $this->services->get_photo_upload_config("")["image_path"];
 		// var_dump($table["rows"]); return;
 
 		$table = $this->load->view('uadmin/civilization/plain_table_image_col', $table, true);		
+		
+		$form_filter["form_data"] = array(
+				"search" => array(
+					'type' => 'text',
+					'label' => "No KK",
+					'value' => $search
+				),
+		);
+		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
+		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
 
-		$this->data["contents"] = $table;
-
-		// $modal_add = array(
-		// 	"name" => "Tambah KK",
-		// 	"modal_id" => "add_civilization_",
-		// 	"button_color" => "primary",
-		// 	"url" => site_url($this->current_page . "add/"),
-		// 	"form_data" => $this->services->get_form_data($village_id)["form_data"],
-		// 	'data' => NULL
-		// );
-
-		// $modal_add = $this->load->view('templates/actions/modal_form_multipart', $modal_add, true);
+		$this->data["contents"] = $form_filter. $table;
 
 		$link_add = array(
 			"name" => "Tambah KK",

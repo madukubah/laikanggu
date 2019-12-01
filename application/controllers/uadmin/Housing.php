@@ -95,6 +95,8 @@ class Housing extends Uadmin_Controller
 
 	public function village($village_id = NULL)
 	{
+		$search = $this->input->get( 'search', TRUE );
+
 		if ($village_id == NULL) redirect(site_url($this->current_page));
 
 		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
@@ -108,12 +110,26 @@ class Housing extends Uadmin_Controller
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config($this->current_page);
-		$table["rows"] = $this->housing_model->houses($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+		if( isset( $search ) && $search != "" )
+			$table[ "rows" ] = $this->housing_model->search( $search , $village_id )->result(  );
+		else
+			$table["rows"] = $this->housing_model->houses($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+			
 		$table["image_url"] = $this->services->get_photo_upload_config("")["image_path"];
 
 		$table = $this->load->view('uadmin/housing/plain_table', $table, true);
 
-		$this->data["contents"] = $table;
+		$form_filter["form_data"] = array(
+				"search" => array(
+					'type' => 'text',
+					'label' => "No KK",
+					'value' => $search
+				),
+		);
+		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
+		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
+
+		$this->data["contents"] = $form_filter. $table;
 
 		$modal_add = array(
 			"name" => "Tambah Rumah",

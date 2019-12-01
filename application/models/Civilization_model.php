@@ -122,10 +122,12 @@ class Civilization_model extends MY_Model
   public function civilization_by_no_kk_and_village_id($no_kk = NULL, $village_id = NULL)
   {
     if (isset($no_kk)) {
-      $this->like(
-        $this->table . '.no_kk',
-        $no_kk
-      );
+      $this->where($this->table . '.no_kk', $no_kk);
+
+      // $this->like(
+      //   $this->table . '.no_kk',
+      //   $no_kk
+      // );
     }
     $this->where($this->table . '.village_id', $village_id);
     $this->limit(1);
@@ -135,7 +137,20 @@ class Civilization_model extends MY_Model
 
     return $this;
   }
+     /**
+   * search
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function search( $key = 'a',  $village_id = NULL  )
+  {
+     $this->db->like( $this->table.'.no_kk', $key, 'both' );
+     $this->db->or_like( $this->table.'.chief_name', $key, 'both' );
 
+     return $this->civilizations( 0, NULL, $village_id );
+  }
   /**
    * civilizations
    *

@@ -40,7 +40,7 @@
                     case 'number':
                         $value = ((isset($data) && ($data != NULL))   ? (isset($data->$form_name) ? $data->$form_name : '') : '');
                         $form['value'] = (isset($attr['value'])) ? $attr['value'] : $value;
-                        echo '<label for="' . $form_name . '" class="control-label">' . $attr["label"] . '</label>';
+                        //echo '<label for="' . $form_name . '" class="control-label">' . $attr["label"] . '</label>';
                         echo form_input($form);
                         break;
                     case 'hidden':
@@ -52,13 +52,13 @@
                         $value = ((isset($data) && ($data != NULL))   ? (isset($data->$form_name) ? $data->$form_name : '') : '');
                         $form['rows'] = "5";
                         $form['value'] = (isset($attr['value'])) ? $attr['value'] : $value;
-                        echo '<label for="" class="control-label">' . $attr["label"] . '</label>';
+                        //echo '<label for="" class="control-label">' . $attr["label"] . '</label>';
                         echo form_textarea($form);
                         break;
                     case 'multiple_file':
                         $form['multiple'] = "";
                     case 'file':
-                        echo '<label for="" class="control-label">' . $attr["label"] . '</label>';
+                        //echo '<label for="" class="control-label">' . $attr["label"] . '</label>';
                         echo form_upload($form);
                         break;
                     case 'select_search':
@@ -68,7 +68,7 @@
                         $form['options'] = (isset($attr['options'])) ? $attr['options'] : '';
                         $value = ((isset($data) && ($data != NULL))   ? (isset($data->$form_name) ? $data->$form_name : '') : '');
                         $form['selected'] = (isset($attr['selected'])) ? $attr['selected'] : $value;
-                        echo '<label for="" class="control-label">' . $attr["label"] . '</label>';
+                        //echo '<label for="" class="control-label">' . $attr["label"] . '</label>';
                         echo form_dropdown($form);
                         break;
                 }

@@ -97,6 +97,7 @@ class Housing_services
   {
     $table["header"] = array(
       'no_kk' => 'Nomor KK',
+      'chief_name' => 'Kepala Keluarga',
       'category' => 'Kategori Rumah',
       'certificate_status' => 'Bersertifikat',
       'address' => 'Alamat',

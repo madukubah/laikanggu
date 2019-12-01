@@ -156,7 +156,8 @@ class Candidate extends Uadmin_Controller
 			"not_has_house" => array(
 				"title" => "Tidak Punya Rumah",
 				"count" => $this->civilization_model->record_count_by_village_id($village_id) - count($has_house_civilization_ids),
-				"function" => (empty($has_house_civilization_ids)) ?  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result() : array(),
+				// "function" => (empty($has_house_civilization_ids)) ?  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result() : array(),
+				"function" =>  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result(),
 			)
 		);
 		$this->load->library('services/Civilization_services');

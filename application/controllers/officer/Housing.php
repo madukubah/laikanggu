@@ -63,6 +63,8 @@ class Housing extends Officer_Controller
 
 	public function index( )
 	{
+		$search = $this->input->get( 'search', TRUE );
+
 		$village = $this->data["village"];
 		$village_id = $village->id;
 		if ($village_id == NULL) redirect(site_url($this->current_page));
@@ -78,12 +80,27 @@ class Housing extends Officer_Controller
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config($this->current_page);
-		$table["rows"] = $this->housing_model->houses($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+		if( isset( $search ) && $search != "" )
+			$table[ "rows" ] = $this->housing_model->search( $search , $village_id )->result(  );
+		else
+			$table["rows"] = $this->housing_model->houses($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
+
 		$table["image_url"] = $this->services->get_photo_upload_config("")["image_path"];
 
 		$table = $this->load->view('uadmin/housing/plain_table', $table, true);
 
-		$this->data["contents"] = $table;
+		
+		$form_filter["form_data"] = array(
+				"search" => array(
+					'type' => 'text',
+					'label' => "No KK",
+					'value' => $search
+				),
+		);
+		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
+		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
+
+		$this->data["contents"] = $form_filter. $table;
 
 		$modal_add = array(
 			"name" => "Tambah Rumah",
@@ -131,7 +148,7 @@ class Housing extends Officer_Controller
 		$civilization = $this->civilization_model->civilization_by_no_kk_and_village_id($no_kk, $village_id)->row();
 		if ($civilization == NULL) {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, "Data Tidak di temukan"));
-			redirect(site_url($this->current_page) . "village/" . $village_id);
+			redirect(site_url($this->current_page) );
 		}
 		// echo var_dump( $this->civilization_model->db );return;
 
@@ -145,7 +162,7 @@ class Housing extends Officer_Controller
 
 			$data['land_status'] 				= $this->input->post('land_status');
 			$data['water_source'] 				= $this->input->post('water_source');
-			$data['floor_material'] 				= $this->input->post('floor_material');
+			$data['floor_material'] 			= $this->input->post('floor_material');
 			$data['wall_material'] 				= $this->input->post('wall_material');
 			$data['roof_material'] 				= $this->input->post('roof_material');
 
@@ -209,7 +226,7 @@ class Housing extends Officer_Controller
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;
 			$this->data["block_header"] = "Tambah Rumah ";
-			$this->data["header"] = "Tambah Rumah Untuk No KK " . $civilization->no_kk;
+			$this->data["header"] = "Tambah Rumah Untuk No KK " . $civilization->no_kk . ' ('. strtoupper( $civilization->chief_name ) .') ' ;
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 			$this->data["url_form"] = $this->current_page . "add/?no_kk=" . $no_kk . "&village_id=" . $village_id;
@@ -260,7 +277,7 @@ class Housing extends Officer_Controller
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Detail Rumah ";
-		$this->data["header"] = "Detail Rumah Untuk No KK " . $civilization->no_kk;
+		$this->data["header"] = "Detail Rumah Untuk No KK " . $civilization->no_kk . ' ('. strtoupper( $civilization->chief_name ) .') ' ;
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->data["url_form"] = ""; // $this->current_page."add/?no_kk=".$no_kk."&village_id=".$village_id;
@@ -278,11 +295,11 @@ class Housing extends Officer_Controller
 		$this->form_validation->set_rules($this->services->validation_config());
 		if ($this->form_validation->run() === TRUE) {
 			// $data['id'] 		= $this->input->post( 'id' );
-			$data['civilization_id'] 		= $this->input->post('civilization_id');
+			$data['civilization_id'] 			= $this->input->post('civilization_id');
 			$data['category'] 					= $this->input->post('category');
-			$data['certificate_status'] = $this->input->post('certificate_status');
-			$data['rt'] 								= $this->input->post('rt');
-			$data['dusun'] 							= $this->input->post('dusun');
+			$data['certificate_status'] 		= $this->input->post('certificate_status');
+			$data['rt'] 						= $this->input->post('rt');
+			$data['dusun'] 						= $this->input->post('dusun');
 
 			$data['land_status'] 				= $this->input->post('land_status');
 			$data['water_source'] 				= $this->input->post('water_source');
@@ -320,7 +337,7 @@ class Housing extends Officer_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->housing_model->errors()));
 			}
-			redirect(site_url($this->current_page) );
+			redirect(site_url($this->current_page)."detail/".$data_param["id"]   );
 		} else {
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->housing_model->errors() ? $this->housing_model->errors() : $this->session->flashdata('message')));
 			if (!empty(validation_errors()) || $this->housing_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
@@ -410,7 +427,7 @@ class Housing extends Officer_Controller
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;
 			$this->data["block_header"] = "Edit Rumah ";
-			$this->data["header"] = "Edit Rumah Untuk No KK " . $civilization->no_kk;
+			$this->data["header"] = "Edit Rumah Untuk No KK " . $civilization->no_kk . ' ('. strtoupper( $civilization->chief_name ) .') ' ;
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 			$this->data["url_form"] = ""; // $this->current_page."add/?no_kk=".$no_kk."&village_id=".$village_id;

@@ -10,15 +10,19 @@ class Home extends Officer_Controller {
 		parent::__construct();
 		$this->load->model(array(
 			'civilization_model',
+			'housing_model',
 		));
 		// echo var_dump( $this->data["village"] );die;
 	}
+	
 	public function index()
 	{
 		$village = $this->data["village"];
 		$village_id = $village->id;
 
 		$this->data["civilization_count"]  = $this->civilization_model->record_count_by_village_id( $village_id );
+		$this->data["livable_house_count"] 	= $this->housing_model->count_houses_by_category( 1 );
+		$this->data["unlivable_house_count"] = $this->housing_model->count_houses_by_category( 0 );
 		#################################################################3
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);

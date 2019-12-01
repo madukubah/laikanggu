@@ -137,15 +137,37 @@ class Housing_model extends MY_Model
    * @return static
    * @author madukubah
    */
-  public function count_houses_by_category($category = NULL)
+  public function count_houses_by_category($category = NULL, $village_id = NULL)
   {
     if (isset($category)) {
       $this->where($this->table . '.category', $category);
     }
-
+    $this->join(
+      "civilization",
+      "civilization.id = " . $this->table . ".civilization_id",
+      "inner"
+    );
     // $this->houses();
+    if (isset($village_id)) {
+      $this->where('civilization.village_id', $village_id);
+    }
 
     return $this->record_count();
+  }
+
+    /**
+   * search
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function search( $key = 'a',  $village_id = NULL  )
+  {
+     $this->db->like( 'civilization.no_kk', $key, 'both' );
+     $this->db->or_like( 'civilization.chief_name', $key, 'both' );
+
+     return $this->houses( 0, NULL, $village_id );
   }
   /**
    * houses
