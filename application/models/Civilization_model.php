@@ -66,16 +66,19 @@ class Civilization_model extends MY_Model
    * @return bool
    * @author madukubah
    */
-  public function delete($data_param)
+  public function delete( $data_param) 
   {
+    // var_dump( $data_param ); die;
     //foreign
     //delete_foreign( $data_param. $models[]  )
-    if (!$this->delete_foreign($data_param, ["aid_model"])) {
+    if (!$this->delete_foreign( $data_param, ["aid_model" , 'housing_model', 'candidate_model' ])) {
       $this->set_error("gagal"); //('civilization_delete_unsuccessful');
       return FALSE;
     }
     //foreign
     $this->db->trans_begin();
+
+    // var_dump( $data_param ); die;
 
     $this->db->delete($this->table, $data_param);
     if ($this->db->trans_status() === FALSE) {
@@ -193,14 +196,22 @@ class Civilization_model extends MY_Model
     $this->db->select(" " . $this->table . ".file_scan  as _file_scan");
     $this->db->select(" " . $this->table . ".civilization_card_scan  as _civilization_card_scan");
     $this->db->select(" CONCAT( " . $this->table . ".no_kk, ' ' )  as no_kk");
+    $this->db->select("house.category");
 
     if (!empty($list_ids)) {
       $this->db->where_in($this->table . ".id", $list_ids);
     }
 
+    $this->db->join(
+      "house",
+      "civilization.id = house.civilization_id",
+      "inner"
+    );
+
     if (isset($village_id)) {
       $this->db->where($this->table . '.village_id', $village_id);
     }
+    $this->db->order_by( 'house.category', 'asc');
     return $this->db->get($this->table);
   }
 

@@ -295,7 +295,7 @@ class Civilization extends Officer_Controller
 		if (!($_POST)) redirect(site_url($this->current_page) );
 
 		$this->load->library('upload'); // Load librari upload
-		$config = $this->services->get_photo_upload_config($data['no_kk']);
+		$config = $this->services->get_photo_upload_config( time() );
 
 		$data_param['id'] 	= $this->input->post('id');
 		if ($this->civilization_model->delete($data_param)) {

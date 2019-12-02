@@ -50,7 +50,6 @@ class Civilization_services
     $config['overwrite'] = "true";
     $config['max_size'] = "2048";
     $config['file_name'] = '' . $filename;
-
     return $config;
   }
 
@@ -116,6 +115,29 @@ class Civilization_services
         ),
         "title" => "KK",
         "data_name" => "no_kk",
+      ),
+    );
+    return $table;
+  }
+
+  public function get_has_house_table_config_candidate($_page, $start_number = 1)
+  {
+    $table["header"] = array(
+      'no_kk' => 'Nomor KK',
+      'chief_name' => 'Kepala Keluarga',
+      'member_count' => 'Anggota Keluarga',
+      'income' => 'Pendapatan / bulan',
+      'category' => 'Kategori Rumah',
+    );
+    $table["number"] = $start_number;
+    $table["action"] = array(
+      array(
+        "name" => "Detail",
+        "type" => "link",
+        "modal_id" => "edit_civilization_",
+        "button_color" => "primary",
+        "url" => site_url($_page . "detail/"),
+        "param" => "id",
       ),
     );
     return $table;

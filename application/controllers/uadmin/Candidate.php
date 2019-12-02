@@ -146,37 +146,41 @@ class Candidate extends Uadmin_Controller
 		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list($village_id)->result();
 		$has_house_civilization_ids = $this->services->extract_civilization_id($has_house_civilization_ids);
 		// var_dump( $has_house_civilization_ids ); return;
+		$this->load->library('services/Civilization_services');
+		$this->services = new Civilization_services;
+		
+		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
+		//pagination parameter
+		$pagination['base_url'] = base_url($this->current_page) . '/index';
+		
+		$pagination['limit_per_page'] = 10;
+		$pagination['start_record'] = $page * $pagination['limit_per_page'];
+		$pagination['uri_segment'] = 4 + 1;
+		//set pagination
 
 		$get_data = array(
 			"has_house" => array(
+				"table_config" => $this->services->get_has_house_table_config_candidate($this->current_page, $pagination['start_record'] + 1 ),
 				"title" => "Punya Rumah",
 				"count" => count($has_house_civilization_ids),
 				"function" => (empty($has_house_civilization_ids)) ? array() : $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result(),
 			),
 			"not_has_house" => array(
+				"table_config" => $this->services->get_table_config_candidate($this->current_page, $pagination['start_record'] + 1 ),
 				"title" => "Tidak Punya Rumah",
 				"count" => $this->civilization_model->record_count_by_village_id($village_id) - count($has_house_civilization_ids),
 				// "function" => (empty($has_house_civilization_ids)) ?  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result() : array(),
 				"function" =>  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result(),
 			)
 		);
-		$this->load->library('services/Civilization_services');
-		$this->services = new Civilization_services;
-
-		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
-		//pagination parameter
-		$pagination['base_url'] = base_url($this->current_page) . '/index';
 		$pagination['total_records'] = $get_data[$code]["count"];
-		$pagination['limit_per_page'] = 10;
-		$pagination['start_record'] = $page * $pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4 + 1;
-		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
-		$table = $this->services->get_table_config_candidate($this->current_page);
+		$table = $get_data[$code]["table_config"];//$this->services->get_table_config_candidate($this->current_page);
 		$table["rows"] = $get_data[$code]["function"];
 
-		$table = $this->load->view('templates/tables/plain_table', $table, true);
+		// $table = $this->load->view('templates/tables/plain_table', $table, true);
+		$table = $this->load->view('uadmin/housing/plain_table', $table, true);
 
 		$this->data["contents"] = $table;
 		// echo var_dump($this->civilization_model->db);
@@ -197,7 +201,8 @@ class Candidate extends Uadmin_Controller
 
 	public function detail($civilization_id = null)
 	{
-		$this->data["menu_list_id"] = "_aid_index";
+		// $this->data["menu_list_id"] = "_aid_index";
+		$this->data["menu_list_id"] = "candidate_index";
 		$this->load->library('services/Candidate_services');
 		$this->services = new Candidate_services;
 		if ($civilization_id == NULL) redirect(site_url($this->current_page));

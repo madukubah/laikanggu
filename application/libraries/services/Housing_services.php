@@ -234,6 +234,11 @@ class Housing_services
         'label' => "Sumber Air",
         "value" => $this->water_source_select[ $this->water_source ],
       ),
+      "light_source" => array(
+        'type' => 'text',
+        'label' => "Sumber Listrik",
+        "value" => $this->light_source_select[ $this->light_source ],
+      ),
       "floor_material" => array(
         'type' => 'text',
         'label' => "Material Lantai Terluas",
@@ -356,6 +361,12 @@ class Housing_services
         'label' => "Sumber Air",
         "options" => $this->water_source_select,
         "selected" => $this->water_source,
+      ),
+      "light_source" => array(
+        'type' => 'select',
+        'label' => "Sumber Listrik",
+        "options" => $this->light_source_select,
+        "selected" => $this->light_source,
       ),
       "floor_material" => array(
         'type' => 'select',
