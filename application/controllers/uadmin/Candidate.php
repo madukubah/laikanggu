@@ -17,6 +17,7 @@ class Candidate extends Uadmin_Controller
 			'village_model',
 			'housing_model',
 			'candidate_model',
+			'aid_model',
 		));
 		$this->data["menu_list_id"] = "candidate_index";
 	}
@@ -208,8 +209,12 @@ class Candidate extends Uadmin_Controller
 		if ($civilization_id == NULL) redirect(site_url($this->current_page));
 
 		$civilization = $this->civilization_model->civilization($civilization_id)->row();
-		if ($civilization == NULL) redirect(site_url($this->current_page));
+		if ( $civilization == NULL) redirect(site_url($this->current_page));
 
+		$history_table = $this->services->get_table_config_aid_history();
+		$history_table["rows"] = $this->aid_model->aids_by_civilization_id( $civilization->id )->result();
+		$history_table = $this->load->view('templates/tables/plain_table', $history_table, true);
+		$this->data[ "history" ] =  $history_table ;
 
 		$add_menu = array(
 			"name" => "Jadikan Kandidat",
@@ -295,7 +300,7 @@ class Candidate extends Uadmin_Controller
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Detail Rumah ";
+		$this->data["block_header"] = "Detail Rumah ".$civilization->no_kk." (".$civilization->chief_name.") ";
 		$this->data["header"] = "Detail Rumah ";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 

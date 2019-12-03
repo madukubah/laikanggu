@@ -46,21 +46,33 @@
                             <!--  -->
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <label for="">Scan KK</label>
-                            <br>
-                            <img  class="img-fluid" src="<?= $image_url.$civilization->file_scan; ?>" alt="">
+                    <div class="row">
+                        <div class="col-6">
+                        <!--  -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <label for="">Scan KK</label>
+                                    <br>
+                                    <img  class="img-fluid" src="<?= $image_url.$civilization->file_scan; ?>" alt="">
+                                </div>
+                            </div>
+                        <!--  -->
+                        </div>
+                        <div class="col-6">
+                        <!--  -->
+                            <!-- KTP -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <label for="">Scan KTP</label>
+                                    <br>
+                                    <img  class="img-fluid" src="<?= $image_url.$civilization->civilization_card_scan; ?>" alt="">
+                                </div>
+                            </div>
+                        <!--  -->
                         </div>
                     </div>
-                    <!-- KTP -->
-                    <div class="card">
-                        <div class="card-body">
-                            <label for="">Scan KTP</label>
-                            <br>
-                            <img  class="img-fluid" src="<?= $image_url.$civilization->civilization_card_scan; ?>" alt="">
-                        </div>
-                    </div>
+                   
+                  
 
                 </div>
             </div>

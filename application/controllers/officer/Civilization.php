@@ -136,6 +136,7 @@ class Civilization extends Officer_Controller
 					// $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
 					// redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 				}
+			else $data['file_scan'] = "default.jpg";
 			// KTP
 			$config = $this->services->get_photo_upload_config( "KTP_".$data['no_kk']);
 
@@ -147,6 +148,7 @@ class Civilization extends Officer_Controller
 					$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
 					redirect(site_url($this->current_page) );
 				}
+			else $data['civilization_card_scan'] = "default.jpg";
 
 			if ($this->civilization_model->create($data)) {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->civilization_model->messages()));
@@ -299,10 +301,11 @@ class Civilization extends Officer_Controller
 
 		$data_param['id'] 	= $this->input->post('id');
 		if ($this->civilization_model->delete($data_param)) {
-			if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) {};
+			if ( $this->input->post('_file_scan') != "default.jpg")
+				if (!@unlink($config['upload_path'] . $this->input->post('_file_scan') )) {};
 			if ($this->input->post('_civilization_card_scan') != "default.jpg")
 				if (!@unlink($config['upload_path'] . $this->input->post('_civilization_card_scan'))) {};
-
+			
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->civilization_model->messages()));
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->civilization_model->errors()));

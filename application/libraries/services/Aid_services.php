@@ -63,7 +63,8 @@ class Aid_services
         "button_color" => "primary",
         "url" => site_url($_page . "year/"),
         "param" => "year",
-      ),
+      )
+      
     );
     return $table;
   }
@@ -83,6 +84,26 @@ class Aid_services
         "button_color" => "primary",
         "url" => site_url($_page . "date/"),
         "param" => "_date",
+      ),
+      array(
+        "name" => 'Hapus',
+        "type" => "modal_delete",
+        "modal_id" => "delete_",
+        "url" => site_url($_page . "delete/"),
+        "button_color" => "danger",
+        "param" => "_date",
+        "form_data" => array(
+          "_date" => array(
+            'type' => 'text',
+            'label' => "date",
+          ),
+          "year" => array(
+            'type' => 'text',
+            'label' => "year",
+          ),
+        ),
+        "title" => "KK",
+        "data_name" => "_date",
       ),
     );
     return $table;

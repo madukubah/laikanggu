@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2019 at 05:22 PM
+-- Generation Time: Dec 03, 2019 at 12:56 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 5.6.37
 
@@ -37,13 +37,6 @@ CREATE TABLE `aid` (
   `year` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `aid`
---
-
-INSERT INTO `aid` (`id`, `civilization_id`, `type_of_aid`, `timestamp`, `date`, `year`) VALUES
-(1, 15, 'PENGADAAN LISTRIK', 1575192857, '2019-12-01', 2019);
-
 -- --------------------------------------------------------
 
 --
@@ -55,13 +48,6 @@ CREATE TABLE `candidate` (
   `civilization_id` int(10) UNSIGNED NOT NULL,
   `type_of_aid` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `candidate`
---
-
-INSERT INTO `candidate` (`id`, `civilization_id`, `type_of_aid`) VALUES
-(1, 15, 'UBIN/TEGEL');
 
 -- --------------------------------------------------------
 
@@ -88,8 +74,7 @@ CREATE TABLE `civilization` (
 --
 
 INSERT INTO `civilization` (`id`, `village_id`, `no_kk`, `chief_name`, `member_count`, `file_scan`, `income`, `age`, `job`, `study`, `civilization_card_scan`) VALUES
-(15, 4, '1932498879', 'alan', 3, 'Civilization_1932498879_1571763247.jpg', 3000000, 30, 'Petani', 'SMA', 'Civilization_KTP_1932498879_1571763315.JPG'),
-(16, 4, '971023947019', 'muhammad alfalah', 4, 'Civilization_971023947019_1571764753.jpg', 3000000, 54, 'Petani', 'SMA', 'Civilization_KTP_971023947019_1571764753.JPG');
+(23, 4, '1432', 'alan', 4, 'Civilization_1432_1575337250.jpg', 1500000, 30, 'Petani', 'sma', 'Civilization_KTP_1432_1575337250.JPG');
 
 -- --------------------------------------------------------
 
@@ -144,7 +129,7 @@ CREATE TABLE `house` (
 --
 
 INSERT INTO `house` (`id`, `civilization_id`, `category`, `certificate_status`, `rt`, `dusun`, `images`, `latitude`, `longitude`, `file_scan`, `floor_material`, `wall_material`, `roof_material`, `light_source`, `water_source`, `land_status`, `length`, `width`) VALUES
-(1, 15, 1, 1, '2', '3', 'front_1575215000.JPG;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 0, 0);
+(5, 23, 0, 1, '2', '3', 'front_1575337434.JPG;back_1575337434.JPG;left_1575337434.JPG;right_1575337434.JPG', '-3.5014330835094682', '122.10348308181318', 'file_scan_1575337434.jpg', 0, 0, 0, 0, 1, 1, 7, 9);
 
 -- --------------------------------------------------------
 
@@ -198,7 +183,7 @@ INSERT INTO `menus` (`id`, `menu_id`, `name`, `link`, `list_id`, `icon`, `status
 (115, 3, 'Olah Kartu Keluarga', 'officer/civilization', 'civilization_index', 'home', 1, 1, '-'),
 (116, 3, 'Olah Perumahan', 'officer/housing', 'housing_index', 'home', 1, 1, '-'),
 (117, 112, 'Cari Calon Penerima Bantuan', 'uadmin/candidate', 'candidate_index', 'home', 1, 1, '-'),
-(119, 112, 'Riwayat', 'uadmin/aid', 'aid_index', 'home', 1, 3, '-'),
+(119, 112, 'Data Bantuan', 'uadmin/aid', 'aid_index', 'home', 1, 3, '-'),
 (120, 112, 'Kandidat Penerima Bantuan', 'uadmin/candidate/candidates', 'candidate_candidates', 'home', 1, 2, '-');
 
 -- --------------------------------------------------------
@@ -235,9 +220,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`) VALUES
-(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1571294019, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
-(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1575211724, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
-(20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, 1575211879, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat');
+(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1575371656, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
+(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1575361363, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
+(20, '::1', 'Desa_A@gmail.com', '$2y$10$Vn63erqUb38mp/.960/mcOJ290jnP96GDv.obZ6.nQiNh.xP9Mso6', 'Desa_A@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1570807835, 1575369406, 1, 'admin', 'Desa A', '0', 'default.jpg', 'Alamat');
 
 -- --------------------------------------------------------
 
@@ -365,19 +350,19 @@ ALTER TABLE `village`
 -- AUTO_INCREMENT for table `aid`
 --
 ALTER TABLE `aid`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `candidate`
 --
 ALTER TABLE `candidate`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `civilization`
 --
 ALTER TABLE `civilization`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `groups`
@@ -389,7 +374,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `house`
 --
 ALTER TABLE `house`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
@@ -407,19 +392,19 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `village`
 --
 ALTER TABLE `village`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

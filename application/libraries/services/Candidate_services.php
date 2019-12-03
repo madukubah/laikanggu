@@ -74,6 +74,17 @@ class Candidate_services
     );
     return $table;
   }
+
+  public function get_table_config_aid_history( )
+  {
+    $table["header"] = array(
+      '_date' => 'Tanggal Bantuan',
+      'type_of_aid' => 'Jenis Bantuan',
+    );
+    $table["number"] = 1;
+    return $table;
+  }
+
   public function validation_config()
   {
     $config = array(
@@ -149,7 +160,7 @@ class Candidate_services
   {
     $aid_select = array(
       "UBIN/TEGEL"=> "UBIN/TEGEL",
-      "EMBUATAN TEMBOK" => "EMBUATAN TEMBOK",
+      "PEMBUATAN TEMBOK" => "PEMBUATAN TEMBOK",
       "PEMBELIAN SENG" => "PEMBELIAN SENG",
       "PENGADAAN LISTRIK" => "PENGADAAN LISTRIK",
       "PENGADAAN SUMUR" => "PENGADAAN SUMUR",

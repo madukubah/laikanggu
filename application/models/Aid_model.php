@@ -197,7 +197,7 @@ class Aid_model extends MY_Model
   }
 
    /**
-   * aids
+   * aids_by_date
    *
    *
    * @return static
@@ -209,6 +209,21 @@ class Aid_model extends MY_Model
     $this->where($this->table.'.date', $date);
       
       return $this->aids( $start, $limit  );
+  }
+
+   /**
+   * aids_by_civilization_id
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function aids_by_civilization_id( $civilization_id )
+  {
+    
+    $this->where($this->table.'.civilization_id', $civilization_id);
+      
+      return $this->aids( 0, NULL  );
   }
 
   /**
@@ -279,6 +294,7 @@ class Aid_model extends MY_Model
 
       // $this->db->select( "CONCAT( ".$this->table.".year ,  ' ' ) as _year"  );
       $this->db->select( $this->table.'.date as _date' );
+      $this->db->select( $this->table.'.year' );
       
       $this->db->where($this->table.'.year', $year );
 

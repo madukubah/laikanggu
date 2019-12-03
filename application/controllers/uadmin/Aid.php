@@ -348,20 +348,16 @@ class Aid extends Uadmin_Controller
 
 	public function delete()
 	{
-		if (!($_POST)) redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+		if (!($_POST)) redirect(site_url($this->current_page) );
 
-		$this->load->library('upload'); // Load librari upload
-		$config = $this->services->get_photo_upload_config($data['no_kk']);
-
-		$data_param['id'] 	= $this->input->post('id');
+		$data_param['date'] 	= $this->input->post('_date');
 		if ($this->aid_model->delete($data_param)) {
-			if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) return;
 
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->aid_model->messages()));
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->aid_model->errors()));
 		}
-		redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+		redirect(site_url($this->current_page) . "year/" . $this->input->post('year') );
 	}
 
 	public function print_aid( $date )
