@@ -1,9 +1,7 @@
 <div class="container">
     <div class="row">
-        <div class="col-9">
-            <div id='map'></div>
-        </div>
-        <div class="col-3" style="margin-top: 100px;s">
+        <div class="col-sm-12 col-md-12 col-lg-9"></div>
+        <div class="col-sm-12 col-md-12 col-lg-3" style="margin-top: 100px;">
             <div class="login-box">
                 <div class="card">
                     <div class="card-body login-card-body">

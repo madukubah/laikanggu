@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover  ">
+    <table id="table" class="table table-striped table-bordered table-hover  ">
         <thead>
             <tr>
                 <th style="width:50px">No</th>
@@ -33,49 +33,48 @@
                                     ?>
                         </td>
                     <?php endforeach; ?>
-                    <?php if( isset( $action ) ):?>
+                    <?php if (isset($action)) : ?>
                         <td>
                             <!--  -->
                             <!-- <div class="btn-group"> -->
-                                <!-- <ul class="nav navbar-nav"> -->
-                                    <?php 
-                                        foreach ( $action as $ind => $value) :
-                                    ?>
-                                        <!-- <li>                                 -->
-                                            <?php 
-                                                    switch( $value['type'] )
-                                                    {
-                                                        case "link" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/link', $value ); 
-                                                            break;
-                                                        case "modal_delete" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/modal_delete', $value ); 
-                                                            break;
-                                                        case "modal_form" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/modal_form', $value ); 
-                                                            break;
-                                                        case "modal_form_multipart" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/modal_form_multipart', $value ); 
-                                                            break;
-                                                        case "button_dropdowns" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/button_dropdown', $value ); 
-                                                            break;
-                                                    }
+                            <!-- <ul class="nav navbar-nav"> -->
+                            <?php
+                                    foreach ($action as $ind => $value) :
+                                        ?>
+                                <!-- <li>                                 -->
+                                <?php
+                                            switch ($value['type']) {
+                                                case "link":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/link', $value);
+                                                    break;
+                                                case "modal_delete":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/modal_delete', $value);
+                                                    break;
+                                                case "modal_form":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/modal_form', $value);
+                                                    break;
+                                                case "modal_form_multipart":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/modal_form_multipart', $value);
+                                                    break;
+                                                case "button_dropdowns":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/button_dropdown', $value);
+                                                    break;
+                                            }
                                             ?>
-                                        <!-- </li> -->
-                                    <?php 
+                                    <!-- </li> -->
+                                <?php
                                         endforeach;
-                                    ?>
+                                        ?>
                                 <!-- </ul> -->
-                            <!-- </div> -->
-                            <!--  -->
+                                <!-- </div> -->
+                                <!--  -->
                         </td>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </tr>
             <?php
             endforeach;
@@ -83,3 +82,14 @@
         </tbody>
     </table>
 </div>
+<script>
+    var width = window.innerWidth;
+    console.log(width);
+    var element = document.getElementById('table');
+
+    if (width <= 600) {
+        element.classList.add('rg-table');
+    } else {
+        element.classList.remove('rg-table');
+    }
+</script>

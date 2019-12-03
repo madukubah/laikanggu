@@ -62,7 +62,7 @@ class Civilization extends Uadmin_Controller
 
 	public function village($village_id = NULL)
 	{
-		$search = $this->input->get( 'search', TRUE );
+		$search = $this->input->get('search', TRUE);
 
 		if ($village_id == NULL) redirect(site_url($this->current_page));
 
@@ -78,27 +78,27 @@ class Civilization extends Uadmin_Controller
 
 		// echo json_encode( $this->data[ "_menus" ] ) ;return;
 		$table = $this->services->get_table_config($this->current_page);
-		if( isset( $search ) && $search != "" )
-			$table[ "rows" ] = $this->civilization_model->search( $search , $village_id )->result(  );
+		if (isset($search) && $search != "")
+			$table["rows"] = $this->civilization_model->search($search, $village_id)->result();
 		else
 			$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
 
 		$table["image_url"] = $this->services->get_photo_upload_config("")["image_path"];
 		// var_dump($table["rows"]); return;
 
-		$table = $this->load->view('uadmin/civilization/plain_table_image_col', $table, true);		
-		
+		$table = $this->load->view('uadmin/civilization/plain_table_image_col', $table, true);
+
 		$form_filter["form_data"] = array(
-				"search" => array(
-					'type' => 'text',
-					'label' => "No KK",
-					'value' => $search
-				),
+			"search" => array(
+				'type' => 'text',
+				'label' => "No KK",
+				'value' => $search
+			),
 		);
 		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
 		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
 
-		$this->data["contents"] = $form_filter. $table;
+		$this->data["contents"] = $form_filter . $table;
 
 		$link_add = array(
 			"name" => "Tambah KK",
@@ -157,10 +157,9 @@ class Civilization extends Uadmin_Controller
 					$data['file_scan'] = "default.jpg";
 					// $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
 					// redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
-				}
-			else $data['file_scan'] = "default.jpg";
+				} else $data['file_scan'] = "default.jpg";
 			// KTP
-			$config = $this->services->get_photo_upload_config( "KTP_".$data['no_kk']);
+			$config = $this->services->get_photo_upload_config("KTP_" . $data['no_kk']);
 
 			$this->upload->initialize($config);
 			if ($_FILES['civilization_card_scan']['name'] != "")
@@ -169,8 +168,7 @@ class Civilization extends Uadmin_Controller
 				} else {
 					$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
 					redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
-				}
-			else $data['civilization_card_scan'] = "default.jpg";
+				} else $data['civilization_card_scan'] = "default.jpg";
 			if ($this->civilization_model->create($data)) {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->civilization_model->messages()));
 			} else {
@@ -217,7 +215,7 @@ class Civilization extends Uadmin_Controller
 			$data['age'] = $this->input->post('age');
 			$data['study'] = $this->input->post('study');
 			$data['job'] = $this->input->post('job');
-			
+
 			$this->load->library('upload'); // Load librari upload
 			$config = $this->services->get_photo_upload_config($data['no_kk']);
 
@@ -233,7 +231,7 @@ class Civilization extends Uadmin_Controller
 					// redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 				}
 			// KTP
-			$config = $this->services->get_photo_upload_config( "KTP_".$data['no_kk']);
+			$config = $this->services->get_photo_upload_config("KTP_" . $data['no_kk']);
 
 			$this->upload->initialize($config);
 			if ($_FILES['civilization_card_scan']['name'] != "")
@@ -260,7 +258,7 @@ class Civilization extends Uadmin_Controller
 			$this->data["civilization"] = $this->civilization_model->civilization($id)->row();
 
 			$form_data = $this->services->get_form_data(null, $id);
-			
+
 			$this->data["image_url"] =  base_url("uploads/civilization/");
 			$no_kk = $form_data['form_data']['no_kk']['value'];
 			$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
@@ -287,7 +285,7 @@ class Civilization extends Uadmin_Controller
 		$this->data["civilization"] = $this->civilization_model->civilization($id)->row();
 
 		$form_data = $this->services->get_form_data_readonly($id);
-		$this->data["image_url"] =  base_url("uploads/civilization/") ;
+		$this->data["image_url"] =  base_url("uploads/civilization/");
 		$no_kk = $form_data['form_data']['no_kk']['value'];
 		$form_data = $this->load->view('templates/form/plain_form', $form_data, TRUE);
 		$this->data["contents"] =  $form_data;
@@ -325,11 +323,11 @@ class Civilization extends Uadmin_Controller
 
 		$data_param['id'] 	= $this->input->post('id');
 		if ($this->civilization_model->delete($data_param)) {
-			if ( $this->input->post('_file_scan') != "default.jpg")
-				if (!@unlink($config['upload_path'] . $this->input->post('_file_scan') )) {};
+			if ($this->input->post('_file_scan') != "default.jpg")
+				if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) { };
 			if ($this->input->post('_civilization_card_scan') != "default.jpg")
-				if (!@unlink($config['upload_path'] . $this->input->post('_civilization_card_scan'))) {};
-			
+				if (!@unlink($config['upload_path'] . $this->input->post('_civilization_card_scan'))) { };
+
 			// if (!@unlink($config['upload_path'] . $this->input->post('_file_scan'))) {};
 			// if (!@unlink($config['_civilization_card_scan'] . $this->input->post('_civilization_card_scan'))) {};
 

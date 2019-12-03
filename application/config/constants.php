@@ -86,7 +86,7 @@ defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 // custom
-define('APP_NAME', 'LAIKANGGU');
+define('APP_NAME', 'SI Umah');
 define('APP_AUTHOR', 'FIXL Labs');
 define('APP_DESC', 'FIXL base core for creating Information System base on Codeigniter');
 define('FAVICON_IMAGE', 'assets/logo/favicon.ico');

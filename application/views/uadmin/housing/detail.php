@@ -87,9 +87,10 @@
       </div>
       <div class="card" style="height: 570px">
         <div class="card-body">
-          <div class="row">
-            <div id='map'></div>
-          </div>
+          <?php
+          if (isset($map))
+            echo $map;
+          ?>
         </div>
       </div>
       <!-- grid -->

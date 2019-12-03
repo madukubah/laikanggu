@@ -1,23 +1,23 @@
 <?php $this->load->library(array('form_validation'));  ?>
 <!-- - -->
 <div class="row">
-<?php foreach ($form_data as $form_name => $attr) : ?>
-    <?php
-        if ($attr['type'] == 'hidden') {
-            $form = array(
-                'name' => $form_name,
-                'type' => $attr['type'],
-                'placeholder' => (isset($attr['label'])) ? $attr['label'] : '',
+    <?php foreach ($form_data as $form_name => $attr) : ?>
+        <?php
+            if ($attr['type'] == 'hidden') {
+                $form = array(
+                    'name' => $form_name,
+                    'type' => $attr['type'],
+                    'placeholder' => (isset($attr['label'])) ? $attr['label'] : '',
 
 
-            );
-            $value = ((isset($data) && ($data != NULL))   ? (isset($data->$form_name) ? $data->$form_name : '') : '');
-            $form['value'] = (isset($attr['value'])) ? $attr['value'] : $value;
-            echo form_input($form);
-            continue;
-        }
-        ?>
-    
+                );
+                $value = ((isset($data) && ($data != NULL))   ? (isset($data->$form_name) ? $data->$form_name : '') : '');
+                $form['value'] = (isset($attr['value'])) ? $attr['value'] : $value;
+                echo form_input($form);
+                continue;
+            }
+            ?>
+
         <div class="col">
             <?php
                 $form = array(
@@ -74,6 +74,6 @@
                 }
                 ?>
         </div>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 </div>
 <!--  -->

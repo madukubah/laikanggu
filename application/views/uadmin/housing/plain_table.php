@@ -21,15 +21,15 @@
                     <?php foreach ($header as $key => $value) : ?>
                         <td>
                             <?php
-                                     $category_select = array(
+                                    $category_select = array(
                                         0 => "Tidak Layak Huni",
                                         1 => "Layak Huni",
-                                      );
-                                      $certificate_status_select = array(
+                                    );
+                                    $certificate_status_select = array(
                                         0 => "Tidak",
                                         1 => "Ya",
                                         2 => "Hak Pakai Tanah",
-                                      );
+                                    );
 
                                     $attr = "";
                                     if (is_numeric($row->$key) && ($key != 'phone' && $key != 'username'))
@@ -38,57 +38,56 @@
                                         $attr = $row->$key;
                                     if ($key == 'date' || $key == 'create_date' || $key == 'time')
                                         $attr =  date("d/m/Y", $row->$key);
-                                    
-                                    if ($key == 'category' ) $attr = $category_select[ $row->$key ];
-                                    if ($key == 'certificate_status' ) $attr = $certificate_status_select[ $row->$key ];
+
+                                    if ($key == 'category') $attr = $category_select[$row->$key];
+                                    if ($key == 'certificate_status') $attr = $certificate_status_select[$row->$key];
 
                                     echo $attr;
                                     ?>
                         </td>
                     <?php endforeach; ?>
-                    <?php if( isset( $action ) ):?>
+                    <?php if (isset($action)) : ?>
                         <td>
                             <!--  -->
                             <!-- <div class="btn-group"> -->
-                                <!-- <ul class="nav navbar-nav"> -->
-                                    <?php 
-                                        foreach ( $action as $ind => $value) :
-                                    ?>
-                                        <!-- <li>                                 -->
-                                            <?php 
-                                                    switch( $value['type'] )
-                                                    {
-                                                        case "link" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/link', $value ); 
-                                                            break;
-                                                        case "modal_delete" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/modal_delete', $value ); 
-                                                            break;
-                                                        case "modal_form" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/modal_form', $value ); 
-                                                            break;
-                                                        case "modal_form_multipart" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/modal_form_multipart', $value ); 
-                                                            break;
-                                                        case "button_dropdowns" :
-                                                                $value["data"] = $row;
-                                                                $this->load->view('templates/actions/button_dropdown', $value ); 
-                                                            break;
-                                                    }
+                            <!-- <ul class="nav navbar-nav"> -->
+                            <?php
+                                    foreach ($action as $ind => $value) :
+                                        ?>
+                                <!-- <li>                                 -->
+                                <?php
+                                            switch ($value['type']) {
+                                                case "link":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/link', $value);
+                                                    break;
+                                                case "modal_delete":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/modal_delete', $value);
+                                                    break;
+                                                case "modal_form":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/modal_form', $value);
+                                                    break;
+                                                case "modal_form_multipart":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/modal_form_multipart', $value);
+                                                    break;
+                                                case "button_dropdowns":
+                                                    $value["data"] = $row;
+                                                    $this->load->view('templates/actions/button_dropdown', $value);
+                                                    break;
+                                            }
                                             ?>
-                                        <!-- </li> -->
-                                    <?php 
+                                    <!-- </li> -->
+                                <?php
                                         endforeach;
-                                    ?>
+                                        ?>
                                 <!-- </ul> -->
-                            <!-- </div> -->
-                            <!--  -->
+                                <!-- </div> -->
+                                <!--  -->
                         </td>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </tr>
             <?php
             endforeach;
