@@ -17,9 +17,9 @@
             foreach ($rows as $ind => $row) :
                 ?>
                 <tr>
-                    <td> <?php echo $no++ ?> </td>
+                    <td data-title='No'> <?php echo $no++ ?> </td>
                     <?php foreach ($header as $key => $value) : ?>
-                        <td>
+                        <td data-title='<?= $value ?>'>
                             <?php
                                     $attr = "";
                                     if (is_numeric($row->$key) && ($key != 'phone' && $key != 'username'))
