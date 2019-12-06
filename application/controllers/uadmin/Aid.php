@@ -19,7 +19,7 @@ class Aid extends Uadmin_Controller
 			'candidate_model',
 			'aid_model',
 		));
-		$this->data[ "menu_list_id" ] = "aid_index";
+		$this->data["menu_list_id"] = "aid_index";
 	}
 
 	public function index()
@@ -54,24 +54,24 @@ class Aid extends Uadmin_Controller
 		$this->render("templates/contents/plain_content");
 	}
 
-	public function year( $year = NULL )
+	public function year($year = NULL)
 	{
 		if ($year == NULL) redirect(site_url($this->current_page));
-		
-		$page = ($this->uri->segment(4+1 )) ? ($this->uri->segment(4+1) - 1) : 0;
+
+		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
 		//pagination parameter
 		$pagination['base_url'] = base_url($this->current_page) . '/index';
 		$pagination['total_records'] = $this->aid_model->record_count();
 		$pagination['limit_per_page'] = 10;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4+1;
+		$pagination['uri_segment'] = 4 + 1;
 		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		// echo json_encode( $this->data[ "_menus" ] ) ;return;
-		$table = $this->services->get_date_table($this->current_page, 1 );
+		$table = $this->services->get_date_table($this->current_page, 1);
 		// $table["rows"] = $this->aid_model->aids_by_year($pagination['start_record'], $pagination['limit_per_page'], $year )->result();
-		$table["rows"] = $this->aid_model->get_dates( $year )->result();
+		$table["rows"] = $this->aid_model->get_dates($year)->result();
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data["contents"] = $table;
 
@@ -80,30 +80,30 @@ class Aid extends Uadmin_Controller
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Data Bantuan Tahun ".$year;
-		$this->data["header"] = "Data Bantuan Tahun ".$year;
+		$this->data["block_header"] = "Data Bantuan Tahun " . $year;
+		$this->data["header"] = "Data Bantuan Tahun " . $year;
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->render("templates/contents/plain_content");
 	}
 
-	public function date( $date = NULL )
+	public function date($date = NULL)
 	{
 		if ($date == NULL) redirect(site_url($this->current_page));
-		
-		$page = ($this->uri->segment(4+1 )) ? ($this->uri->segment(4+1) - 1) : 0;
+
+		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
 		//pagination parameter
 		$pagination['base_url'] = base_url($this->current_page) . '/index';
 		$pagination['total_records'] = $this->aid_model->record_count();
 		$pagination['limit_per_page'] = 10;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4+1;
+		$pagination['uri_segment'] = 4 + 1;
 		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		// echo json_encode( $this->data[ "_menus" ] ) ;return;
-		$table = $this->services->get_table_config($this->current_page, 1 );
-		$table["rows"] = $this->aid_model->aids_by_date($pagination['start_record'], $pagination['limit_per_page'], $date )->result();
+		$table = $this->services->get_table_config($this->current_page, 1);
+		$table["rows"] = $this->aid_model->aids_by_date($pagination['start_record'], $pagination['limit_per_page'], $date)->result();
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data["contents"] = $table;
 
@@ -114,8 +114,8 @@ class Aid extends Uadmin_Controller
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Data Bantuan Tanggal ".$date;
-		$this->data["header"] = "Data Bantuan Tanggal ".$date;
+		$this->data["block_header"] = "Data Bantuan Tanggal " . $date;
+		$this->data["header"] = "Data Bantuan Tanggal " . $date;
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render("uadmin/aid/date/plain_content");
 	}
@@ -288,10 +288,16 @@ class Aid extends Uadmin_Controller
 			"button_color" => "primary",
 			"data" => NULL,
 		);
+		$map = [
+			'cordinate' => $cordinate,
+			'zoom' => 12,
+			'drag' => false
+		];
+		$map = $this->load->view('templates/map/multiple_map', $map, TRUE);
 		$this->data["edit_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);;
 		##############################################################################
 		$alert = $this->session->flashdata('alert');
-		$this->data["cordinate"] = $cordinate;
+		$this->data["map"] = $map;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
@@ -303,36 +309,35 @@ class Aid extends Uadmin_Controller
 
 		$this->render("uadmin/candidate/detail");
 	}
-	
+
 	public function add()
 	{
 		if (!($_POST)) redirect(site_url());
 
 		// echo var_dump( $data );return;
-		$this->form_validation->set_rules( "year", "year", "trim|required" );
+		$this->form_validation->set_rules("year", "year", "trim|required");
 		if ($this->form_validation->run() === TRUE) {
 			$data['year'] = $this->input->post('year');
-			$time = strtotime( $this->input->post('date') );
-			$data['date'] = date( "Y-m-d", $time );
+			$time = strtotime($this->input->post('date'));
+			$data['date'] = date("Y-m-d", $time);
 			$data['timestamp'] = time();
 
-			$candidates = $this->candidate_model->candidates(  )->result_array();
-			if( empty( $candidates ) ) {
-				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER,  "Tidak ada kandidat" ));
-				redirect(site_url(  ) . "uadmin/candidate/candidates/" );
+			$candidates = $this->candidate_model->candidates()->result_array();
+			if (empty($candidates)) {
+				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER,  "Tidak ada kandidat"));
+				redirect(site_url() . "uadmin/candidate/candidates/");
 			}
-			foreach( $candidates as $ind =>$candidate )
-			{
-				$candidates[ $ind ]["year"] = $data['year'];
-				$candidates[ $ind ]["date"] = $data['date'];
-				$candidates[ $ind ]["timestamp"] = $data['timestamp'];
-				unset( $candidates[ $ind ][ "chief_name" ]  );
-				unset( $candidates[ $ind ][ "village_name" ]  );
-				unset( $candidates[ $ind ][ "no_kk" ]  );
-				unset( $candidates[ $ind ][ "id" ]  );
+			foreach ($candidates as $ind => $candidate) {
+				$candidates[$ind]["year"] = $data['year'];
+				$candidates[$ind]["date"] = $data['date'];
+				$candidates[$ind]["timestamp"] = $data['timestamp'];
+				unset($candidates[$ind]["chief_name"]);
+				unset($candidates[$ind]["village_name"]);
+				unset($candidates[$ind]["no_kk"]);
+				unset($candidates[$ind]["id"]);
 			}
 			// var_dump( $candidates ); return;
-			if ( $this->aid_model->create_batch($candidates)) {
+			if ($this->aid_model->create_batch($candidates)) {
 				$this->candidate_model->truncate();
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->aid_model->messages()));
 			} else {
@@ -343,12 +348,12 @@ class Aid extends Uadmin_Controller
 			if (validation_errors() || $this->aid_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
 		}
 
-		redirect(site_url(  ) . "uadmin/candidate/candidates/" );
+		redirect(site_url() . "uadmin/candidate/candidates/");
 	}
 
 	public function delete()
 	{
-		if (!($_POST)) redirect(site_url($this->current_page) );
+		if (!($_POST)) redirect(site_url($this->current_page));
 
 		$data_param['date'] 	= $this->input->post('_date');
 		if ($this->aid_model->delete($data_param)) {
@@ -357,27 +362,27 @@ class Aid extends Uadmin_Controller
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->aid_model->errors()));
 		}
-		redirect(site_url($this->current_page) . "year/" . $this->input->post('year') );
+		redirect(site_url($this->current_page) . "year/" . $this->input->post('year'));
 	}
 
-	public function print_aid( $date )
-	{	
-		$year = date( "Y", strtotime( $date ) );
-		$month = date( "m", strtotime( $date ) );
-		$day = date( "d", strtotime( $date ) );
-		$this->data['title'] = "Data Bantuan ".$day." ".Util::MONTH[ $month ] ." Tahun ".$year;
-		$this->data[ "header" ] = $this->services->get_table_config( $this->current_page )['header'];
-		unset( $this->data[ "header" ]["_date"] );
-		$this->data[ "rows" ]   = $this->aid_model->aids_by_date( 0, NULL, $date )->result();
+	public function print_aid($date)
+	{
+		$year = date("Y", strtotime($date));
+		$month = date("m", strtotime($date));
+		$day = date("d", strtotime($date));
+		$this->data['title'] = "Data Bantuan " . $day . " " . Util::MONTH[$month] . " Tahun " . $year;
+		$this->data["header"] = $this->services->get_table_config($this->current_page)['header'];
+		unset($this->data["header"]["_date"]);
+		$this->data["rows"]   = $this->aid_model->aids_by_date(0, NULL, $date)->result();
 
 		$this->load->library('pdf');
 		$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
 
-		$pdf->SetTitle( "Laporan Bantuan " );
-			
+		$pdf->SetTitle("Laporan Bantuan ");
+
 		$pdf->setPrintHeader(false);
 		$pdf->setPrintFooter(false);
-		
+
 		$pdf->SetTopMargin(10);
 		$pdf->SetLeftMargin(10);
 		$pdf->SetRightMargin(10);
@@ -387,9 +392,9 @@ class Aid extends Uadmin_Controller
 		$pdf->AddPage();
 		$pdf->SetFont('times', NULL, 9);
 
-		$html =  $this->load->view('templates/report/aid', $this->data, true);	
+		$html =  $this->load->view('templates/report/aid', $this->data, true);
 		$pdf->writeHTML($html, true, false, true, false, '');
-		$title = str_replace( " ", "_", $this->data['title'] );
-		$pdf->Output(  $title.".pdf",'I');
+		$title = str_replace(" ", "_", $this->data['title']);
+		$pdf->Output($title . ".pdf", 'I');
 	}
 }

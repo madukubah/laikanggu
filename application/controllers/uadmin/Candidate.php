@@ -60,7 +60,7 @@ class Candidate extends Uadmin_Controller
 		$this->services = new Candidate_services;
 		$page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
 		//pagination parameter
-		$pagination['base_url'] = base_url($this->current_page) ;
+		$pagination['base_url'] = base_url($this->current_page);
 		$pagination['total_records'] = $this->candidate_model->record_count();
 		$pagination['limit_per_page'] = 10;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
@@ -70,7 +70,7 @@ class Candidate extends Uadmin_Controller
 
 
 		$table = $this->services->get_table_config($this->current_page);
-		$table["rows"] = $this->candidate_model->candidates(  )->result();
+		$table["rows"] = $this->candidate_model->candidates()->result();
 		$type_of_aid = $this->services->type_of_aid();
 		$table["type_of_aid"] = $this->load->view('templates/form/plain_form_no_label', $type_of_aid, TRUE);
 
@@ -93,7 +93,7 @@ class Candidate extends Uadmin_Controller
 		$this->render("uadmin/candidate/candidates");
 	}
 
-	public function village( $village_id = NULL)
+	public function village($village_id = NULL)
 	{
 		$this->load->library('services/Candidate_services');
 		$this->services = new Candidate_services;
@@ -109,13 +109,13 @@ class Candidate extends Uadmin_Controller
 		$candidate_rows[] = (object) ["code" => "has_house", "name" => "KK Punya Rumah", "count" => count($has_house)];
 		$candidate_rows[] = (object) ["code" => "not_has_house", "name" => "KK Tidak Punya Rumah", "count" => ($count_all - count($has_house))];
 
-		$page = ($this->uri->segment(4 +1)) ? ($this->uri->segment(4 +1) - 1) : 0;
+		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
 		//pagination parameter
 		$pagination['base_url'] = base_url($this->current_page) . '/index';
 		$pagination['total_records'] = $this->civilization_model->record_count();
 		$pagination['limit_per_page'] = 10;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4 +1;
+		$pagination['uri_segment'] = 4 + 1;
 		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
@@ -149,11 +149,11 @@ class Candidate extends Uadmin_Controller
 		// var_dump( $has_house_civilization_ids ); return;
 		$this->load->library('services/Civilization_services');
 		$this->services = new Civilization_services;
-		
+
 		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
 		//pagination parameter
 		$pagination['base_url'] = base_url($this->current_page) . '/index';
-		
+
 		$pagination['limit_per_page'] = 10;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
 		$pagination['uri_segment'] = 4 + 1;
@@ -161,13 +161,13 @@ class Candidate extends Uadmin_Controller
 
 		$get_data = array(
 			"has_house" => array(
-				"table_config" => $this->services->get_has_house_table_config_candidate($this->current_page, $pagination['start_record'] + 1 ),
+				"table_config" => $this->services->get_has_house_table_config_candidate($this->current_page, $pagination['start_record'] + 1),
 				"title" => "Punya Rumah",
 				"count" => count($has_house_civilization_ids),
 				"function" => (empty($has_house_civilization_ids)) ? array() : $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result(),
 			),
 			"not_has_house" => array(
-				"table_config" => $this->services->get_table_config_candidate($this->current_page, $pagination['start_record'] + 1 ),
+				"table_config" => $this->services->get_table_config_candidate($this->current_page, $pagination['start_record'] + 1),
 				"title" => "Tidak Punya Rumah",
 				"count" => $this->civilization_model->record_count_by_village_id($village_id) - count($has_house_civilization_ids),
 				// "function" => (empty($has_house_civilization_ids)) ?  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result() : array(),
@@ -177,7 +177,7 @@ class Candidate extends Uadmin_Controller
 		$pagination['total_records'] = $get_data[$code]["count"];
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
-		$table = $get_data[$code]["table_config"];//$this->services->get_table_config_candidate($this->current_page);
+		$table = $get_data[$code]["table_config"]; //$this->services->get_table_config_candidate($this->current_page);
 		$table["rows"] = $get_data[$code]["function"];
 
 		// $table = $this->load->view('templates/tables/plain_table', $table, true);
@@ -194,7 +194,7 @@ class Candidate extends Uadmin_Controller
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Olah Penerima Bantuan";
-		$this->data["header"] = "Daftar KK " . $get_data[$code]["title"]. " ". $village->name;
+		$this->data["header"] = "Daftar KK " . $get_data[$code]["title"] . " " . $village->name;
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->render("templates/contents/plain_content");
@@ -209,37 +209,37 @@ class Candidate extends Uadmin_Controller
 		if ($civilization_id == NULL) redirect(site_url($this->current_page));
 
 		$civilization = $this->civilization_model->civilization($civilization_id)->row();
-		if ( $civilization == NULL) redirect(site_url($this->current_page));
+		if ($civilization == NULL) redirect(site_url($this->current_page));
 
 		$history_table = $this->services->get_table_config_aid_history();
-		$history_table["rows"] = $this->aid_model->aids_by_civilization_id( $civilization->id )->result();
+		$history_table["rows"] = $this->aid_model->aids_by_civilization_id($civilization->id)->result();
 		$history_table = $this->load->view('templates/tables/plain_table', $history_table, true);
-		$this->data[ "history" ] =  $history_table ;
+		$this->data["history"] =  $history_table;
 
 		$add_menu = array(
 			"name" => "Jadikan Kandidat",
 			"modal_id" => "add_menu_",
 			"button_color" => "success",
-			"url" => site_url( $this->current_page."add/"),
+			"url" => site_url($this->current_page . "add/"),
 			"form_data" => array(
-			  "civilization_id" => array(
-				'type' => 'hidden',
-				'label' => "civilization_id",
-				'value' => $civilization->id,
-			  ),
-			  "village_id" => array(
-				'type' => 'hidden',
-				'label' => "village_id",
-				'value' => $civilization->village_id,
-			  ),
-			  "type_of_aid" =>  $this->services->type_of_aid()[ "form_data" ]["type_of_aid[]"],
+				"civilization_id" => array(
+					'type' => 'hidden',
+					'label' => "civilization_id",
+					'value' => $civilization->id,
+				),
+				"village_id" => array(
+					'type' => 'hidden',
+					'label' => "village_id",
+					'value' => $civilization->village_id,
+				),
+				"type_of_aid" =>  $this->services->type_of_aid()["form_data"]["type_of_aid[]"],
 			),
 			'data' => NULL
 		);
 
-		$add_menu= $this->load->view('templates/actions/modal_form', $add_menu, true ); 
+		$add_menu = $this->load->view('templates/actions/modal_form', $add_menu, true);
 
-		$this->data[ "header_button" ] =  $add_menu ;
+		$this->data["header_button"] =  $add_menu;
 
 		$this->load->library('services/Civilization_services');
 		$this->services = new Civilization_services;
@@ -262,7 +262,6 @@ class Candidate extends Uadmin_Controller
 			$house_id	= $house->id;
 
 			$form_data = $this->services->get_form_data_readonly($house->id, $house->civilization_id);
-
 			$cordinate['konut_' . $i] = [$form_data['form_data']['longitude']['value'], $form_data['form_data']['latitude']['value']];
 
 			$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data, TRUE);
@@ -293,14 +292,20 @@ class Candidate extends Uadmin_Controller
 			"button_color" => "primary",
 			"data" => NULL,
 		);
+		$map = [
+			'cordinate' => $cordinate,
+			'zoom' => 12,
+			'drag' => false
+		];
+		$map = $this->load->view('templates/map/multiple_map', $map, TRUE);
 		$this->data["edit_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);;
 		##############################################################################
 		$alert = $this->session->flashdata('alert');
-		$this->data["cordinate"] = $cordinate;
+		$this->data["map"] = $map;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Detail Rumah ".$civilization->no_kk." (".$civilization->chief_name.") ";
+		$this->data["block_header"] = "Detail Rumah " . $civilization->no_kk . " (" . $civilization->chief_name . ") ";
 		$this->data["header"] = "Detail Rumah ";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
@@ -314,14 +319,13 @@ class Candidate extends Uadmin_Controller
 		if (!($_POST)) redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 
 		// echo var_dump( $this->input->post('civilization_id') );die;
-		$this->form_validation->set_rules( "civilization_id", "civilization_id", "trim|required" );
+		$this->form_validation->set_rules("civilization_id", "civilization_id", "trim|required");
 		if ($this->form_validation->run() === TRUE) {
 			$data['civilization_id'] = $this->input->post('civilization_id');
 			$data['type_of_aid'] = $this->input->post('type_of_aid');
-			$is_exist = $this->candidate_model->is_exist_by_civilization_id( $data['civilization_id']  );
-			if( $is_exist ) 
-			{
-				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER,  "Data telah di masukkan dalam daftar" ));
+			$is_exist = $this->candidate_model->is_exist_by_civilization_id($data['civilization_id']);
+			if ($is_exist) {
+				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER,  "Data telah di masukkan dalam daftar"));
 				redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 			}
 
@@ -340,7 +344,7 @@ class Candidate extends Uadmin_Controller
 
 	public function delete()
 	{
-		if (!($_POST)) redirect(site_url($this->current_page) . "candidates/" );
+		if (!($_POST)) redirect(site_url($this->current_page) . "candidates/");
 
 		$data_param['id'] 	= $this->input->post('id');
 		if ($this->candidate_model->delete($data_param)) {
@@ -348,6 +352,6 @@ class Candidate extends Uadmin_Controller
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->candidate_model->errors()));
 		}
-		redirect(site_url($this->current_page) . "candidates/"  );
+		redirect(site_url($this->current_page) . "candidates/");
 	}
 }

@@ -219,10 +219,16 @@ class Aid extends Officer_Controller
 			"button_color" => "primary",
 			"data" => NULL,
 		);
+		$map = [
+			'cordinate' => $cordinate,
+			'zoom' => 12,
+			'drag' => false
+		];
+		$map = $this->load->view('templates/map/multiple_map', $map, TRUE);
 		$this->data["edit_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);;
 		##############################################################################
 		$alert = $this->session->flashdata('alert');
-		$this->data["cordinate"] = $cordinate;
+		$this->data["map"] = $map;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;

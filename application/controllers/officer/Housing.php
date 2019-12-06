@@ -61,9 +61,9 @@ class Housing extends Officer_Controller
 		redirect(site_url($this->current_page) . "edit/" . $house->id);
 	}
 
-	public function index( )
+	public function index()
 	{
-		$search = $this->input->get( 'search', TRUE );
+		$search = $this->input->get('search', TRUE);
 
 		$village = $this->data["village"];
 		$village_id = $village->id;
@@ -80,8 +80,8 @@ class Housing extends Officer_Controller
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config($this->current_page);
-		if( isset( $search ) && $search != "" )
-			$table[ "rows" ] = $this->housing_model->search( $search , $village_id )->result(  );
+		if (isset($search) && $search != "")
+			$table["rows"] = $this->housing_model->search($search, $village_id)->result();
 		else
 			$table["rows"] = $this->housing_model->houses($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
 
@@ -89,18 +89,18 @@ class Housing extends Officer_Controller
 
 		$table = $this->load->view('uadmin/housing/plain_table', $table, true);
 
-		
+
 		$form_filter["form_data"] = array(
-				"search" => array(
-					'type' => 'text',
-					'label' => "No KK",
-					'value' => $search
-				),
+			"search" => array(
+				'type' => 'text',
+				'label' => "No KK",
+				'value' => $search
+			),
 		);
 		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
 		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
 
-		$this->data["contents"] = $form_filter. $table;
+		$this->data["contents"] = $form_filter . $table;
 
 		$modal_add = array(
 			"name" => "Tambah Rumah",
@@ -148,7 +148,7 @@ class Housing extends Officer_Controller
 		$civilization = $this->civilization_model->civilization_by_no_kk_and_village_id($no_kk, $village_id)->row();
 		if ($civilization == NULL) {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, "Data Tidak di temukan"));
-			redirect(site_url($this->current_page) );
+			redirect(site_url($this->current_page));
 		}
 		// echo var_dump( $this->civilization_model->db );return;
 
@@ -196,7 +196,7 @@ class Housing extends Officer_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->housing_model->errors()));
 			}
-			redirect(site_url($this->current_page) );
+			redirect(site_url($this->current_page));
 		} else {
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->housing_model->errors() ? $this->housing_model->errors() : $this->session->flashdata('message')));
 			if (!empty(validation_errors()) || $this->housing_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
@@ -216,17 +216,20 @@ class Housing extends Officer_Controller
 			$form_data_3 = $this->load->view('templates/form/plain_form_6', $form_data_3, TRUE);
 
 			$this->data["contents"] =  $form_data . $form_data_1 . $form_data_2 . "<br>" . $form_data_3;
-			$cordinate = array(
-				'konut_0' => [122.10348308181318, -3.5014330835094682]
-			);
+			$config_map = [
+				'cordinate' => array(
+					'konut_0' => [122.10348308181318, -3.5014330835094682],
+				),
+				'zoom' => 13
+			];
+			$this->data["map"] = $this->load->view('templates/map/map', $config_map, TRUE);
 
 			$alert = $this->session->flashdata('alert');
 			$this->data["key"] = $this->input->get('key', FALSE);
-			$this->data["cordinate"] = $cordinate;
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;
 			$this->data["block_header"] = "Tambah Rumah ";
-			$this->data["header"] = "Tambah Rumah Untuk No KK " . $civilization->no_kk . ' ('. strtoupper( $civilization->chief_name ) .') ' ;
+			$this->data["header"] = "Tambah Rumah Untuk No KK " . $civilization->no_kk . ' (' . strtoupper($civilization->chief_name) . ') ';
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 			$this->data["url_form"] = $this->current_page . "add/?no_kk=" . $no_kk . "&village_id=" . $village_id;
@@ -265,19 +268,21 @@ class Housing extends Officer_Controller
 			"data" => NULL,
 		);
 		$this->data["edit_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);;
-		$cordinate = array(
-			'konut_0' => [$longitude, $latitude]
-		);
+		$config_map = [
+			'cordinate' => array(
+				'konut_0' => [$longitude, $latitude],
+			),
+			'zoom' => 14
+		];
+		$this->data["map"] = $this->load->view('templates/map/map', $config_map, TRUE);
 		##############################################################################
 
 		$alert = $this->session->flashdata('alert');
-		$this->data["cordinate"] = $cordinate;
-		$this->data["zoom"] = 12;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Detail Rumah ";
-		$this->data["header"] = "Detail Rumah Untuk No KK " . $civilization->no_kk . ' ('. strtoupper( $civilization->chief_name ) .') ' ;
+		$this->data["header"] = "Detail Rumah Untuk No KK " . $civilization->no_kk . ' (' . strtoupper($civilization->chief_name) . ') ';
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->data["url_form"] = ""; // $this->current_page."add/?no_kk=".$no_kk."&village_id=".$village_id;
@@ -337,7 +342,7 @@ class Housing extends Officer_Controller
 			} else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->housing_model->errors()));
 			}
-			redirect(site_url($this->current_page)."detail/".$data_param["id"]   );
+			redirect(site_url($this->current_page) . "detail/" . $data_param["id"]);
 		} else {
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->housing_model->errors() ? $this->housing_model->errors() : $this->session->flashdata('message')));
 			if (!empty(validation_errors()) || $this->housing_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
@@ -416,18 +421,20 @@ class Housing extends Officer_Controller
 				"data" => NULL,
 			);
 			$this->data["edit_button"] = "";
-			$cordinate = array(
-				'konut_0' => [$longitude, $latitude]
-			);
+			$config_map = [
+				'cordinate' => array(
+					'konut_0' => [$longitude, $latitude],
+				),
+				'zoom' => 14
+			];
+			$this->data["map"] = $this->load->view('templates/map/map', $config_map, TRUE);
 			##############################################################################
 			$alert = $this->session->flashdata('alert');
-			$this->data["cordinate"] = $cordinate;
-			$this->data["zoom"] = 12;
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 			$this->data["current_page"] = $this->current_page;
 			$this->data["block_header"] = "Edit Rumah ";
-			$this->data["header"] = "Edit Rumah Untuk No KK " . $civilization->no_kk . ' ('. strtoupper( $civilization->chief_name ) .') ' ;
+			$this->data["header"] = "Edit Rumah Untuk No KK " . $civilization->no_kk . ' (' . strtoupper($civilization->chief_name) . ') ';
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 			$this->data["url_form"] = ""; // $this->current_page."add/?no_kk=".$no_kk."&village_id=".$village_id;
@@ -463,6 +470,6 @@ class Housing extends Officer_Controller
 		} else {
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->housing_model->errors()));
 		}
-		redirect(site_url($this->current_page)  );
+		redirect(site_url($this->current_page));
 	}
 }

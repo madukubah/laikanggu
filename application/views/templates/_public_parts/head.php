@@ -51,11 +51,12 @@
 
         #map {
             position: absolute;
-            top: 10%;
-            right: 5%;
+            /* top: 100px; */
+            /* left: 50px; */
             bottom: 10px;
             height: 550px;
-            width: 100%;
+            width: 95%;
+            overflow: hidden;
         }
     </style>
 </head>
