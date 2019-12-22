@@ -151,6 +151,35 @@ class Housing_model extends MY_Model
     if (isset($village_id)) {
       $this->where('civilization.village_id', $village_id);
     }
+    return $this->record_count();
+
+  }
+
+    /**
+   * count_key_value
+   *
+   * @param int|array|null $id = id_houses
+   * @return static
+   * @author madukubah
+   */
+  public function count_key_value( $key = NULL, $value = NULL, $village_id = NULL)
+  {
+    if (isset($category)) {
+      $this->where($this->table . '.category', $category);
+    }
+    $this->join(
+      "civilization",
+      "civilization.id = " . $this->table . ".civilization_id",
+      "inner"
+    );
+    // $this->houses();
+    if (isset($village_id)) {
+      $this->where('civilization.village_id', $village_id);
+    }
+
+    if (isset( $key )) {
+      $this->where( $this->table .'.'.$key , $value);
+    }
 
     return $this->record_count();
   }

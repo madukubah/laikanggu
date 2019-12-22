@@ -28,8 +28,8 @@ class Aid_services
   public function get_table_config( $_page, $start_number = 1, $village_id = "")
   {
     $table["header"] = array(
-      'no_kk' => 'No KK',
       'village_name' => 'Desa',
+      'no_kk' => 'No KK',
       'chief_name' => 'Nama Kepala Keluarga',
       'type_of_aid' => 'Jenis Bantuan',
       '_date' => 'Tanggal Bantuan',
@@ -94,11 +94,11 @@ class Aid_services
         "param" => "_date",
         "form_data" => array(
           "_date" => array(
-            'type' => 'text',
+            'type' => 'hidden',
             'label' => "date",
           ),
           "year" => array(
-            'type' => 'text',
+            'type' => 'hidden',
             'label' => "year",
           ),
         ),

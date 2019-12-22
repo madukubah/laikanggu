@@ -161,7 +161,7 @@ class Candidate_model extends MY_Model
    * @return static
    * @author madukubah
    */
-  public function candidates( $start = 0 , $limit = NULL )
+  public function candidates( $start = 0 , $limit = NULL, $village_id = -1 )
   {
       if (isset( $limit ))
       {
@@ -184,9 +184,89 @@ class Candidate_model extends MY_Model
         "inner"
       );
 
+      if ( $village_id != -1 )
+      {
+        $this->where( 'village.id', $village_id );
+      }
 
       $this->offset( $start );
-      $this->order_by($this->table.'.id', 'asc');
+      $this->order_by( 'village.id', 'asc');
+      return $this->fetch_data();
+  }
+
+  /**
+   * candidates
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function get_candidates_for_verification( $start = 0 , $limit = NULL, $village_id = -1 )
+  {
+      if (isset( $limit ))
+      {
+        $this->limit( $limit );
+      }
+
+      $this->select( $this->table.'.*' );
+      $this->select( "civilization.chief_name as chief_name" );
+      $this->select( "CONCAT( civilization.no_kk, ' ' )  as no_kk" );
+      $this->select( "village.name as village_name" );
+      $this->db->select("house.*");
+
+      $this->join( 
+        "civilization" ,
+        "civilization.id = " .$this->table.'.civilization_id',
+        "inner"
+      );
+      $this->join( 
+        "village" ,
+        "village.id = civilization.village_id ",
+        "inner"
+      );
+      $this->db->join(
+        "house",
+        $this->table.".civilization_id = house.civilization_id",
+        "inner"
+      );
+
+      if ( $village_id != -1 )
+      {
+        $this->where( 'village.id', $village_id );
+      }
+
+      $this->offset( $start );
+      $this->order_by( 'village.id', 'asc');
+      return $this->fetch_data();
+  }
+
+  /**
+   * candidates
+   *
+   *
+   * @return static
+   * @author madukubah
+   */
+  public function get_village_by_candidates( )
+  {
+      // $this->select( $this->table.'.*' );
+      // $this->select( "civilization.chief_name as chief_name" );
+      // $this->select( "CONCAT( civilization.no_kk, ' ' )  as no_kk" );
+      $this->select( "village.id as id" );
+      $this->select( "village.name as name" );
+
+      $this->join( 
+        "civilization" ,
+        "civilization.id = " .$this->table.'.civilization_id',
+        "inner"
+      );
+      $this->join( 
+        "village" ,
+        "village.id = civilization.village_id ",
+        "inner"
+      );
+
+      $this->order_by( 'village.id', 'asc');
       return $this->fetch_data();
   }
 

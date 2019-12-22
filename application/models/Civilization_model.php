@@ -173,8 +173,15 @@ class Civilization_model extends MY_Model
     $this->select($this->table . '.*');
     $this->select(" " . $this->table . ".file_scan  as images");
     $this->select(" " . $this->table . ".file_scan  as _file_scan");
-    $this->db->select(" " . $this->table . ".civilization_card_scan  as _civilization_card_scan");
+    $this->select(" " . $this->table . ".civilization_card_scan  as _civilization_card_scan");
     $this->select(" CONCAT( " . $this->table . ".no_kk, ' ' )  as no_kk");
+    $this->select("house.category as category");
+
+    $this->join(
+      "house",
+      "civilization.id = house.civilization_id",
+      "inner"
+    );
 
     $this->offset($start);
     $this->order_by($this->table . '.id', 'asc');

@@ -16,35 +16,37 @@ class Housing_services
   protected $length;
   protected $width;
 
+  protected $description;
+
   protected $floor_material;
-  protected $floor_material_select = array(
-    "PLESTERAN", "UBIN/TEGEL", "KAYU"
+  public $floor_material_select = array(
+    "UBIN/TEGEL","PLESTERAN", "KAYU"
   );
   protected $wall_material;
-  protected $wall_material_select = array(
-    "KAYU", "TEMBOK"
+  public $wall_material_select = array(
+    "TEMBOK","KAYU"
   );
   protected $roof_material;
-  protected $roof_material_select = array(
+  public $roof_material_select = array(
     "SENG", "JERAMI"
   );
   protected $light_source;
-  protected $light_source_select = array(
+  public $light_source_select = array(
     "LISTRIK PLN DENGAN METERAN", "BUKAN LISTRIK"
   );
   protected $water_source;
-  protected $water_source_select = array(
+  public $water_source_select = array(
     "MATA AIR", "SUMUR GALI", "SUNGAI"
   );
   protected $land_status	;
-  protected $land_status_select =array(
+  public $land_status_select =array(
     "MILIK SENDIRI", "BUKAN MILIK SENDIRI"
   );
-  protected $category_select = array(
+  public $category_select = array(
     0 => "Tidak Layak Huni",
     1 => "Layak Huni",
   );
-  protected $certificate_status_select = array(
+  public $certificate_status_select = array(
     0 => "Tidak",
     1 => "Ya",
     2 => "Hak Pakai Tanah",
@@ -72,6 +74,8 @@ class Housing_services
 
     $this->length             = 0;
     $this->width              = 0;
+
+    $this->description        = "";
   }
 
   public function __get($var)
@@ -154,36 +158,39 @@ class Housing_services
    **/
   public function get_form_data_readonly($house_id = NULL, $civilization_id = NULL)
   {
-    $this->civilization_id    = $civilization_id;
-    if (isset($house_id)) {
-      $this->load->model(array(
-        'housing_model',
+      $this->civilization_id      = $civilization_id;
+      if (isset($house_id)) {
+        $this->load->model(array(
+          'housing_model',
       ));
-      $house         = $this->housing_model->house($house_id)->row();
 
-      $this->id                  = $house->id;
-      $this->civilization_id    = $civilization_id;
-      $this->category            = $house->category;
-      $this->certificate_status  = $house->certificate_status;
-      $this->rt                  = $house->rt;
-      $this->dusun              = $house->dusun;
-      $this->images              = $house->images;
-      $this->latitude            = $house->latitude;
-      $this->longitude          = $house->longitude;
-      $this->file_scan          = $house->file_scan;
+      $house                      = $this->housing_model->house($house_id)->row();
 
-      $this->floor_material          = $house->floor_material;
-      $this->wall_material          = $house->wall_material;
-      $this->roof_material          = $house->roof_material;
-      $this->light_source          = $house->light_source;
-      $this->water_source          = $house->water_source;
+      $this->id                   = $house->id;
+      $this->civilization_id      = $civilization_id;
+      $this->category             = $house->category;
+      $this->certificate_status   = $house->certificate_status;
+      $this->rt                   = $house->rt;
+      $this->dusun                = $house->dusun;
+      $this->images               = $house->images;
+      $this->latitude             = $house->latitude;
+      $this->longitude            = $house->longitude;
+      $this->file_scan            = $house->file_scan;
+
+      $this->floor_material       = $house->floor_material;
+      $this->wall_material        = $house->wall_material;
+      $this->roof_material        = $house->roof_material;
+      $this->light_source         = $house->light_source;
+      $this->water_source         = $house->water_source;
       $this->land_status          = $house->land_status;
 
-      $this->length          = $house->length;
-      $this->width          = $house->width;
+      $this->length               = $house->length;
+      $this->width                = $house->width;
+
+      $this->description          = $house->description;
     }
 
-    $_data["form_data"] = array(
+    $_data[0]["form_data"] = array(
       "id" => array(
         'type' => 'hidden',
         'label' => "ID",
@@ -224,6 +231,13 @@ class Housing_services
         'label' => "Dusun",
         'value' => $this->form_validation->set_value('dusun', $this->dusun),
       ),
+      "description" => array(
+        'type' => 'textarea',
+        'label' => "Keterangan",
+        'value' => $this->form_validation->set_value('description', $this->description),
+      ),
+    );
+    $_data[1]["form_data"] = array(
       "land_status" => array(
         'type' => 'text',
         'label' => "Status Tanah",
@@ -236,7 +250,7 @@ class Housing_services
       ),
       "light_source" => array(
         'type' => 'text',
-        'label' => "Sumber Listrik",
+        'label' => "Sumber Penerangan",
         "value" => $this->light_source_select[ $this->light_source ],
       ),
       "floor_material" => array(
@@ -255,16 +269,15 @@ class Housing_services
         "value" => $this->roof_material_select[ $this->roof_material ],
       ),
       "latitude" => array(
-        'type' => 'text',
+        'type' => 'hidden',
         'label' => "Latitude",
         'value' => $this->form_validation->set_value('latitude', $this->latitude),
       ),
       "longitude" => array(
-        'type' => 'text',
+        'type' => 'hidden',
         'label' => "Longitude",
         'value' => $this->form_validation->set_value('longitude', $this->longitude),
       ),
-
     );
     return $_data;
   }
@@ -283,26 +296,28 @@ class Housing_services
       ));
       $house         = $this->housing_model->house($house_id)->row();
 
-      $this->id                  = $house->id;
-      $this->civilization_id    = $civilization_id;
-      $this->category            = $house->category;
-      $this->certificate_status  = $house->certificate_status;
-      $this->rt                  = $house->rt;
-      $this->dusun              = $house->dusun;
-      $this->images              = $house->images;
-      $this->latitude            = $house->latitude;
-      $this->longitude          = $house->longitude;
-      $this->file_scan          = $house->file_scan;
+      $this->id                   = $house->id;
+      $this->civilization_id      = $civilization_id;
+      $this->category             = $house->category;
+      $this->certificate_status   = $house->certificate_status;
+      $this->rt                   = $house->rt;
+      $this->dusun                = $house->dusun;
+      $this->images               = $house->images;
+      $this->latitude             = $house->latitude;
+      $this->longitude            = $house->longitude;
+      $this->file_scan            = $house->file_scan;
 
-      $this->floor_material          = $house->floor_material;
-      $this->wall_material          = $house->wall_material;
-      $this->roof_material          = $house->roof_material;
-      $this->light_source          = $house->light_source;
-      $this->water_source          = $house->water_source;
+      $this->floor_material       = $house->floor_material;
+      $this->wall_material        = $house->wall_material;
+      $this->roof_material        = $house->roof_material;
+      $this->light_source         = $house->light_source;
+      $this->water_source         = $house->water_source;
       $this->land_status          = $house->land_status;
 
-      $this->length          = $house->length;
-      $this->width          = $house->width;
+      $this->length               = $house->length;
+      $this->width                = $house->width;
+
+      $this->description                = $house->description;
     }
 
     $_data[0]["form_data"] = array(
@@ -364,7 +379,7 @@ class Housing_services
       ),
       "light_source" => array(
         'type' => 'select',
-        'label' => "Sumber Listrik",
+        'label' => "Sumber Penerangan",
         "options" => $this->light_source_select,
         "selected" => $this->light_source,
       ),
@@ -419,14 +434,21 @@ class Housing_services
     );
     $_data[3]["form_data"] = array(
       "latitude" => array(
-        'type' => 'text',
+        'type' => 'hidden',
         'label' => "Latitude",
         'value' => $this->form_validation->set_value('latitude', $this->latitude),
       ),
       "longitude" => array(
-        'type' => 'text',
+        'type' => 'hidden',
         'label' => "Longitude",
         'value' => $this->form_validation->set_value('longitude', $this->longitude),
+      ),
+    );
+    $_data[4]["form_data"] = array(
+      "description" => array(
+        'type' => 'textarea',
+        'label' => "Keterangan",
+        'value' => $this->form_validation->set_value('description', $this->description),
       ),
     );
 

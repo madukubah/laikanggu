@@ -35,10 +35,10 @@ class Candidate extends Uadmin_Controller
 		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
-		// echo json_encode( $this->data[ "_menus" ] ) ;return;
 		$table = $this->services->get_table_config_housing($this->current_page);
 		$table["rows"] = $this->village_model->villages($pagination['start_record'], $pagination['limit_per_page'])->result();
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
+		
 		$this->data["contents"] = $table;
 
 		#################################################################3
@@ -46,7 +46,7 @@ class Candidate extends Uadmin_Controller
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Olah Perumahan";
+		$this->data["block_header"] = "Calon Penerima Bantuan";
 		$this->data["header"] = "Pilih Desa";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
@@ -55,12 +55,15 @@ class Candidate extends Uadmin_Controller
 
 	public function candidates()
 	{
+		$village_id = $this->input->get( 'village_id', TRUE );
+		$village_id || $village_id =  -1;
+
 		$this->data["menu_list_id"] = "candidate_candidates";
 		$this->load->library('services/Candidate_services');
 		$this->services = new Candidate_services;
 		$page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
 		//pagination parameter
-		$pagination['base_url'] = base_url($this->current_page);
+		$pagination['base_url'] = base_url($this->current_page)."candidates";
 		$pagination['total_records'] = $this->candidate_model->record_count();
 		$pagination['limit_per_page'] = 10;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
@@ -68,18 +71,80 @@ class Candidate extends Uadmin_Controller
 		//set pagination
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
+		$table = $this->services->get_table_config($this->current_page, $pagination['start_record'] + 1 );
+		$table["rows"] = $this->candidate_model->candidates( $pagination['start_record'], $pagination['limit_per_page'], $village_id )->result();
 
-		$table = $this->services->get_table_config($this->current_page);
-		$table["rows"] = $this->candidate_model->candidates()->result();
-		$type_of_aid = $this->services->type_of_aid();
-		$table["type_of_aid"] = $this->load->view('templates/form/plain_form_no_label', $type_of_aid, TRUE);
+		$year_select = array(
+			2019 => "2019",
+			2020 => "2020",
+			2021 => "2021",
+		);
+		$modal_confirm = array(
+			"name" => "Konfirmasi",
+			"modal_id" => "modal_confirm",
+			"button_color" => "success",
+			"url" => site_url( "uadmin/aid/add" ) ,
+			"form_data" => array(
+				"year" => array(
+					'type' => 'select',
+					'label' => "Tahun Anggaran",
+					"options" => $year_select
+				),
+				"date" => array(
+					'type' => 'date',
+					'label' => "Tanggal Konfirmasi",
+					'value' => date("m/d/Y"),
+				),
+			),
+			'data' => NULL
+		);
 
-		$form_header = $this->services->get_header_form();
-		$this->data["form_header"] = $this->load->view('templates/form/plain_form_horizontal', $form_header, TRUE);
+		$modal_confirm = $this->load->view('templates/actions/modal_form_confirm', $modal_confirm, true);
+		$this->data["form_confirm"] = $modal_confirm;
 
 		// $table = $this->load->view('uadmin/candidate/table_form', $table, true);
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
-		$this->data["contents"] = $table;
+
+		$villages = $this->candidate_model->get_village_by_candidates()->result();
+		$village_select = array( -1 => "Semua Desa" );
+		foreach( $villages as $village )
+		{
+			$village_select[ $village->id ]	= $village->name;
+		}
+		
+		$form_filter["form_data"] = array(
+				"village_id" => array(
+					'type' => 'select_search',
+					'label' => "Desa",
+					"options" => $village_select,
+					"selected" => $village_id,
+				),
+		);
+		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
+		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
+
+		unset( $village_select[ -1 ] );
+		$modal_print = array(
+			"name" => "Cetak Dokumen Verifikasi",
+			"modal_id" => "add_civilization_",
+			"button_color" => "success",
+			"url" => site_url($this->current_page . "print_verification/"), 
+			"form_data" => array(
+				"village_id" => array(
+					'type' => 'select_search',
+					'label' => "Desa",
+					"options" => $village_select,
+					"selected" => $village_id,
+				),
+			),
+			'data' => NULL
+		);
+
+		$modal_print = $this->load->view('templates/actions/modal_form_blank', $modal_print, true);
+		
+		// var_dump( $village_id ); die;
+		$this->data["header_button"] =  $modal_print;		// return;
+		$this->data["contents"] = $form_filter. $table;
 
 		#################################################################3
 		$alert = $this->session->flashdata('alert');
@@ -93,57 +158,16 @@ class Candidate extends Uadmin_Controller
 		$this->render("uadmin/candidate/candidates");
 	}
 
-	public function village($village_id = NULL)
+	public function village( $village_id = NULL )
 	{
-		$this->load->library('services/Candidate_services');
-		$this->services = new Candidate_services;
-		if ($village_id == NULL) redirect(site_url($this->current_page));
+		$search = $this->input->get( 'search', TRUE );
 
-		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list($village_id)->result();
-		$has_house_civilization_ids = $this->services->extract_civilization_id($has_house_civilization_ids);
-
-		$has_house = (empty($has_house_civilization_ids)) ? array() : $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids)->result();
-		$count_all = $this->civilization_model->record_count_by_village_id($village_id);
-
-		$candidate_rows = array();
-		$candidate_rows[] = (object) ["code" => "has_house", "name" => "KK Punya Rumah", "count" => count($has_house)];
-		$candidate_rows[] = (object) ["code" => "not_has_house", "name" => "KK Tidak Punya Rumah", "count" => ($count_all - count($has_house))];
-
-		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
-		//pagination parameter
-		$pagination['base_url'] = base_url($this->current_page) . '/index';
-		$pagination['total_records'] = $this->civilization_model->record_count();
-		$pagination['limit_per_page'] = 10;
-		$pagination['start_record'] = $page * $pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4 + 1;
-		//set pagination
-		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
-
-		// echo json_encode( $this->data[ "_menus" ] ) ;return;
-		$table = $this->services->get_table_accumulation($this->current_page, NULL,  $village_id);
-		$table["rows"] = $candidate_rows;
-		$table = $this->load->view('templates/tables/plain_table', $table, true);
-		$this->data["contents"] = $table;
-		// return;
-		#################################################################3
-		$village 				= $this->village_model->village($village_id)->row();
-
-		$alert = $this->session->flashdata('alert');
-		$this->data["key"] = $this->input->get('key', FALSE);
-		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
-		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "" . $village->name;
-		$this->data["header"] = "" . $village->name; //"Olah Penerima Bantuan";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-
-		$this->render("templates/contents/plain_content");
-	}
-
-	public function code($code = NULL)
-	{
+		$code = 'has_house';
 		$this->data["menu_list_id"] = "candidate_index";
 		if ($code == NULL) redirect(site_url($this->current_page));
-		$village_id = $this->input->get("village_id", NULL);
+		#update
+		// $village_id = $this->input->get("village_id", NULL);
+
 		$has_house_civilization_ids = $this->housing_model->get_civilization_id_list($village_id)->result();
 		$has_house_civilization_ids = $this->services->extract_civilization_id($has_house_civilization_ids);
 		// var_dump( $has_house_civilization_ids ); return;
@@ -152,40 +176,34 @@ class Candidate extends Uadmin_Controller
 
 		$page = ($this->uri->segment(4 + 1)) ? ($this->uri->segment(4 + 1) - 1) : 0;
 		//pagination parameter
-		$pagination['base_url'] = base_url($this->current_page) . '/index';
-
-		$pagination['limit_per_page'] = 10;
+		$pagination['base_url'] = base_url($this->current_page) . '/village/'.$village_id;
+		$pagination['total_records'] = $this->civilization_model->record_count_by_village_id($village_id);
+		$pagination['limit_per_page'] = 100;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
 		$pagination['uri_segment'] = 4 + 1;
 		//set pagination
-
-		$get_data = array(
-			"has_house" => array(
-				"table_config" => $this->services->get_has_house_table_config_candidate($this->current_page, $pagination['start_record'] + 1),
-				"title" => "Punya Rumah",
-				"count" => count($has_house_civilization_ids),
-				"function" => (empty($has_house_civilization_ids)) ? array() : $this->civilization_model->civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result(),
-			),
-			"not_has_house" => array(
-				"table_config" => $this->services->get_table_config_candidate($this->current_page, $pagination['start_record'] + 1),
-				"title" => "Tidak Punya Rumah",
-				"count" => $this->civilization_model->record_count_by_village_id($village_id) - count($has_house_civilization_ids),
-				// "function" => (empty($has_house_civilization_ids)) ?  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result() : array(),
-				"function" =>  $this->civilization_model->not_in_civilizations_by_list_id(0, NULL, $has_house_civilization_ids, $village_id)->result(),
-			)
-		);
-		$pagination['total_records'] = $get_data[$code]["count"];
 		if ($pagination['total_records'] > 0) $this->data['pagination_links'] = $this->setPagination($pagination);
+	
+		$table = $this->services->get_has_house_table_config_candidate($this->current_page, $pagination['start_record'] + 1);
 
-		$table = $get_data[$code]["table_config"]; //$this->services->get_table_config_candidate($this->current_page);
-		$table["rows"] = $get_data[$code]["function"];
+		if( isset( $search ) && $search != "" )
+			$table[ "rows" ] = $this->civilization_model->search( $search , $village_id )->result(  );
+		else
+			$table["rows"] = $this->civilization_model->civilizations($pagination['start_record'], $pagination['limit_per_page'], $village_id)->result();
 
-		// $table = $this->load->view('templates/tables/plain_table', $table, true);
 		$table = $this->load->view('uadmin/housing/plain_table', $table, true);
+		$form_filter["form_data"] = array(
+				"search" => array(
+					'type' => 'text',
+					'label' => "No KK",
+					'value' => $search
+				),
+		);
+		$form_filter["form"] = $this->load->view('templates/form/plain_form_horizontal', $form_filter, TRUE);
+		$form_filter = $this->load->view('officer/filter_horizontal', $form_filter, TRUE);
 
-		$this->data["contents"] = $table;
-		// echo var_dump($this->civilization_model->db);
-		// return;
+		$this->data["contents"] = $form_filter.$table;
+
 		#################################################################3
 		$village 				= $this->village_model->village($village_id)->row();
 
@@ -194,7 +212,7 @@ class Candidate extends Uadmin_Controller
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Olah Penerima Bantuan";
-		$this->data["header"] = "Daftar KK " . $get_data[$code]["title"] . " " . $village->name;
+		$this->data["header"] = "Data Perumahan Tidak Layak Huni " . $village->name;
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$this->render("templates/contents/plain_content");
@@ -232,7 +250,7 @@ class Candidate extends Uadmin_Controller
 					'label' => "village_id",
 					'value' => $civilization->village_id,
 				),
-				"type_of_aid" =>  $this->services->type_of_aid()["form_data"]["type_of_aid[]"],
+				"type_of_aid" =>  $this->services->type_of_aid()["form_data"]["type_of_aid"],
 			),
 			'data' => NULL
 		);
@@ -261,13 +279,16 @@ class Candidate extends Uadmin_Controller
 			$data_house = NULL;
 			$house_id	= $house->id;
 
-			$form_data = $this->services->get_form_data_readonly($house->id, $house->civilization_id);
-			$cordinate['konut_' . $i] = [$form_data['form_data']['longitude']['value'], $form_data['form_data']['latitude']['value']];
+			$form_data = $this->services->get_form_data_readonly($house->id, $house->civilization_id)[0];
+			$form_data_1 = $this->services->get_form_data_readonly($house->id, $house->civilization_id)[1];
+			$cordinate['konut_' . $i] = [$form_data_1['form_data']['longitude']['value'], $form_data_1['form_data']['latitude']['value']];
 
 			$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data, TRUE);
+			$form_data_1 = $this->load->view('templates/form/plain_form_readonly_6', $form_data_1, TRUE);
 
 			$data_house = array(
 				"contents" => $form_data,
+				"contents_1" => $form_data_1,
 				"file_scan"  => (object) ["name" => $house->file_scan, "url" => $house->url_file_scan],
 				"image_url" => base_url("uploads/house/"),
 				"house" => $house,
@@ -301,7 +322,7 @@ class Candidate extends Uadmin_Controller
 		$this->data["edit_button"] =  $this->load->view('templates/actions/link', $link_add, TRUE);;
 		##############################################################################
 		$alert = $this->session->flashdata('alert');
-		$this->data["map"] = $map;
+		// $this->data["map"] = $map;
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL;
 		$this->data["current_page"] = $this->current_page;
@@ -342,6 +363,30 @@ class Candidate extends Uadmin_Controller
 		redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
 	}
 
+	public function edit()
+	{
+		if (!($_POST)) redirect(site_url($this->current_page) . "village/" . $this->input->post('village_id'));
+
+		// echo var_dump( $this->input->post('civilization_id') );die;
+		$this->form_validation->set_rules("id", "id", "trim|required");
+		if ($this->form_validation->run() === TRUE) {
+			$data['type_of_aid'] = $this->input->post('type_of_aid');
+			$data_param['id'] = $this->input->post('id');
+			
+
+			if ($this->candidate_model->update($data, $data_param)) {
+				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, $this->candidate_model->messages()));
+			} else {
+				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->candidate_model->errors()));
+			}
+		} else {
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->candidate_model->errors() ? $this->candidate_model->errors() : $this->session->flashdata('message')));
+			if (validation_errors() || $this->candidate_model->errors()) $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->data['message']));
+		}
+
+		redirect(site_url($this->current_page) . "candidates" );
+	}
+
 	public function delete()
 	{
 		if (!($_POST)) redirect(site_url($this->current_page) . "candidates/");
@@ -353,5 +398,80 @@ class Candidate extends Uadmin_Controller
 			$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->candidate_model->errors()));
 		}
 		redirect(site_url($this->current_page) . "candidates/");
+	}
+
+	public function print_verification()
+	{
+		$village_id = $this->input->post( 'village_id' );
+		$village_id || $village_id =  -1;
+		if( $village_id == -1 ) redirect(site_url($this->current_page) . "candidates/");
+
+		$village         = $this->village_model->village($village_id)->row();
+		$rows = $this->candidate_model->get_candidates_for_verification( 0, NULL, $village_id )->result();
+		// var_dump( $rows ); die;
+
+		$this->load->library('pdf');
+		$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+
+		$pdf->SetTitle("Laporan Bantuan");
+
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
+
+		$pdf->SetTopMargin(10);
+		$pdf->SetLeftMargin(10);
+		$pdf->SetRightMargin(10);
+		$pdf->SetAutoPageBreak(true);
+		$pdf->SetAuthor('PERUMAHAN');
+		$pdf->SetDisplayMode('real', 'default');
+		$pdf->AddPage();
+		$cover[ "title" ] = "Daftar Kandidat Penerima Bantuan Rumah Tidak Layak Huni ".$village->name;
+		$html = $this->load->view('templates/report/cover', $cover, true);
+		$pdf->writeHTML($html, true, false, true, false, '');
+
+		$pdf->AddPage();
+		$html = "";
+		$this->load->library('services/housing_services');
+		$this->services = new housing_services;
+		$i = 1;
+		$y = 0;
+		foreach( $rows as $ind => $row )
+		{
+			$data = NULL;
+			$row->floor_material  	= $this->services->floor_material_select[ $row->floor_material ];
+			$row->land_status  		= $this->services->land_status_select[ $row->land_status ];
+			$row->water_source  	= $this->services->water_source_select[ $row->water_source ];
+			$row->light_source  	= $this->services->light_source_select[ $row->light_source ];
+			$row->wall_material  	= $this->services->wall_material_select[ $row->wall_material ];
+			$row->roof_material  	= $this->services->roof_material_select[ $row->roof_material ];
+
+			$data[ "house" ] = $row;
+
+			$images = explode(";", $row->images);
+			// $img = file_get_contents( base_url()."uploads/house/".$images[0]  );
+
+			$pdf->Image('@' . file_get_contents( base_url()."uploads/house/".$images[0]  ),  15				, 50 + $y, 60, 40, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+			$pdf->Image('@' . file_get_contents( base_url()."uploads/house/".$images[1]  ),  15 + 60		, 50 + $y, 60, 40, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+			$pdf->Image('@' . file_get_contents( base_url()."uploads/house/".$images[3]  ),  15 + 60 + 60	, 50 + $y, 60, 40, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+
+			// $html .= $this->load->view('templates/report/candidates', $data, true);
+			$pdf->writeHTML( $this->load->view('templates/report/candidates', $data, true) , true, false, true, false, '');
+			$y += 87;
+			if( $i % 3 == 0 )
+			{
+				// $pdf->writeHTML($html, true, false, true, false, '');
+				$pdf->AddPage();
+				$html = "";
+				$y = 0;
+			}
+			$i++;
+		}
+		// $pdf->AddPage();
+		$pdf->SetFont('times', NULL, 9);
+		// $html = $this->load->view('templates/report/candidates', $this->data, true);
+		// $pdf->writeHTML($html, true, false, true, false, '');
+		$title = str_replace(" ", "_", "asd" );
+		//sleep ( 15 );
+		$pdf->Output($title . ".pdf", 'I');
 	}
 }

@@ -71,7 +71,7 @@ class Village_model extends MY_Model
   {
     //foreign
     //delete_foreign( $data_param. $models[]  )
-    if( !$this->delete_foreign( $data_param ) )
+    if( !$this->delete_foreign( $data_param, [ "civilization_model" ] ) )
     {
       $this->set_error("gagal");//('village_delete_unsuccessful');
       return FALSE;

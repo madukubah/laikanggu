@@ -54,7 +54,23 @@ class Candidate_services
       'type_of_aid' => 'Jenis Bantuan',
     );
     $table["number"] = $start_number;
+    $form_data = $this->type_of_aid()[ "form_data" ];
+    $form_data [ "id" ]= array(
+      'type' => 'hidden',
+      'label' => "id",
+    );
     $table["action"] = array(
+      array(
+        "name" => 'Edit',
+        "type" => "modal_form",
+        "modal_id" => "edit_",
+        "url" => site_url($_page . "edit/"),
+        "button_color" => "primary",
+        "param" => "id",
+        "form_data" => $form_data,
+        "title" => "KK",
+        "data_name" => "no_kk",
+      ),
       array(
         "name" => 'X',
         "type" => "modal_delete",
@@ -166,7 +182,7 @@ class Candidate_services
       "PENGADAAN SUMUR" => "PENGADAAN SUMUR",
     );
     $_data["form_data"] = array(
-      "type_of_aid[]" => array(
+      "type_of_aid" => array(
         'type' => 'select',
         'label' => "Bantuan Yang Akan Di Berikan",
         "options" => $aid_select

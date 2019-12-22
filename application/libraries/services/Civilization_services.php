@@ -65,15 +65,6 @@ class Civilization_services
     );
     $table["number"] = $start_number;
     $table["action"] = array(
-      // array(
-      //   "name" => "Edit KK",
-      //   "type" => "modal_form_multipart",
-      //   "modal_id" => "edit_civilization_",
-      //   "button_color" => "primary",
-      //   "url" => site_url($_page . "edit/"),
-      //   "param" => "id",
-      //   "form_data" => $this->get_form_data(null)["form_data"],
-      // ),
       array(
         "name" => "Detail",
         "type" => "link",
@@ -81,13 +72,6 @@ class Civilization_services
         "url" => site_url($_page . "detail/"),
         "param" => "id",
       ),
-      // array(
-      //   "name" => "Edit KK",
-      //   "type" => "link",
-      //   "button_color" => "primary",
-      //   "url" => site_url($_page . "edit/"),
-      //   "param" => "id",
-      // ),
       array(
         "name" => 'X',
         "type" => "modal_delete",
@@ -175,12 +159,32 @@ class Civilization_services
       ),
       array(
         'field' => 'chief_name',
-        'label' => 'chief_name',
+        'label' => 'Nama Kepala Keluarga',
         'rules' =>  'trim|required',
       ),
       array(
         'field' => 'member_count',
-        'label' => 'member_count',
+        'label' => 'Jumlah Anggota Keluarga',
+        'rules' =>  'trim|required',
+      ),
+      array(
+        'field' => 'age',
+        'label' => 'Umur',
+        'rules' =>  'trim|required',
+      ),
+      array(
+        'field' => 'study',
+        'label' => 'Pendidikan Terakhir',
+        'rules' =>  'trim|required',
+      ),
+      array(
+        'field' => 'job',
+        'label' => 'Pekerjaan',
+        'rules' =>  'trim|required',
+      ),
+      array(
+        'field' => 'income',
+        'label' => 'Pendapatan / Bulan',
         'rules' =>  'trim|required',
       ),
     );
@@ -230,6 +234,11 @@ class Civilization_services
         'label' => "village_id",
         "value" => $village_id
       ),
+      "has_house" => array(
+        'type' => 'hidden',
+        'label' => "has_house",
+        "value" => 1,
+      ),
       "no_kk" => array(
         'type' => 'text',
         'label' => "Nomor KK",
@@ -237,33 +246,34 @@ class Civilization_services
       ),
       "chief_name" => array(
         'type' => 'text',
-        'label' => "Kepala Keluarga",
-        'value' => $this->chief_name
+        'label' => "Nama Kepala Keluarga",
+        'value' => $this->form_validation->set_value('chief_name', $this->chief_name),
       ),
       "member_count" => array(
         'type' => 'number',
         'label' => "Jumlah Anggota Keluarga",
-        'value' => $this->member_count
+        'value' => $this->form_validation->set_value('member_count', $this->member_count),
+        
       ),
       "age" => array(
         'type' => 'text',
         'label' => "Umur",
-        'value' => $this->age
+        'value' => $this->form_validation->set_value('age', $this->age),
       ),
       "study" => array(
         'type' => 'text',
         'label' => "Pendidikan Terakhir",
-        'value' => $this->study
+        'value' => $this->form_validation->set_value('study', $this->study),
       ),
       "job" => array(
         'type' => 'text',
         'label' => "Pekerjaan",
-        'value' => $this->job
+        'value' => $this->form_validation->set_value('job', $this->job),
       ),
       "income" => array(
         'type' => 'number',
         'label' => "Pendapatan / Bulan",
-        'value' => $this->income
+        'value' => $this->form_validation->set_value('income', $this->income ),
       ),
       "file_scan" => array(
         'type' => 'file',

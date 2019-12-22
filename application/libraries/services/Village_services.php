@@ -7,12 +7,16 @@ class Village_services
   protected $name;
   protected $description;
   protected $polygon;
+  protected $kk_count;
+  protected $house_count;
   function __construct()
   {
-    $this->id          = '';
-    $this->name    = '';
+    $this->id           = '';
+    $this->name         = '';
     $this->description  = "";
-    $this->polygon  = "";
+    $this->polygon      = "";
+    $this->kk_count     = 0;
+    $this->house_count  = 0;
   }
 
   public function __get($var)
@@ -25,6 +29,8 @@ class Village_services
     $table["header"] = array(
       'name' => 'Nama Desa',
       'description' => 'Deskripsi',
+      'kk_count' => 'Jumlah KK',
+      'house_count' => 'Jumlah Rumah',
     );
     $table["number"] = $start_number;
     $table["action"] = array(
@@ -103,11 +109,11 @@ class Village_services
         'label' => 'name',
         'rules' =>  'trim|required',
       ),
-      array(
-        'field' => 'description',
-        'label' => 'description',
-        'rules' =>  'trim|required',
-      ),
+      // array(
+      //   'field' => 'description',
+      //   'label' => 'description',
+      //   'rules' =>  'trim|required',
+      // ),
     );
 
     return $config;
@@ -126,6 +132,7 @@ class Village_services
         "url" => site_url($_page . "village/"),
         "button_color" => "primary",
         "param" => "id",
+        
       ),
     );
     return $table;
@@ -145,10 +152,12 @@ class Village_services
       ));
       $village         = $this->village_model->village($village_id)->row();
 
-      $this->id            = $village->id;
-      $this->name          = $village->name;
-      $this->description  = $village->description;
-      $this->polygon      = $village->polygon;
+      $this->id             = $village->id;
+      $this->name           = $village->name;
+      $this->description    = $village->description;
+      $this->polygon        = $village->polygon;
+      $this->kk_count       = $village->kk_count;
+      $this->house_count    = $village->house_count;
     }
 
     $_data["form_data"] = array(
@@ -162,11 +171,22 @@ class Village_services
         'label' => "Nama Desa",
         'value' => $this->form_validation->set_value('name', $this->name),
       ),
+      "kk_count" => array(
+        'type' => 'number',
+        'label' => "Jumlah KK",
+        'value' => $this->form_validation->set_value('kk_count', $this->kk_count),
+      ),
+      "house_count" => array(
+        'type' => 'number',
+        'label' => "Jumlah Rumah",
+        'value' => $this->form_validation->set_value('house_count', $this->house_count),
+      ),
       "description" => array(
         'type' => 'textarea',
-        'label' => "Ringkasan",
+        'label' => "Ringkasan Desa",
         'value' => $this->form_validation->set_value('description', $this->description),
       ),
+     
       "polygon" => array(
         'type' => 'hidden',
         'label' => "Polygon",
