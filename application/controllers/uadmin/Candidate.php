@@ -65,7 +65,7 @@ class Candidate extends Uadmin_Controller
 		//pagination parameter
 		$pagination['base_url'] = base_url($this->current_page)."candidates";
 		$pagination['total_records'] = $this->candidate_model->record_count();
-		$pagination['limit_per_page'] = 10;
+		$pagination['limit_per_page'] = 100;
 		$pagination['start_record'] = $page * $pagination['limit_per_page'];
 		$pagination['uri_segment'] = 4;
 		//set pagination
@@ -449,10 +449,20 @@ class Candidate extends Uadmin_Controller
 
 			$images = explode(";", $row->images);
 			// $img = file_get_contents( base_url()."uploads/house/".$images[0]  );
+			$default = file_get_contents( base_url()."uploads/house/default.jpg" );
+			if( $images[0] != "default.jpg" )
+				$images[0] = file_get_contents( base_url()."uploads/house/".$images[0]  );
+			else $images[0] = $default;
+			if( $images[1] != "default.jpg" )
+				$images[1] = file_get_contents( base_url()."uploads/house/".$images[1]  );
+			else $images[1] = $default;
+			if( $images[3] != "default.jpg" )
+				$images[3] = file_get_contents( base_url()."uploads/house/".$images[3]  );
+			else $images[3] = $default;
 
-			$pdf->Image('@' . file_get_contents( base_url()."uploads/house/".$images[0]  ),  15				, 50 + $y, 60, 40, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
-			$pdf->Image('@' . file_get_contents( base_url()."uploads/house/".$images[1]  ),  15 + 60		, 50 + $y, 60, 40, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
-			$pdf->Image('@' . file_get_contents( base_url()."uploads/house/".$images[3]  ),  15 + 60 + 60	, 50 + $y, 60, 40, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+			$pdf->Image('@' . $images[0],  15			, 50 + $y, 60, 40, 'JPG', '#', '', true, 150, '', false, false, 1, false, false, false);
+			$pdf->Image('@' . $images[1],  15 + 60		, 50 + $y, 60, 40, 'JPG', '#', '', true, 150, '', false, false, 1, false, false, false);
+			$pdf->Image('@' . $images[3],  15 + 60 + 60	, 50 + $y, 60, 40, 'JPG', '#', '', true, 150, '', false, false, 1, false, false, false);
 
 			// $html .= $this->load->view('templates/report/candidates', $data, true);
 			$pdf->writeHTML( $this->load->view('templates/report/candidates', $data, true) , true, false, true, false, '');

@@ -175,17 +175,22 @@ class Candidate_services
   public function type_of_aid()
   {
     $aid_select = array(
-      "UBIN/TEGEL"=> "UBIN/TEGEL",
-      "PEMBUATAN TEMBOK" => "PEMBUATAN TEMBOK",
-      "PEMBELIAN SENG" => "PEMBELIAN SENG",
-      "PENGADAAN LISTRIK" => "PENGADAAN LISTRIK",
-      "PENGADAAN SUMUR" => "PENGADAAN SUMUR",
+      "PENGADAAN BATU"=> "PENGADAAN BATU",
+      "PENGADAAN PASIR"=> "PENGADAAN PASIR",
+      "PEMBUATAN DINDING" => "PEMBUATAN DINDING",
+      "PENGADAAN SENG" => "PENGADAAN SENG",
+      "PENGADAAN MCK" => "PENGADAAN MCK",
+      "PENGADAAN KAYU" => "PENGADAAN KAYU",
+      "PENGADAAN BESI" => "PENGADAAN BESI",
+      "PENGADAAN PAKU" => "PENGADAAN PAKU",
+      "PENGADAAN SEMEN" => "PENGADAAN SEMEN",
+      "PENGADAAN BUMBUNGAN" => "PENGADAAN BUMBUNGAN",
     );
     $_data["form_data"] = array(
       "type_of_aid" => array(
-        'type' => 'select',
+        'type' => 'text',
         'label' => "Bantuan Yang Akan Di Berikan",
-        "options" => $aid_select
+        // "options" => $aid_select
       ),
     );
     return $_data;

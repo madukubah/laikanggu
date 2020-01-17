@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 22 Des 2019 pada 15.40
+-- Waktu pembuatan: 23 Des 2019 pada 06.03
 -- Versi server: 10.2.30-MariaDB-cll-lve
 -- Versi PHP: 7.3.6
 
@@ -62,7 +62,19 @@ INSERT INTO `candidate` (`id`, `civilization_id`, `type_of_aid`) VALUES
 (6, 69, 'PENGADAAN SUMUR'),
 (7, 47, 'UBIN/TEGEL'),
 (8, 70, 'PENGADAAN LISTRIK'),
-(9, 158, 'PEMBELIAN SENG');
+(9, 158, 'PEMBELIAN SENG'),
+(10, 71, 'UBIN/TEGEL'),
+(11, 93, 'UBIN/TEGEL'),
+(12, 120, 'PEMBELIAN SENG'),
+(13, 147, 'PEMBELIAN SENG'),
+(14, 74, 'PEMBELIAN SENG'),
+(15, 87, 'PENGADAAN LISTRIK'),
+(16, 182, 'PEMBELIAN SENG'),
+(17, 184, 'PENGADAAN LISTRIK'),
+(18, 187, 'PEMBUATAN TEMBOK'),
+(19, 190, 'PEMBUATAN TEMBOK'),
+(20, 189, 'PEMBELIAN SENG'),
+(21, 176, 'UBIN/TEGEL');
 
 -- --------------------------------------------------------
 
@@ -238,7 +250,27 @@ INSERT INTO `civilization` (`id`, `village_id`, `no_kk`, `chief_name`, `member_c
 (187, 11, '7409050207770002', 'SAIPUL S', 4, 'default.jpg', 1200000, 42, 'WIRASWASTA', 'SMA', 'Civilization_KTP_7409050207770002_1576994240.jpg'),
 (188, 11, '7409090307750001', 'SAENUDIN', 3, 'default.jpg', 1000000, 44, 'PETANI', 'SMA', 'Civilization_KTP_7409090307750001_1576994291.jpg'),
 (189, 11, '7409012701580001', 'RAMALA', 4, 'default.jpg', 1100000, 64, 'PETANI', 'SMA', 'Civilization_KTP_7409012701580001_1576994374.jpg'),
-(190, 11, '7409090610700001', 'HARMUDIN', 5, 'default.jpg', 1000000, 49, 'PETANI', 'SMP', 'Civilization_KTP_7409090610700001_1576994427.jpg');
+(190, 11, '7409090610700001', 'HARMUDIN', 5, 'default.jpg', 1000000, 49, 'PETANI', 'SMP', 'Civilization_KTP_7409090610700001_1576994427.jpg'),
+(191, 13, '7409050512280001', 'ASMAN', 5, 'Civilization_7409050512280001_1577018578.jpeg', 1000000, 33, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'Civilization_KTP_7409050512280001_1577018578.jpeg'),
+(192, 13, '7409050409120026', 'ABD. SYARIF', 5, 'Civilization_7409050409120026_1577019067.jpeg', 900000, 70, 'PETANI/PEKEBUN', 'SLTP/SEDERAJAT', 'Civilization_KTP_7409050409120026_1577019067.jpeg'),
+(193, 13, '7409050409120020', 'WAHYUDIN', 7, 'Civilization_7409050409120020_1577021111.jpeg', 900000, 31, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'Civilization_KTP_7409050409120020_1577021111.jpeg'),
+(194, 13, '7409050808190001', 'RUDINI', 3, 'Civilization_7409050808190001_1577021418.jpeg', 1000000, 28, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'Civilization_KTP_7409050808190001_1577021418.jpeg'),
+(195, 13, '7409052809120006', 'BUDULAHI', 4, 'Civilization_7409052809120006_1577022037.jpeg', 1000000, 51, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'Civilization_KTP_7409052809120006_1577022037.jpeg'),
+(196, 13, '7409052809120018', 'ELUMI', 5, 'Civilization_7409052809120018_1577022412.jpeg', 1200000, 45, 'WIRASWASTA', 'SD/SEDERAJAT', 'Civilization_KTP_7409052809120018_1577022412.jpeg'),
+(197, 13, '7409051912130002', 'UMI', 2, 'Civilization_7409051912130002_1577022741.jpeg', 700000, 51, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'Civilization_KTP_7409051912130002_1577022741.jpeg'),
+(198, 13, '7409052809120005', 'ROFIN', 5, 'Civilization_7409052809120005_1577023261.jpeg', 1000000, 37, 'WIRASWASTA', 'SD/SEDERAJAT', 'Civilization_KTP_7409052809120005_1577023261.jpeg'),
+(199, 13, '7409053011150002', 'LAMANGUNDA', 2, 'Civilization_7409053011150002_1577024027.jpeg', 900000, 30, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'Civilization_KTP_7409053011150002_1577024027.jpeg'),
+(200, 13, '7409052709120028', 'IRAWAN', 4, 'default.jpg', 1000000, 31, 'NELAYAN', 'SMA', 'default.jpg'),
+(201, 13, '7409051103190001', 'ISLAN', 4, 'default.jpg', 1200000, 28, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'default.jpg'),
+(202, 13, '7405051309120069', 'RASUDIN', 7, 'default.jpg', 1500000, 47, 'WIRASWASTA', 'SLTP/SEDERAJAT', 'default.jpg'),
+(203, 13, '7409052909160001', 'SULKIFLI', 3, 'default.jpg', 1000000, 30, 'PETANI/PEKEBUN', 'SLTP/SEDERAJAT', 'default.jpg'),
+(204, 13, '7409062005680001', 'BASIR', 7, 'default.jpg', 1300000, 54, 'WIRASWASTA', 'SLTP/SEDERAJAT', 'default.jpg'),
+(205, 13, '7409053101180005', 'SAMSUDDIN', 4, 'default.jpg', 1200000, 42, 'PETANI/PEKEBUN', 'SLTP/SEDERAJAT', 'default.jpg'),
+(206, 13, '740951903100021', 'RAMLI', 6, 'default.jpg', 1400000, 53, 'PERDAGANGAN', 'SLTP/SEDERAJAT', 'default.jpg'),
+(207, 13, '7409050510180002', 'BUDUSAMI', 2, 'default.jpg', 1000000, 75, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'default.jpg'),
+(208, 13, '7409040402100037', 'AMIRUDDIN B', 6, 'default.jpg', 900000, 43, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'default.jpg'),
+(209, 13, '7409051801180001', 'ASDAM', 4, 'default.jpg', 900000, 25, 'PETANI/PEKEBUN', 'SD/SEDERAJAT', 'default.jpg'),
+(210, 13, '7409052809120013', 'TASRIN', 5, 'default.jpg', 1300000, 46, 'WIRASWASTA', 'SD/SEDERAJAT', 'default.jpg');
 
 -- --------------------------------------------------------
 
@@ -443,7 +475,27 @@ INSERT INTO `house` (`id`, `civilization_id`, `category`, `certificate_status`, 
 (168, 187, 1, 2, '1', '1', 'front_1576994250.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 8, 6, 'KORBAN BANJIR'),
 (169, 188, 1, 2, '1', '1', 'front_1576994343.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 1, 1, 0, 0, 0, 0, 6, 5, 'KORBAN BANJIR'),
 (170, 189, 0, 2, '1', '1', 'front_1576994385.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 2, 1, 0, 0, 0, 0, 5, 4, 'KORBAN BANJIR'),
-(171, 190, 1, 2, '1', '1', 'front_1576994443.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 1, 1, 0, 0, 0, 0, 5, 3, 'KORBAN BANJIR');
+(171, 190, 1, 2, '1', '1', 'front_1576994443.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 1, 1, 0, 0, 0, 0, 5, 3, 'KORBAN BANJIR'),
+(172, 191, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 7, 8, ''),
+(173, 192, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 9, 7, ''),
+(174, 193, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 8, 8, ''),
+(175, 194, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 9, 8, ''),
+(176, 195, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 9, 9, ''),
+(177, 196, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 8, 9, ''),
+(178, 197, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 8, 7, ''),
+(179, 198, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 9, 7, ''),
+(180, 199, 0, 0, '2', '3', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 7, 9, ''),
+(181, 200, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 5, 4, 'KORBAN BANJIR'),
+(182, 201, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 6, 4, 'KORBAN BANJIR'),
+(183, 202, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 6, 5, 'KORBAN BANJIR'),
+(184, 203, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 7, 3, 'KORBAN BANJIR'),
+(185, 204, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 7, 5, 'KORBAN BANJIR'),
+(186, 205, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 5, 3, 'KORBAN BANJIR'),
+(187, 206, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 8, 5, 'KORBAN BANJIR'),
+(188, 207, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 5, 3, 'KORBAN BANJIR'),
+(189, 208, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 6, 4, 'KORBAN BANJIR'),
+(190, 209, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 6, 3, 'KORBAN BANJIR'),
+(191, 210, 0, 0, '1', '1', 'default.jpg;default.jpg;default.jpg;default.jpg', '-3.5014330835094682', '122.10348308181318', 'default.jpg', 0, 0, 0, 0, 0, 0, 6, 2, 'KORBAN BANJIR');
 
 -- --------------------------------------------------------
 
@@ -463,7 +515,6 @@ CREATE TABLE `login_attempts` (
 --
 
 INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
-(1, '114.125.170.148', 'Dinas gmail@xom', 1576943319),
 (2, '222.124.222.58', 'desa_puuwanggudu@gmail.com', 1576977616),
 (3, '222.124.222.58', 'desa_wangguduraya@gmail.com', 1576978746),
 (4, '222.124.222.58', 'Desa_Wanggudu_Jaya@gmail.com', 1576979497),
@@ -546,12 +597,13 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`) VALUES
 (1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1575824004, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1569750691.PNG', 'admin'),
-(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1577003901, 1, 'admin', 'Dinas', '00', 'USER_13_1576949614.png', 'jln mutiara no 8'),
+(13, '::1', 'dinas@gmail.com', '$2y$10$xbDFfxFWEv2vFuxytqXIOuBX3bIFzRXZRbvrc9DCiaNJsl34gTvOi', 'dinas@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1577010995, 1, 'admin', 'Dinas', '00', 'USER_13_1576949614.png', 'jln mutiara no 8'),
 (24, '222.124.222.58', 'Desa_Puuwanggudu@gmail.com', '$2y$10$nGx65tOUaSQFZZISz/leX.4827AkpC9jCV8bWPIAvfKswcZag97ya', 'Desa_Puuwanggudu@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1576976337, 1576977431, 1, 'admin', 'Desa Puuwanggudu', '0', 'default.jpg', 'Alamat'),
 (25, '222.124.222.58', 'Desa_Ala_Wanggudu@gmail.com', '$2y$10$Ib5tIteosb2S0ztTEUFX2.jNMX1zP9rz7UMBEldnbHsFddc2tGnAG', 'Desa_Ala_Wanggudu@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1576977289, 1576977684, 1, 'admin', 'Desa Ala Wanggudu', '0', 'default.jpg', 'Alamat'),
 (26, '222.124.222.58', 'Desa_Walalindu@gmail.com', '$2y$10$BIGuyfSiiwFtylZ.TvSCVuI0QJ32syHiTe9nnD66QhIXkNzCmS8a2', 'Desa_Walalindu@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1576977327, 1576978417, 1, 'admin', 'Desa Walalindu', '0', 'default.jpg', 'Alamat'),
 (27, '222.124.222.58', 'Desa_Labungga@gmail.com', '$2y$10$zwEICJUplFcmPKz5BqDNe.VbDcOEajVj6.eVT1zmisWDhABFBCGMq', 'Desa_Labungga@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1576977350, 1576987060, 1, 'admin', 'Desa Labungga', '0', 'default.jpg', 'Alamat'),
-(28, '222.124.222.58', 'Desa_Wanggudu_Raya@gmail.com', '$2y$10$3bYcQH6jvo/kX8nZp9cyHugQ2ai6EAe57H.o.kwWA91djGO1qxc/e', 'Desa_Wanggudu_Raya@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1576977374, 1576985613, 1, 'admin', 'Desa Wanggudu Raya', '0', 'default.jpg', 'Alamat');
+(28, '222.124.222.58', 'Desa_Wanggudu_Raya@gmail.com', '$2y$10$3bYcQH6jvo/kX8nZp9cyHugQ2ai6EAe57H.o.kwWA91djGO1qxc/e', 'Desa_Wanggudu_Raya@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1576977374, 1576985613, 1, 'admin', 'Desa Wanggudu Raya', '0', 'default.jpg', 'Alamat'),
+(29, '36.75.142.5', 'Desa_Abola@gmail.com', '$2y$10$2KnykcY2NzvxXYNUwH4Rf.7a0AdwPaXIAN..u2zvsj0raAV8jqT.a', 'Desa_Abola@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1577017379, 1577055693, 1, 'admin', 'Desa Abola', '0', 'default.jpg', 'Alamat');
 
 -- --------------------------------------------------------
 
@@ -576,7 +628,8 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (39, 25, 3),
 (40, 26, 3),
 (41, 27, 3),
-(42, 28, 3);
+(42, 28, 3),
+(43, 29, 3);
 
 -- --------------------------------------------------------
 
@@ -603,7 +656,8 @@ INSERT INTO `village` (`id`, `user_id`, `name`, `description`, `polygon`, `kk_co
 (9, 25, 'Desa Ala Wanggudu', '-', '', 0, 0),
 (10, 26, 'Desa Walalindu', '-', '', 0, 0),
 (11, 27, 'Desa Labungga', '-', '', 0, 0),
-(12, 28, 'Desa Wanggudu Raya', '-', '', 0, 0);
+(12, 28, 'Desa Wanggudu Raya', '-', '', 0, 0),
+(13, 29, 'Desa Abola', '-', '', 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -695,13 +749,13 @@ ALTER TABLE `aid`
 -- AUTO_INCREMENT untuk tabel `candidate`
 --
 ALTER TABLE `candidate`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `civilization`
 --
 ALTER TABLE `civilization`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
 
 --
 -- AUTO_INCREMENT untuk tabel `groups`
@@ -713,7 +767,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT untuk tabel `house`
 --
 ALTER TABLE `house`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
 
 --
 -- AUTO_INCREMENT untuk tabel `login_attempts`
@@ -731,19 +785,19 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT untuk tabel `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT untuk tabel `village`
 --
 ALTER TABLE `village`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
